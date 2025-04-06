@@ -44,7 +44,7 @@ const Login = () => {
         <div className={styles.main} >
             <div className={styles.card}>
                 <h3 className={styles.title}>¡Bienvenido!</h3>
-                <p className={styles.subtitle}>Antiocar alquiler de vehículos</p>
+                <p className={styles.subtitle}>ANTIOCAR alquiler de vehículos</p>
                 <form onSubmit={handleSubmit}>
                     <div className={styles.field}>
                         <svg className={styles.inputIcon} viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
