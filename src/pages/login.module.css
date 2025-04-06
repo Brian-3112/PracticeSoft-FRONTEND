@@ -128,3 +128,46 @@
 .btnLink:hover {
     color: #ffeba7;
 }
+
+
+             /* RESPONSIVE */
+/* -------------------------------------- */
+
+
+
+
+@media (max-width: 480px) {
+    .card {
+        width: 90%;
+        padding: 1.5rem 1rem;
+        min-height: auto;
+    }
+
+    .title {
+        font-size: 40px;
+        top: 0;
+    }
+
+    .subtitle {
+        font-size: 14px;
+        margin-top: -6px;
+    }
+
+    .field {
+        width: 80%;
+        padding: 0.6em 0.8em;
+    }
+    .inputField {
+        font-size: 0.9rem;
+    }
+
+    .btn {
+        width: 35%;
+        padding: 0.6em;
+    }
+
+    .btnLink {
+        font-size: 0.7em;
+        margin-top: -2px;
+    }
+}
