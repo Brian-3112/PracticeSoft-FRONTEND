@@ -44,6 +44,7 @@ const Login = () => {
         <div className={styles.main} >
 
             <div className={styles.card1}>
+                
 
             </div>
 

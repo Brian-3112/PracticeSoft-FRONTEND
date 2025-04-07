@@ -27,7 +27,7 @@
 }
 
 .card1{
-    background-image: url('/public/img1.png');
+    background-image: url('/img1.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -156,15 +156,17 @@
 
 
 @media (max-width: 480px) {
+
+    .card1 {
+        display: none;
+        
+    }
+    
     .card {
         width: 90%;
         padding: 1.5rem 1rem;
         min-height: 60%;
         border-radius: 8px;
-    }
-    .card1 {
-        display: none;
-        
     }
 
     .title {
