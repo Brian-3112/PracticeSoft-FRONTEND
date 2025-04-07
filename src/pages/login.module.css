@@ -26,17 +26,36 @@
 
 }
 
-.card {
+.card1{
+    background-image: url('/public/img1.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     width: 450px;
     padding: 2rem;
     text-align: center;
-    background: #2a2b38;
-    border-radius: 8px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
     min-height: 450px;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+    /* border: 3px solid black; */
+}
+
+.card {
+    width: 400px;
+    padding: 2rem;
+    text-align: center;
+    background: #2a2b38;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    min-height: 450px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
     /* border: 3px solid black; */
 }
 
@@ -141,6 +160,11 @@
         width: 90%;
         padding: 1.5rem 1rem;
         min-height: 60%;
+        border-radius: 8px;
+    }
+    .card1 {
+        display: none;
+        
     }
 
     .title {

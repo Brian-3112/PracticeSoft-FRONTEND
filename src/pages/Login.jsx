@@ -42,6 +42,11 @@ const Login = () => {
 
     return (
         <div className={styles.main} >
+
+            <div className={styles.card1}>
+
+            </div>
+
             <div className={styles.card}>
                 <h3 className={styles.title}>¡Bienvenido!</h3>
                 <p className={styles.subtitle}>ANTIOCAR alquiler de vehículos</p>
