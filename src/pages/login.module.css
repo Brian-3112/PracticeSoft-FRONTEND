@@ -41,7 +41,7 @@
     justify-content: center;
     border-top-left-radius: 8px;
     border-bottom-left-radius: 8px;
-    /* border: 3px solid black; */
+    border: 1px solid rgb(214, 214, 214);
 }
 
 .card {
