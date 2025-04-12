@@ -2,6 +2,7 @@
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 import Login from '../pages/Login';
 import Navegador from '../Layout/Navegador';
+import Dashboard from '../pages/Dashboard';
 import { AuthProvider } from '../context/AuthProvider';
 import ProtectedRoute from './ProtectedRoute';
 
@@ -15,10 +16,11 @@ const MyRoutes = () => {
 
 
                     <Route
-
                         path="/admin"
                         element={<Navegador />}
                     >
+
+                        <Route index element={<Dashboard />} />
 
 
 
@@ -29,13 +31,13 @@ const MyRoutes = () => {
 
                     {/* Rutas protegidas */}
                     <Route element={<ProtectedRoute />}>
-                
+
                         {/* Puedes agregar más rutas protegidas aquí en el futuro */}
                         {/* <Route path="/admin" element={<AdminPanel />} /> */}
                     </Route>
 
 
-                    
+
                 </Routes>
             </AuthProvider>
         </BrowserRouter>

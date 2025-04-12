@@ -1,29 +1,29 @@
-import { Navigate } from 'react-router-dom';
+import { Link, Outlet } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
 import styles from '../Layout/Navegador.module.css';
 
-
 const Navegador = () => {
-
-  /// extrayendo la información para la autenticación
   const { auth, loading } = useAuth();
-  if (loading == true) return 'Cargando...';
-
+  if (loading) return 'Cargando...';
 
   return (
-    <nav className={styles.navbar}>
-      <div className={styles.navbarleft}>
-        <span className={styles.brandName}>ANTIOCAR</span>
-      </div>
-      <ul className={styles.navbarlinkss}>
-        <li><a href="#">Dashboard</a></li>
-        <li><a href="#">Clientes</a></li>
-        <li><a href="#">Vehiculos</a></li>
-        <li><a href="#">Rentas</a></li>
-      </ul>
-    </nav>
+    <>
+      <nav className={styles.navbar}>
+        <div className={styles.navbarleft}>
+          <span className={styles.brandName}>ANTIOCAR</span>
+        </div>
+        <ul className={styles.navbarlinkss}>
+          <li><Link to="/admin">Dashboard</Link></li>
+          <li><a href="#">Clientes</a></li>
+          <li><a href="#">Vehiculos</a></li>
+          <li><a href="#">Rentas</a></li>
+        </ul>
+      </nav>
+
+      {/* Aquí se renderizan las rutas hijas como Dashboard */}
+      <Outlet />
+    </>
   );
 };
-
 
 export default Navegador;
