@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import useAuth from '../hooks/useAuth';
 import clienteAxios from "../config/axios";
 import Swal from "sweetalert2";
-import styled from 'styled-components';
 import styles from '../pages/login.module.css';
 
 
@@ -30,7 +29,7 @@ const Login = () => {
             const { data } = await clienteAxios.post("/usuarios/login", { email, password });
             localStorage.setItem("token", data.token);
             setAuth(data);
-            navigate("/dashboard");
+            navigate("/admin");
         } catch (error) {
             Swal.fire("Error", "Credenciales incorrectas", "error");
         }

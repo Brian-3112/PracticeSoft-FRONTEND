@@ -1,0 +1,54 @@
+.navbar {
+    background: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    border-radius: 8px;
+    max-width: 1000px;
+    margin: 2rem auto;
+    box-shadow: 0 0 10px rgba(78, 148, 84, 0.4), 0 0 20px rgba(78, 148, 84, 0.2);
+    /* border: 1px solid black; */
+  }
+  
+  .navbarleft {
+    display: flex;
+    align-items: center;
+    position: relative;
+    left: 40px;
+    /* border: 2px solid black; */
+  }
+  
+  /* 3d7c36 */
+  .brandName {
+    font-weight: bold;
+    font-size: 24px;
+    color: #4e9454;
+    /* border: 3px solid black; */
+  }
+  
+.navbarlinkss {
+    display: flex;
+    align-items: center;
+    gap: 2.2rem;
+    list-style: none;
+    position: relative;
+    right: 50px;
+    margin: 0;
+    padding: 0;
+    /* border: 1px solid black; */
+  }
+  
+  .navbarlinkss a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+    font-size: 17px;
+    transition: color 0.2s ease;
+    /* border: 3px solid black; */
+  }
+  
+  .navbarlinkss a:hover {
+    color: #4e9454;
+  }
+  
