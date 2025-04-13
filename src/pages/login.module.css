@@ -4,7 +4,7 @@
 /* #e8e8e8 */
 
 .loginBody {
-    background-color: #e8e8e8;
+    background-color: #f3f3f3;
     font-family: 'Poppins', sans-serif;
     margin: 0;
     padding: 0;
@@ -27,7 +27,7 @@
 }
 
 .card1{
-    background-image: url('/6.png');
+    background-image: url('/5.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
