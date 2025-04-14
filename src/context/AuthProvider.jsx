@@ -7,10 +7,21 @@ import Swal from 'sweetalert2';
 const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
+    
     const [auth, setAuth] = useState({});
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
 
+    const token = localStorage.getItem('token');
+
+    const config = {
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        },
+    };
+    
+    //! Este use effect Para que cuando carge la app revisar si el usuario esta autenticado o no
     useEffect(() => {
         const autenticarUsuario = async () => {
             const token = localStorage.getItem('token');
@@ -54,7 +65,7 @@ const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ auth, setAuth, loading, cerrarSesion }}>
+        <AuthContext.Provider value={{ auth, setAuth, loading, cerrarSesion, config }}>
             {children}
         </AuthContext.Provider>
     );

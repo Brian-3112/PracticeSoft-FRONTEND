@@ -5,12 +5,14 @@ import Navegador from '../Layout/Navegador';
 import Dashboard from '../pages/Dashboard';
 import Vehiculo from '../pages/Vehiculo';
 import { AuthProvider } from '../context/AuthProvider';
+import { VehiculoProvider } from '../context/VehiculoProvider';
 import ProtectedRoute from './ProtectedRoute';
 
 const MyRoutes = () => {
     return (
         <BrowserRouter>
             <AuthProvider>
+            <VehiculoProvider>
                 <Routes>
                     <Route path="/" element={<Navigate to="/login" />} />
                     <Route path="/login" element={<Login />} />
@@ -44,6 +46,7 @@ const MyRoutes = () => {
 
 
                 </Routes>
+                </VehiculoProvider>
             </AuthProvider>
         </BrowserRouter>
     );
