@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 import Login from '../pages/Login';
 import Navegador from '../Layout/Navegador';
 import Dashboard from '../pages/Dashboard';
+import Vehiculo from '../pages/Vehiculo';
 import { AuthProvider } from '../context/AuthProvider';
 import ProtectedRoute from './ProtectedRoute';
 
@@ -21,6 +22,10 @@ const MyRoutes = () => {
                     >
 
                         <Route index element={<Dashboard />} />
+
+                        <Route path="vehiculo" element={<Vehiculo />} />
+
+            
 
 
 
