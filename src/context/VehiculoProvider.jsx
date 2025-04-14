@@ -8,7 +8,7 @@ import Swal from 'sweetalert2';
 export const VehiculoContext = createContext(); // <-- cambia esto
 
 export const VehiculoProvider = ({ children }) => {
-    const { auth } = useAuth();
+    const { auth, config } = useAuth();
     const [vehiculos, setVehiculos] = useState([]);
 
     const consultarVehiculos = async () => {
@@ -16,12 +16,7 @@ export const VehiculoProvider = ({ children }) => {
             const token = localStorage.getItem('token');
             if (!token) return;
 
-            const config = {
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${token}`,
-                },
-            };
+            
 
             const { data } = await clienteAxios.get('/vehiculos', config);
 
