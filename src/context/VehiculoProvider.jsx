@@ -5,50 +5,50 @@ import { useNavigate } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
 import Swal from 'sweetalert2';
 
-const VehiculoContext = createContext();
+export const VehiculoContext = createContext(); // <-- cambia esto
 
-const VehiculoProvider = ({ children }) => {
-
-    const { config, auth } = useAuth();
-
-    // primer state
+export const VehiculoProvider = ({ children }) => {
+    const { auth } = useAuth();
     const [vehiculos, setVehiculos] = useState([]);
 
     const consultarVehiculos = async () => {
-
-
         try {
             const token = localStorage.getItem('token');
             if (!token) return;
+
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,
+                },
+            };
 
             const { data } = await clienteAxios.get('/vehiculos', config);
 
             setVehiculos(data.reverse());
         } catch (error) {
+            console.error('Error al consultar vehículos:', error);
             Swal.fire({
                 title: 'Error',
-                text: 'Error al consultar los proveedores. Vuelva a intentarlo.',
+                text: 'Error al consultar los vehículos. Vuelva a intentarlo.',
                 icon: 'error',
             });
         }
     };
+
     useEffect(() => {
-        consultarVehiculos();
+        if (auth) {
+            consultarVehiculos();
+        }
     }, [auth]);
 
-
-
-
-
-
-
     return (
-        <VehiculoContext.Provider value={{vehiculos}}>
+        <VehiculoContext.Provider value={{ vehiculos }}>
             {children}
         </VehiculoContext.Provider>
     );
 };
 
-
-export { VehiculoProvider };
-export default VehiculoContext;
+VehiculoProvider.propTypes = {
+    children: PropTypes.node.isRequired,
+};

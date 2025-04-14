@@ -25,7 +25,7 @@ const MyRoutes = () => {
 
                         <Route index element={<Dashboard />} />
 
-                        <Route path="vehiculo" element={<Vehiculo />} />
+                        <Route path="vehiculos" element={<Vehiculo />} />
 
 
 

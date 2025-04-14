@@ -16,9 +16,6 @@ const Vehiculo = () => {
 
 
 
-
-
-
     return (
         <div>
             <h2>Carros</h2>

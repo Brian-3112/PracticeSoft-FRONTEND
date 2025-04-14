@@ -30,10 +30,15 @@ const AuthProvider = ({ children }) => {
                 return;
             }
 
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,
+                },
+            };
+
             try {
-                const { data } = await clienteAxios.get('/usuarios', {
-                    headers: { Authorization: `Bearer ${token}` }
-                });
+                const { data } = await clienteAxios.get('/usuarios', config);
                 setAuth(data);
             } catch (error) {
                 if (error.response?.data?.message === "Token no valido") {
