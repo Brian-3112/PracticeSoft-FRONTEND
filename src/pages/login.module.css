@@ -84,7 +84,7 @@
     align-items: center;
     justify-content: center;
     gap: .5em;
-    background-color: #868d76;
+    background-color: #d5d5d525;
     border-radius: 4px;
     padding: 0.8em 1em;
     width: 80%;
@@ -107,7 +107,7 @@
     outline: none;
     width: 100%;
     color: #2d2d2d;
-    font-weight: 500;
+    font-weight: 600;
     height: 2.0rem;
     font-size: 0.9rem;
     /* border: 3px solid black; */
