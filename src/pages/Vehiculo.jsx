@@ -28,12 +28,10 @@ const Vehiculo = () => {
             ) : (
                 <ul>
                     {vehiculos.map((vehiculo) => (
-                        <li key={vehiculo._id}>
-                            <h3>{vehiculo.nombre}</h3>
-                            <p>Marca: {vehiculo.marca}</p>
-                            <p>Modelo: {vehiculo.modelo}</p>
-                            <p>Precio: {vehiculo.precio}</p>
-                            {/* Agrega más campos si necesitas */}
+                        <li key={vehiculo.id}>
+                            <h3>{vehiculo.nombreVehiculo}</h3>
+                            <p>Placa: {vehiculo.placa}</p>
+                            <p>Tránsito: {vehiculo.transito}</p>
                         </li>
                     ))}
                 </ul>
