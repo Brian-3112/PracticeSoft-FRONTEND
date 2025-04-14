@@ -1,7 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700&display=swap');
 
-/* #dfdfdf */
-/* #e8e8e8 */
+
 
 .loginBody {
     background-color: #fbfbfb;
@@ -48,7 +47,7 @@
     width: 400px;
     padding: 2rem;
     text-align: center;
-    background: #2a2b38;
+    background: #32432fd0;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
     min-height: 450px;
     display: flex;
@@ -85,13 +84,13 @@
     align-items: center;
     justify-content: center;
     gap: .5em;
-    background-color: #1f2029;
+    background-color: #b2c3af9a;
     border-radius: 4px;
     padding: 0.8em 1em;
     width: 80%;
     margin-left: auto;
     margin-right: auto;
-    /* border: 3px solid black; */
+    /* border: 1px solid rgb(0, 0, 0); */
 }
 
 .inputIcon {
@@ -107,10 +106,15 @@
     border: none;
     outline: none;
     width: 100%;
-    color: #d3d3d3;
+    color: #2d2d2d;
     height: 2.0rem;
     font-size: 0.9rem;
     /* border: 3px solid black; */
+}
+
+.inputField::placeholder {
+    color: #ffffff; /* Cambia este valor al color que desees */
+    opacity: 1; /* Opcional: asegura que se vea el color al 100% */
 }
 
 /* fde186 */
@@ -133,7 +137,7 @@
 
 .btnLink {
     font-family: 'Poppins', sans-serif;
-    color: #f5f5f5;
+    color: #ffffff;
     display: block;
     font-size: .75em;
     transition: color .3s ease-out;
@@ -141,13 +145,13 @@
 }
 
 .btn:hover {
-    background-color: #5e6681;
-    color: #ffeba7;
+    background-color: #404044fe;
+    color: #ffffff;
     box-shadow: 0 8px 24px 0 rgb(16 39 112 / 20%);
 }
 
 .btnLink:hover {
-    color: #ffeba7;
+    color: #d4d4d4b7;
 }
 
 
