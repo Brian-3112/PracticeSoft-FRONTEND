@@ -107,14 +107,17 @@
     outline: none;
     width: 100%;
     color: #2d2d2d;
+    font-weight: 500;
     height: 2.0rem;
     font-size: 0.9rem;
     /* border: 3px solid black; */
 }
 
 .inputField::placeholder {
-    color: #ffffff; /* Cambia este valor al color que desees */
+    color: #e5e5e5; /* Cambia este valor al color que desees */
     opacity: 1; /* Opcional: asegura que se vea el color al 100% */
+    font-weight: 400;
+    font-size: 14px;
 }
 
 /* fde186 */
