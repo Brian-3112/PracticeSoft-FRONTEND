@@ -26,7 +26,7 @@
 
 }
 
-.card1{
+.card1 {
     background-image: url('/5.png');
     background-size: cover;
     background-position: center;
@@ -75,7 +75,7 @@
     font-family: 'Poppins', sans-serif;
     margin-top: -28px;
     font-size: 15px;
-    
+
 }
 
 /* #9ddf91 */
@@ -98,7 +98,7 @@
     height: 1.1em;
     width: 1.1em;
     fill: #ffffff;
-     /* border: 3px solid black; */
+    /* border: 3px solid black; */
 }
 
 .inputField {
@@ -128,7 +128,7 @@
     color: #5e6681;
     box-shadow: 0 8px 24px 0 rgb(255 235 167 / 20%);
     transition: all .3s ease-in-out;
-     /* border: 3px solid black; */
+    /* border: 3px solid black; */
 }
 
 .btnLink {
@@ -137,7 +137,7 @@
     display: block;
     font-size: .75em;
     transition: color .3s ease-out;
-     /* border: 3px solid black; */
+    /* border: 3px solid black; */
 }
 
 .btn:hover {
@@ -151,7 +151,7 @@
 }
 
 
-             /* RESPONSIVE */
+/* RESPONSIVE */
 /* -------------------------------------- */
 
 
@@ -161,9 +161,9 @@
 
     .card1 {
         display: none;
-        
+
     }
-    
+
     .card {
         width: 330px;
         padding: 1.5rem 1rem;
@@ -186,6 +186,7 @@
         width: 80%;
         padding: 0.6em 0.8em;
     }
+
     .inputField {
         font-size: 0.9rem;
     }

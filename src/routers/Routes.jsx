@@ -25,7 +25,7 @@ const MyRoutes = () => {
 
                         <Route path="vehiculo" element={<Vehiculo />} />
 
-            
+
 
 
 
