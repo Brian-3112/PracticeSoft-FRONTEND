@@ -26,7 +26,7 @@ const Vehiculo = () => {
             ) : (
                 vehiculos.map((vehiculo) => (
                     <div className={styles.card} key={vehiculo.id}>
-                        <img src="/car2.svg" alt="Icono de carro" className={styles.carImage} />
+                        {/* <img src="/car2.svg" alt="Icono de carro" className={styles.carImage} /> */}
                         <p className={styles.cookieHeading}>{vehiculo.nombreVehiculo}</p>
                         <p className={styles.cookieDescription}>Placa: {vehiculo.placa}</p>
                         <p className={styles.cookieDescription}>Tránsito: {vehiculo.transito}</p>
