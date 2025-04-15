@@ -3,7 +3,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1.5rem 2rem;
+  padding: 1rem 1rem;
   border-radius: 8px;
   max-width: 1000px;
   margin: 2rem auto;
@@ -22,8 +22,8 @@
 /* 3d7c36 */
 .brandName {
   font-weight: bold;
-  font-size: 24px;
-  color: #4e9454;
+  font-size: 27px;
+  color: rgba(60, 71, 58, 0.86);
   /* border: 3px solid black; */
 }
 
@@ -43,11 +43,22 @@
   text-decoration: none;
   color: #333;
   font-weight: 500;
-  font-size: 17px;
+  font-size: 16px;
   transition: color 0.2s ease;
   /* border: 3px solid black; */
 }
 
 .navbarlinkss a:hover {
   color: #4e9454;
+}
+
+
+.logautimg {
+  width: 23px;
+  height: auto;
+  margin-bottom: 12px;
+  position: relative;
+  top: 10px;
+  left: 25px ;
+  /* border: 3px solid black; */
 }

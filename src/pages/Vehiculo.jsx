@@ -18,14 +18,15 @@ const Vehiculo = () => {
 
 
     return (
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px', justifyContent: 'center' }}>
-            <h2 style={{ width: '100%', textAlign: 'center' }}>Carros</h2>
+        <div className={styles.container}>
+            <h2 className={styles.heading}>VEHICULOS</h2>
 
             {vehiculos.length === 0 ? (
                 <p>No hay vehículos disponibles.</p>
             ) : (
                 vehiculos.map((vehiculo) => (
                     <div className={styles.card} key={vehiculo.id}>
+                        <img src="/car2.svg" alt="Icono de carro" className={styles.carImage} />
                         <p className={styles.cookieHeading}>{vehiculo.nombreVehiculo}</p>
                         <p className={styles.cookieDescription}>Placa: {vehiculo.placa}</p>
                         <p className={styles.cookieDescription}>Tránsito: {vehiculo.transito}</p>

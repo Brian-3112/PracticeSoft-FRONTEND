@@ -1,4 +1,22 @@
 /* Vehiculo.css */
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    /* border: 3px solid black; */
+  }
+  
+  .heading {
+    width: 100%;
+    text-align: center;
+    font-size: 30PX;
+    color: #4e9454;;
+    /* border: 3px solid black; */
+  }
+
+
 .card {
     width: 300px;
     height: 220px;
@@ -13,12 +31,20 @@
     position: relative;
     overflow: hidden;
     box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.062);
+    /* border: 3px solid black; */
   }
   
+  .carImage {
+    width: 40px;
+    height: auto;
+    margin-bottom: 12px;
+  }
+
   .cookieHeading {
     font-size: 1.2em;
     font-weight: 800;
     color: rgb(26, 26, 26);
+    /* border: 3px solid black; */
   }
   
   .cookieDescription {
@@ -26,5 +52,6 @@
     font-size: 0.7em;
     font-weight: 600;
     color: rgb(99, 99, 99);
+    /* border: 3px solid black; */
   }
   

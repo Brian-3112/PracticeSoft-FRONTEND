@@ -17,6 +17,8 @@ const Navegador = () => {
           <li><a href="#">Clientes</a></li>
           <li><Link to="vehiculos">Vehiculos</Link></li>
           <li><a href="#">Rentas</a></li>
+          <li><a href="#"><img src="/logaut.svg" alt="icono de salir" className={styles.logautimg} /></a></li>
+
         </ul>
       </nav>
 
