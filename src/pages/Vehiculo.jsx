@@ -30,6 +30,12 @@ const Vehiculo = () => {
                         <p className={styles.cookieHeading}>{vehiculo.nombreVehiculo}</p>
                         <p className={styles.cookieDescription}>Placa: {vehiculo.placa}</p>
                         <p className={styles.cookieDescription}>Tránsito: {vehiculo.transito}</p>
+
+                        <div className={styles.buttonContainer}>
+                            <button className={styles.acceptButton}>Editar</button>
+                            <button className={styles.declineButton}>Eliminar</button>
+                        </div>
+
                     </div>
                 ))
             )}
