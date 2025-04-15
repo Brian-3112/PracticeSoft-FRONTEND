@@ -32,7 +32,7 @@
   align-items: center;
   justify-content: center;
   padding: 15x 25px;
-  /* gap: 5px; */
+  gap: 8px;
   position: relative;
   overflow: hidden;
   box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.062);
@@ -45,20 +45,24 @@
   margin-bottom: 12px;
 }
 
+.cookieHeading,
+.cookieDescription {
+  margin: 0;
+}
+
 .cookieHeading {
   font-family: "Special Gothic Condensed One", sans-serif;
   font-size: 30px;
   font-weight: 600;
   color: rgb(26, 26, 26);
-  /* border: 3px solid black; */
   position: relative;
   /* top: -15px; */
+  /* border: 3px solid black; */
 }
 
 .cookieDescription {
   text-align: center;
   font-size: 1.0em;
-  font-weight: 600;
   color: rgb(0, 0, 0);
   /* border: 3px solid black; */
 }
