@@ -10,6 +10,8 @@
   /* border: 3px solid rgb(107, 28, 28); */
 }
 
+
+/* TITLE */
 .heading {
   font-family: "Special Gothic Condensed One", sans-serif;
   width: 100%;
@@ -21,6 +23,8 @@
   /* border: 3px solid rgb(0, 0, 0); */
 }
 
+
+/* CARD PRINCIPAL */
 .card {
   width: 300px;
   height: 220px;
@@ -42,11 +46,7 @@
   z-index: 3;
 }
 
-.carImage {
-  width: 40px;
-  height: auto;
-  margin-bottom: 12px;
-}
+
 
 .cookieHeading,
 .cookieDescription {
@@ -55,6 +55,8 @@
   bottom: 10px;
 }
 
+
+/* TITLE CARD */
 .cookieHeading {
   font-family: "Special Gothic Condensed One", sans-serif;
   font-size: 32px;
@@ -62,21 +64,29 @@
   color: rgb(26, 26, 26);
   position: relative;
   top: -35px;
+  /* border: 3px solid rgb(0, 0, 0); */
 }
 
+
+/* TEXT OF CARD */
 .cookieDescription {
   text-align: center;
   font-size: 0.9em;
   color: rgb(0, 0, 0);
+  /* border: 3px solid rgb(0, 0, 0); */
 }
 
+
+/* BUTTON */
 .buttonContainer {
   display: flex;
   gap: 10px;
   flex-direction: row;
   position: relative;
   top: 35px;
+  /* border: 3px solid rgb(0, 0, 0); */
 }
+
 
 .acceptButton {
   width: 80px;
@@ -175,7 +185,7 @@
   }
 }
 
-
+/* CARUCEELLL */
 
 .wrapper {
   width: 100%;
