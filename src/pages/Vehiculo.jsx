@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
 import useVehiculo from '../hooks/useVehiculo.jsx';
@@ -30,6 +30,15 @@ const Vehiculo = () => {
 
   const startIndex = currentSlide * cardsPerPage;
   const visibleVehiculos = vehiculos.slice(startIndex, startIndex + cardsPerPage);
+
+  // ⏱ Cambio automático de slide cada 5 segundos
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentSlide(prev => (prev < totalSlides - 1 ? prev + 1 : 0));
+    }, 5000); // 5000 ms = 5 segundos
+
+    return () => clearInterval(interval); // Limpieza del intervalo
+  }, [totalSlides]);
 
   return (
     <div className={styles.wrapper}>
