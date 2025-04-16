@@ -27,7 +27,7 @@
 /* CARD PRINCIPAL */
 .card {
   width: 300px;
-  height: 220px;
+  height: 280px;
   background-color: rgba(255, 255, 255, 0.612);
   border-radius: 14px;
   display: flex;
@@ -136,7 +136,7 @@
 .bg {
   position: absolute;
   width: 340px;
-  height: 240px;
+  height: 300px;
   z-index: 2;
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(24px);
@@ -152,8 +152,8 @@
   z-index: 1;
   top: 50%;
   left: 50%;
-  width: 190px;
-  height: 190px;
+  width: 230px;
+  height: 230px;
   border-radius: 50%;
   background-color: rgba(50, 64, 47, 0.537);
   opacity: 1;
@@ -205,7 +205,7 @@
   gap: 10px;
   overflow: hidden;
   position: relative;
-  margin-top: 20px;
+  top: -20px;
   /* border: 3px solid rgb(0, 0, 0); */
 }
 
