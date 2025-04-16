@@ -26,7 +26,9 @@ const Vehiculo = () => {
             ) : (
                 vehiculos.map((vehiculo) => (
                     <div className={styles.card} key={vehiculo.id}>
-                        {/* <img src="/car2.svg" alt="Icono de carro" className={styles.carImage} /> */}
+                        <div className={styles.bg}></div>
+                        <div className={styles.blob}></div>
+
                         <p className={styles.cookieHeading}>{vehiculo.nombreVehiculo}</p>
                         <p className={styles.cookieDescription}>Placa: {vehiculo.placa}</p>
                         <p className={styles.cookieDescription}>Tránsito: {vehiculo.transito}</p>
@@ -35,7 +37,6 @@ const Vehiculo = () => {
                             <button className={styles.acceptButton}>Editar</button>
                             <button className={styles.declineButton}>Eliminar</button>
                         </div>
-
                     </div>
                 ))
             )}
