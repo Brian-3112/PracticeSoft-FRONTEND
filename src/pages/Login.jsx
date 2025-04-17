@@ -31,7 +31,15 @@ const Login = () => {
             setAuth(data);
             navigate("/admin");
         } catch (error) {
-            Swal.fire("Error", "Credenciales incorrectas", "error");
+            Swal.fire({
+                title: "Error",
+                text: "Credenciales incorrectas",
+                icon: "error",
+                customClass: {
+                  confirmButton: "confirmarBoton"
+                }
+              });
+            
         }
     };
     //ancho y alto de la web
