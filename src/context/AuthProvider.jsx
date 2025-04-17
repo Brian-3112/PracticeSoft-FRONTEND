@@ -2,6 +2,7 @@ import { createContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import clienteAxios from '../config/axios';
 import { useNavigate } from 'react-router-dom';
+import '../GeneralCSS/generalCss.css';
 import Swal from 'sweetalert2';
 
 const AuthContext = createContext();
@@ -60,6 +61,10 @@ const AuthProvider = ({ children }) => {
             showCancelButton: true,
             confirmButtonText: "Sí, cerrar sesión",
             cancelButtonText: "Cancelar",
+            customClass: {
+                confirmButton: 'confirmarBoton', // <- clase personalizada aquí
+                cancelButton: 'cancelBoton'
+            }
         }).then(result => {
             if (result.isConfirmed) {
                 localStorage.removeItem('token');
