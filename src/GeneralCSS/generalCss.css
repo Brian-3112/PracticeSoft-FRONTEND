@@ -1,6 +1,8 @@
 .confirmarBoton{
 
     background-color: rgba(50, 64, 47, 0.861);
+    color: white;
+    font-family: 'Poppins', sans-serif;
 
 }
 
@@ -8,4 +10,6 @@
 
 .cancelBoton{
     background-color: #ce4e4eec;
+    color: white;
+    font-family: 'Poppins', sans-serif;
 }
