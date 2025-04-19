@@ -10,10 +10,39 @@ export const ClienteContext = createContext(); // <-- cambia esto
 export const ClienteProvider = ({ children }) => {
     const { auth, config } = useAuth();
 
+    const [clientes, setClientes] = useState([]);
+
+
+    const consultarClientes = async () => {
+        try {
+            const token = localStorage.getItem('token');
+            if (!token) return;
+
+
+            const { data } = await clienteAxios.get('/clientes', config);
+
+            setClientes(data.reverse());
+        } catch (error) {
+            console.error('Error al consultar los  clientes:', error);
+            Swal.fire({
+                title: 'Error',
+                text: 'Error al consultar los clientes. Vuelva a intentarlo.',
+                icon: 'error',
+            });
+        }
+    };
+
+
+    useEffect(() => {
+        if (auth) {
+            consultarClientes();
+        }
+    }, [auth]);
+
 
 
     return (
-        <ClienteContext.Provider value={{  }}>
+        <ClienteContext.Provider value={{ clientes }}>
             {children}
         </ClienteContext.Provider>
     );
