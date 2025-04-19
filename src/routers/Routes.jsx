@@ -4,6 +4,7 @@ import Login from '../pages/Login';
 import Navegador from '../Layout/Navegador';
 import Dashboard from '../pages/Dashboard';
 import Vehiculo from '../pages/Vehiculo';
+import Cliente from '../pages/Cliente';
 import { AuthProvider } from '../context/AuthProvider';
 import { VehiculoProvider } from '../context/VehiculoProvider';
 import ProtectedRoute from './ProtectedRoute';
@@ -26,6 +27,8 @@ const MyRoutes = () => {
                         <Route index element={<Dashboard />} />
 
                         <Route path="vehiculos" element={<Vehiculo />} />
+
+                        <Route path="clientes" element={<Cliente />} />
 
 
 

@@ -14,7 +14,7 @@ const Navegador = () => {
         </div>
         <ul className={styles.navbarlinkss}>
           <li><Link to="/admin">Dashboard</Link></li>
-          <li><a href="#">Clientes</a></li>
+          <li><Link to="clientes">Clientes</Link></li>
           <li><Link to="vehiculos">Vehiculos</Link></li>
           <li><a href="#">Rentas</a></li>
           <li><button
