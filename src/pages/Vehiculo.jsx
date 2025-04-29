@@ -3,16 +3,24 @@ import { Navigate } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
 import useVehiculo from '../hooks/useVehiculo.jsx';
 import styles from '../pages/vehiculo.module.css';
+import Agregarvehiculo from './Agregarvehiculo.jsx';
+
+
+
+
+
 
 const Vehiculo = () => {
   const { auth, loading } = useAuth();
   if (loading) return 'Cargando...';
 
+  
   const vehiculoData = useVehiculo();
   const vehiculos = vehiculoData?.vehiculos || [];
 
 
-  
+
+//------------- CARUCEL
   const [currentSlide, setCurrentSlide] = useState(0);
   const cardsPerPage = 4;
 
@@ -42,9 +50,17 @@ const Vehiculo = () => {
     return () => clearInterval(interval); // Limpieza del intervalo
   }, [totalSlides]);
 
+
+
   return (
     <div className={styles.wrapper}>
       <h2 className={styles.heading}>VEHICULOS</h2>
+
+      <div>
+        <p>aqui el boton de agregar</p>
+      </div>
+
+    
 
       <div className={styles.carouselContainer}>
         <button className={styles.navButton} onClick={prevSlide} disabled={currentSlide === 0}>
