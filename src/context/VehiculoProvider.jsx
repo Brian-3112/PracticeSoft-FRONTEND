@@ -5,12 +5,13 @@ import { useNavigate } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
 import Swal from 'sweetalert2';
 
-export const VehiculoContext = createContext(); // <-- cambia esto
+
+export const VehiculoContext = createContext();
+
 
 export const VehiculoProvider = ({ children }) => {
 
     const { auth, config } = useAuth();
-
     //se guarda la info de los vehiculosque se trae del cosultar
     const [vehiculos, setVehiculos] = useState([]);
 
@@ -42,13 +43,49 @@ export const VehiculoProvider = ({ children }) => {
 
 
 
+    const agregarVehiculo = async (nuevoVehiculo) => {
+        try {
+            const token = localStorage.getItem('token');
+            if (!token) return;
+
+            const { data } = await clienteAxios.post('/vehiculos', nuevoVehiculo, config);
+            setVehiculos(prev => [data, ...prev]);  // Agrega al principio de la lista
+
+            Swal.fire({
+                title: 'Éxito',
+                text: data.data.message,
+                icon: 'success',
+            });
+
+        } catch (error) {
+
+            if (error.response && error.response.status === 403) {
+
+                Swal.fire({
+                    title: 'Error',
+                    text: error.response.data.message,
+                    icon: 'error',
+                });
+
+            } else {
+                Swal.fire({
+                    title: 'Error',
+                    text: 'No se pudo agregar el vehículo.',
+                    icon: 'error',
+                });
+            }
+        }
+    };
+
+
+
 
 
 
 
 
     return (
-        <VehiculoContext.Provider value={{ vehiculos }}>
+        <VehiculoContext.Provider value={{ vehiculos, agregarVehiculo }}>
             {children}
         </VehiculoContext.Provider>
     );
