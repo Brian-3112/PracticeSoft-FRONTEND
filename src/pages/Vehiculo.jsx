@@ -11,6 +11,8 @@ const Vehiculo = () => {
   const vehiculoData = useVehiculo();
   const vehiculos = vehiculoData?.vehiculos || [];
 
+
+  
   const [currentSlide, setCurrentSlide] = useState(0);
   const cardsPerPage = 4;
 
