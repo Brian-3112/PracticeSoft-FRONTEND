@@ -8,8 +8,6 @@ import Agregarvehiculo from './Agregarvehiculo.jsx';
 
 
 
-
-
 const Vehiculo = () => {
   const { auth, loading } = useAuth();
   if (loading) return 'Cargando...';
@@ -17,7 +15,6 @@ const Vehiculo = () => {
   
   const vehiculoData = useVehiculo();
   const vehiculos = vehiculoData?.vehiculos || [];
-
 
 
 //------------- CARUCEL
@@ -49,6 +46,8 @@ const Vehiculo = () => {
 
     return () => clearInterval(interval); // Limpieza del intervalo
   }, [totalSlides]);
+
+
 
 
 
