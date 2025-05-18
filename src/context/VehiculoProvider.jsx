@@ -78,6 +78,53 @@ export const VehiculoProvider = ({ children }) => {
     };
 
 
+    const eliminarVehiculo = async (id) => {
+        try {
+            const token = localStorage.getItem('token');
+            if (!token) return;
+
+            const resultado = await Swal.fire({
+                title: '¿Estás seguro?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Eliminar',
+                cancelButtonText: 'Cancelar',
+                customClass: {
+                    confirmButton: "confirmarBoton",
+                    cancelButton: 'cancelBoton'
+                }
+            });
+
+            if (resultado.isConfirmed) {
+                await clienteAxios.delete(`/vehiculos/${id}`, config);
+
+                setVehiculos(prevVehiculos =>
+                    prevVehiculos.filter(vehiculo => vehiculo.id !== id)
+                );
+
+                Swal.fire({
+                    title: 'Eliminado',
+                    icon: 'success',
+                    customClass: {
+                    confirmButton: "confirmarBoton",
+                    cancelButton: 'cancelBoton'
+                }
+                });
+            }
+
+        } catch (error) {
+            console.error('Error al eliminar vehículo:', error);
+
+            Swal.fire({
+                title: 'Error',
+                text: 'No se pudo eliminar el vehículo.',
+                icon: 'error',
+            });
+        }
+    };
+
+
+
 
 
 
@@ -85,7 +132,7 @@ export const VehiculoProvider = ({ children }) => {
 
 
     return (
-        <VehiculoContext.Provider value={{ vehiculos, agregarVehiculo }}>
+        <VehiculoContext.Provider value={{ vehiculos, agregarVehiculo, eliminarVehiculo }}>
             {children}
         </VehiculoContext.Provider>
     );

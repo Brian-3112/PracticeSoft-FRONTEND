@@ -13,8 +13,7 @@ const Vehiculo = () => {
   if (loading) return 'Cargando...';
 
   
-  const vehiculoData = useVehiculo();
-  const vehiculos = vehiculoData?.vehiculos || [];
+const { vehiculos, eliminarVehiculo } = useVehiculo();
 
 
 //------------- CARUCEL
@@ -78,7 +77,7 @@ const Vehiculo = () => {
 
               <div className={styles.buttonContainer}>
                 <button className={styles.acceptButton}>Editar</button>
-                <button className={styles.declineButton}>Eliminar</button>
+                <button className={styles.declineButton} onClick={() => eliminarVehiculo(vehiculo.id)} >Eliminar</button>
               </div>
             </div>
           ))}
