@@ -11,11 +11,15 @@
   },
   "dependencies": {
     "axios": "^1.7.9",
+    "bootstrap": "^5.3.6",
     "react": "^19.0.0",
+    "react-bootstrap": "^2.10.10",
     "react-dom": "^19.0.0",
+    "react-modal": "^3.16.3",
     "react-router-dom": "^7.1.5",
     "styled-components": "^6.1.15",
-    "sweetalert2": "^11.16.0"
+    "sweetalert2": "^11.16.0",
+    "vite-plugin-svgr": "^4.3.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.19.0",

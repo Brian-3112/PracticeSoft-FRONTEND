@@ -19,7 +19,7 @@
   font-size: 43px;
   color: rgba(50, 64, 47, 0.861);
   position: relative;
-  top: -15px;
+  top: -25px;
   /* border: 3px solid rgb(0, 0, 0); */
 }
 
@@ -241,4 +241,66 @@
 
 .navButton:hover:not(:disabled) {
   background-color: rgba(173, 173, 173, 0.623);
+}
+
+
+
+.divAddVehiculo{
+  /* border:  1px solid black; */
+  padding: 0%;
+  position: relative;
+  left: 10%;
+  margin-bottom: 2%;
+  margin-top: -1.5%;
+  font-family: 'Poppins', sans-serif;
+
+}
+
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modalContent {
+  background-color: #fff;
+  padding: 2rem;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 500px;
+  position: relative;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+.closeButton {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1.5rem;
+}
+
+.cancelButton {
+  background-color: #999;
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
 }
