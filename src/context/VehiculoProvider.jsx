@@ -87,7 +87,7 @@ export const VehiculoProvider = ({ children }) => {
                 title: '¿Estás seguro?',
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonText: 'Eliminar',
+                confirmButtonText: 'Si, eliminar',
                 cancelButtonText: 'Cancelar',
                 customClass: {
                     confirmButton: "confirmarBoton",
