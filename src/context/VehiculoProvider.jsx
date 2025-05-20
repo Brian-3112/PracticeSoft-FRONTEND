@@ -1,7 +1,6 @@
 import { createContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import clienteAxios from '../config/axios';
-import { useNavigate } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
 import Swal from 'sweetalert2';
 
@@ -12,6 +11,7 @@ export const VehiculoContext = createContext();
 export const VehiculoProvider = ({ children }) => {
 
     const { auth, config } = useAuth();
+    
     //se guarda la info de los vehiculosque se trae del cosultar
     const [vehiculos, setVehiculos] = useState([]);
 
