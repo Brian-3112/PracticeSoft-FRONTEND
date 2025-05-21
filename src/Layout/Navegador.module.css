@@ -7,7 +7,8 @@
   border-radius: 8px;
   max-width: 1000px;
   margin: 2rem auto;
-  box-shadow: 0 0 10px rgba(20, 54, 23, 0.4), 0 0 20px rgba(19, 46, 22, 0.2);
+  box-shadow: 0 0 10px rgba(40, 160, 135, 0.4), 0 0 20px rgba(40, 160, 135, 0.2);
+
   /* border: 1px solid black; */
 }
 
@@ -23,7 +24,7 @@
 .brandName {
   font-weight: bold;
   font-size: 27px;
-  color: rgba(50, 64, 47, 0.861);
+  color: #28A087;
   /* border: 3px solid black; */
 }
 
@@ -49,7 +50,7 @@
 }
 
 .navbarlinkss a:hover {
-  color: #4e9454;
+  color: #28A087;
 }
 
 
