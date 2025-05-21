@@ -18,31 +18,37 @@ const Agregarvehiculo = () => {
 
   return (
     <div>
-      <div>
-        <BotonVerde text={'Agregar Vehiculo'} onClick={handleShow} />
-      </div>
+      <BotonVerde text="Agregar Vehículo" onClick={handleShow} />
 
+       {show && (
+        <div className={styles.modalBackdrop}>
+          <div className={styles.modal}>
+            <div className={styles.modalDialog}>
+              <div className={styles.modalContent}>
 
-      {show && (
-        <div className={styles.modalOverlay}>
-          <div className={styles.modalContent}>
-            <button className={styles.closeButton} onClick={handleClose}>
-              ×
-            </button>
-            <h2>Agregar Vehículo</h2>
-            <p>Contenido del formulario aquí.</p>
-            <div className={styles.footer}>
-              <button className={styles.cancelButton} onClick={handleClose}>
-                Cancelar
-              </button>
+                <div className={styles.modalHeader}>
+                  <h5 className={styles.modalTitle}>Agregar Vehículo</h5>
+                  <button type="button" className={styles.btnClose} onClick={handleClose}>×</button>
+                </div>
+
+                <div className={styles.modalBody}>
+                  <p>Contenido del formulario aquí.</p>
+                </div>
+
+                <div className={styles.modalFooter}>
+                  <button className={`${styles.btn} ${styles.btnSecondary}`} onClick={handleClose}>
+                    Cancelar
+                  </button>
+                  <button className={`${styles.btn} ${styles.btnPrimary}`}>
+                    Guardar
+                  </button>
+                </div>
+
+              </div>
             </div>
           </div>
         </div>
       )}
-
-
-
-
     </div>
   );
 };
