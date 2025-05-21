@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { Navigate } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
 import useVehiculo from '../hooks/useVehiculo.jsx';
 import styles from '../pages/vehiculo.module.css';
