@@ -1,8 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Special+Gothic+Condensed+One&display=swap');
 
-*{
-  font-family: 'Poppins', sans-serif;
-}
+
 
 .container {
   display: flex;
@@ -17,7 +15,7 @@
 
 /* TITLE */
 .heading {
-  font-family: "Special Gothic Condensed One", sans-serif;
+  /* font-family: "Special Gothic Condensed One", sans-serif; */
   width: 100%;
   text-align: center;
   font-size: 43px;
@@ -62,7 +60,7 @@
 
 /* TITLE CARD */
 .cookieHeading {
-  font-family: "Special Gothic Condensed One", sans-serif;
+  /* font-family: "Special Gothic Condensed One", sans-serif; */
   font-size: 32px;
   font-weight: 500;
   color: rgb(26, 26, 26);
@@ -93,6 +91,7 @@
 
 
 .acceptButton {
+  /* font-family: 'Poppins', sans-serif; */
   width: 80px;
   height: 30px;
   background-color: rgba(50, 64, 47, 0.549);
@@ -104,7 +103,6 @@
   border-radius: 20px;
   box-shadow: 0 4px 6px -1px rgba(50, 64, 47, 0.549), 0 2px 4px -1px rgba(50, 64, 47, 0.549);
   transition: all .6s ease;
-  font-family: 'Poppins', sans-serif;
 }
 
 .acceptButton:hover {
@@ -114,6 +112,7 @@
 }
 
 .declineButton {
+  /* font-family: 'Poppins', sans-serif; */
   width: 80px;
   height: 30px;
   background-color: #ce4e4eec;
@@ -125,7 +124,6 @@
   border-radius: 20px;
   box-shadow: 0 4px 6px -1px #bebdbd, 0 2px 4px -1px #bebdbd;
   transition: all .6s ease;
-  font-family: 'Poppins', sans-serif;
   cursor: pointer; 
 }
 
@@ -252,14 +250,13 @@
 /* MODAL */
 
 .divAddVehiculo{
-  /* border:  1px solid black; */
+  /* font-family: 'Poppins', sans-serif; */
   padding: 0%;
   position: relative;
   left: 10%;
   margin-bottom: 2%;
   margin-top: -1.5%;
-  font-family: 'Poppins', sans-serif;
-
+  /* border:  1px solid black; */
 }
 
 .modalBackdrop {
