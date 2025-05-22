@@ -92,9 +92,9 @@
   background: none;
   border: none;
   padding: 0;
+  /* border: 3px solid rgb(15, 49, 238); */
   
 }
-
 
 .iconButton {
   width: 40px;
@@ -104,7 +104,7 @@
   cursor: pointer;
 }
 
-.colorimgg {
+.editar .colorimgg {
   fill: #28A087;
   stroke: #28A087;
 }
