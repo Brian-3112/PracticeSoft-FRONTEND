@@ -23,7 +23,7 @@ const Navegador = () => {
             style={{ background: 'none', border: 'none', cursor: 'pointer' }}
           >
             <svg className={styles.logautimg} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-              <path  d="M10 17l5-5-5-5v10zm9-15H5c-1.1 0-2 .9-2 2v4h2V4h14v16H5v-4H3v4c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z" fill="#28A087"/>
+              <path className= {styles.colorimg}  d="M10 17l5-5-5-5v10zm9-15H5c-1.1 0-2 .9-2 2v4h2V4h14v16H5v-4H3v4c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"  />
             </svg>
           </button></li>
 
