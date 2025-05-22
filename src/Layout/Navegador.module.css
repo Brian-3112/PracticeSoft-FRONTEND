@@ -42,7 +42,6 @@
 
 .navbarlinkss a {
   text-decoration: none;
-  color: #2c2c2c;
   font-weight: 500;
   font-size: 16px;
   transition: color 0.2s ease;
@@ -55,7 +54,7 @@
 
 
 .logautimg {
-  width: 24px;
+  width: 25px;
   height: auto;
   margin-bottom: 12px;
   position: relative;
