@@ -19,7 +19,7 @@
   width: 100%;
   text-align: center;
   font-size: 43px;
-  color: #28A087;
+  color: var(--primary);
   position: relative;
   top: -25px;
   /* border: 3px solid rgb(0, 0, 0); */
@@ -105,8 +105,8 @@
 }
 
 .editar .colorimgg {
-  fill: #28A087;
-  stroke: #28A087;
+  fill: var(--primary);
+  stroke: var(--primary);
 }
 
 .eliminar .colorimgg {
@@ -144,7 +144,7 @@
   width: 230px;
   height: 230px;
   border-radius: 50%;
-  background-color: #28A087;
+  background-color: var(--primary);
   opacity: 1;
   filter: blur(12px);
   animation: blob-bounce 5s infinite ease;

@@ -29,7 +29,7 @@
 }
 
 .brandName2 {
-  color: #28A087;
+  color: var(--primary)
   /* border: 3px solid black; */
 }
 
@@ -54,7 +54,7 @@
 }
 
 .navbarlinkss a:hover {
-  color: #28A087;
+  color: var(--primary)
 }
 
 .logoutButton{
@@ -77,6 +77,6 @@
 }
 
 .colorimg {
-  fill: #28A087;
-  stroke: #28A087;
+  fill: var(--primary);
+  stroke: var(--primary);
 }
