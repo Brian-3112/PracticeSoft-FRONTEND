@@ -24,6 +24,11 @@
 .brandName {
   font-weight: bold;
   font-size: 27px;
+  color: #CBDC00;
+  /* border: 3px solid black; */
+}
+
+.brandName2 {
   color: #28A087;
   /* border: 3px solid black; */
 }

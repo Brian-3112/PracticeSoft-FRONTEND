@@ -10,7 +10,7 @@ const Navegador = () => {
     <>
       <nav className={styles.navbar}>
         <div className={styles.navbarleft}>
-          <span className={styles.brandName}>ANTIOCAR</span>
+          <span className={styles.brandName}><span className={styles.brandName2}>ANTIO</span>CAR</span>
         </div>
         <ul className={styles.navbarlinkss}>
           <li><Link to="/admin">Dashboard</Link></li>
