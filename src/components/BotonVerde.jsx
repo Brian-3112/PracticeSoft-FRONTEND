@@ -4,7 +4,7 @@ const BotonVerde = ({ text, onClick }) => {
   return (
     <button
       style={{
-        backgroundColor: '#64856b',
+        backgroundColor: '#28A087',
         color: 'white',
         padding: '0.5rem 1rem',
         border: 'none',
