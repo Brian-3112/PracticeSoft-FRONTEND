@@ -1,6 +1,6 @@
 .confirmarBoton{
 
-    background-color: #28A087;
+    background-color: var(--primary);
     color: white;
     font-family: 'Poppins', sans-serif;
 

@@ -93,7 +93,7 @@
   border: none;
   padding: 0;
   /* border: 3px solid rgb(15, 49, 238); */
-  
+
 }
 
 .iconButton {
@@ -233,7 +233,7 @@
 
 /* MODAL */
 
-.divAddVehiculo{
+.divAddVehiculo {
   padding: 0%;
   position: relative;
   left: 10%;
@@ -250,6 +250,7 @@
   width: 100vw;
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.5);
+  /* border:  1px solid black; */
 }
 
 .modal {
@@ -260,23 +261,29 @@
   transform: translate(-50%, -50%);
   display: block;
   outline: 0;
+  /* border:  1px solid black; */
 }
 
 .modalDialog {
-  max-width: 500px;
+  width: 650px;
+  height: 450px;
+  max-width: 90%;
   margin: 1.75rem auto;
+  /* border:  1px solid black; */
 }
 
 .modalContent {
   position: relative;
   background-color: #fff;
-  border: 1px solid rgba(0,0,0,.2);
+  border: 1px solid rgba(0, 0, 0, .2);
   border-radius: 0.3rem;
-  box-shadow: 0 0.5rem 1rem rgba(0,0,0,.15);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, .15);
   display: flex;
   flex-direction: column;
   width: 100%;
+  height: 100%;
   outline: 0;
+  /* border:  1px solid black; */
 }
 
 .modalHeader {
@@ -285,12 +292,27 @@
   justify-content: space-between;
   padding: 1rem;
   border-bottom: 1px solid #dee2e6;
+  height: 45px;
+  /* border:  1px solid black; */
 }
 
 .modalTitle {
   margin-bottom: 0;
-  font-size: 1.25rem;
+  font-family: "Special Gothic Condensed One", sans-serif;
+  font-size: 1.65rem;
   font-weight: 500;
+  color: var(--primary);
+  position: relative;
+  bottom: 15px;
+  /* border:  1px solid black; */
+}
+
+.modalTitle2{
+  margin-bottom: 0;
+  font-family: "Special Gothic Condensed One", sans-serif;
+  font-size: 1.65rem;
+  font-weight: 500;
+  color: var(--second);
 }
 
 .btnClose {
@@ -300,11 +322,15 @@
   font-size: 1.5rem;
   line-height: 1;
   cursor: pointer;
+  /* border:  1px solid black; */
 }
 
 .modalBody {
   position: relative;
   padding: 1rem;
+
+  flex-grow: 1;
+  /* border:  1px solid black; */
 }
 
 .modalFooter {
@@ -314,6 +340,7 @@
   padding: 0.75rem;
   border-top: 1px solid #dee2e6;
   gap: 0.5rem;
+  /* border:  1px solid black; */
 }
 
 .btn {
@@ -328,14 +355,15 @@
   font-size: 1rem;
   border-radius: 0.25rem;
   transition: all 0.15s ease-in-out;
+  /* border:  1px solid black; */
 }
 
 .btnPrimary {
-  background-color: #0d6efd;
-  border-color: #0d6efd;
+  background-color: var(--primary);
+  border-color: var(--primary);
 }
 
 .btnSecondary {
-  background-color: #6c757d;
-  border-color: #6c757d;
+  background-color: #ce4e4eec;
+  border-color: #ce4e4eec;
 }
