@@ -17,25 +17,23 @@ const Agregarvehiculo = () => {
   /// Funcionalidad para cerra el modal
   const [show, setShow] = useState(false);
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => { setShow(true); }
-  
-
-   const {
-        reset, //resetea el formulario
-    } = useForm
-
-// Estado para el formulario
+  // Estado para el formulario
   const [formData, setFormData] = useState({
-    nombreVehiculo: '',
-    placa: '',
-    transito: '',
-    fechaSOAT: '',
-    fechaTecno: '',
-    description: ''
+    nombreVehiculo: '', placa: '', transito: '', fechaSOAT: '', fechaTecno: '', description: ''
   });
 
-  // Manejar cambios en los inputs,  optiene lo que uno va escribienod en los imput, ...formData trae los valores acutales y solo actualice el input que este modificando
+  // Limpiar formulario
+  const limpiarFormulario = () => {
+    setFormData({
+      nombreVehiculo: '', placa: '', transito: '', fechaSOAT: '', fechaTecno: '', description: ''
+    });
+  };
+
+  // Logica cierre modal
+  const handleClose = () => { limpiarFormulario(); setShow(false); };
+  const handleShow = () => { setShow(true); };
+
+  // Manejar cambios en los inputs, optiene lo que uno va escribienod en los imput, ...formData trae los valores acutales y solo actualice el input que este modificando
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -44,7 +42,7 @@ const Agregarvehiculo = () => {
     });
   };
 
-  // Enviar formulario
+   // Enviar formulario
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -57,19 +55,12 @@ const Agregarvehiculo = () => {
         fechaTecno: formData.fechaTecno,
         description: formData.description.trim()
       },
-      //  Dejar todos los campos en blanco justo después de enviar los datos
-      () => setFormData({
-        nombreVehiculo: '',
-        placa: '',
-        transito: '',
-        fechaSOAT: '',
-        fechaTecno: '',
-        description: ''
-      }),
-      handleClose()
+      () => {
+        limpiarFormulario();
+        handleClose();
+      }
     );
   };
-
 
   return (
     <div>
@@ -102,7 +93,7 @@ const Agregarvehiculo = () => {
 
                     <div>
                       <label>Tránsito</label>
-                      <input type="text" name="transito" value={formData.transito} onChange={handleChange}  />
+                      <input type="text" name="transito" value={formData.transito} onChange={handleChange} />
                     </div>
 
                     <div>
@@ -117,7 +108,7 @@ const Agregarvehiculo = () => {
 
                     <div>
                       <label>Descripción</label>
-                      <textarea name="description" value={formData.description} onChange={handleChange}  />
+                      <textarea name="description" value={formData.description} onChange={handleChange} />
                     </div>
 
 
@@ -128,7 +119,7 @@ const Agregarvehiculo = () => {
                     <button className={`${styles.btn} ${styles.btnSecondary}`} onClick={handleClose}>
                       Cancelar
                     </button>
-                    <button  type="submit" className={`${styles.btn} ${styles.btnPrimary}`}>
+                    <button type="submit" className={`${styles.btn} ${styles.btnPrimary}`}>
                       Guardar
                     </button>
                   </div>
