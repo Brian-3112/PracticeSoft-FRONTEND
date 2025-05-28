@@ -3,6 +3,8 @@ import useAuth from '../hooks/useAuth';
 import BotonVerde from '../components/BotonVerde';
 import styles from '../pages/vehiculo.module.css';
 import useVehiculo from '../hooks/useVehiculo.jsx';
+import { useForm } from 'react-hook-form';
+
 
 const Agregarvehiculo = () => {
 
@@ -18,6 +20,10 @@ const Agregarvehiculo = () => {
   const handleClose = () => setShow(false);
   const handleShow = () => { setShow(true); }
   
+
+   const {
+        reset, //resetea el formulario
+    } = useForm
 
 // Estado para el formulario
   const [formData, setFormData] = useState({
@@ -60,7 +66,7 @@ const Agregarvehiculo = () => {
         fechaTecno: '',
         description: ''
       }),
-      handleClose
+      handleClose()
     );
   };
 
@@ -122,7 +128,7 @@ const Agregarvehiculo = () => {
                     <button className={`${styles.btn} ${styles.btnSecondary}`} onClick={handleClose}>
                       Cancelar
                     </button>
-                    <button className={`${styles.btn} ${styles.btnPrimary}`}>
+                    <button  type="submit" className={`${styles.btn} ${styles.btnPrimary}`}>
                       Guardar
                     </button>
                   </div>

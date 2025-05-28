@@ -43,7 +43,7 @@ export const VehiculoProvider = ({ children }) => {
 
 
 
-    const agregarVehiculo = async (nuevoVehiculo) => {
+    const agregarVehiculo = async (nuevoVehiculo, reset, handleClose) => {
         try {
             const token = localStorage.getItem('token');
             if (!token) return;
@@ -55,6 +55,9 @@ export const VehiculoProvider = ({ children }) => {
                 title: 'Éxito',
                 text: data.message,
                 icon: 'success',
+            }).then(() => {
+                reset();
+                handleClose();
             });
 
         } catch (error) {
