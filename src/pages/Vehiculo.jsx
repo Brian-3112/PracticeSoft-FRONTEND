@@ -71,8 +71,9 @@ const Vehiculo = () => {
               <div className={styles.blob}></div>
 
               <p className={styles.cookieHeading}>{vehiculo.nombreVehiculo}</p>
-              <p className={styles.cookieDescription}>Placa: {vehiculo.placa}</p>
-              <p className={styles.cookieDescription}>Tránsito: {vehiculo.fechaSOAT}</p>
+              <p className={styles.cookieDescription}><span>Placa: </span>{vehiculo.placa}</p>
+              <p className={styles.cookieDescription}><span>Soat: </span> {vehiculo.fechaSOAT}</p>
+              <p className={styles.cookieDescription}><span>Tecno: </span> {vehiculo.fechaTecno}</p>
 
               <div className={styles.buttonContainer}>
 
