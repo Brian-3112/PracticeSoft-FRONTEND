@@ -49,11 +49,11 @@ export const VehiculoProvider = ({ children }) => {
             if (!token) return;
 
             const { data } = await clienteAxios.post('/vehiculos', nuevoVehiculo, config);
-            setVehiculos(prev => [data, ...prev]);  // Agrega al principio de la lista
+            setVehiculos(prev => [data.NuevoVehiculo, ...prev]);  // Agrega al principio de la lista
 
             Swal.fire({
                 title: 'Éxito',
-                text: data.data.message,
+                text: data.message,
                 icon: 'success',
             });
 

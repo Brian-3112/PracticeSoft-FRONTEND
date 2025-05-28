@@ -72,7 +72,7 @@ const Vehiculo = () => {
 
               <p className={styles.cookieHeading}>{vehiculo.nombreVehiculo}</p>
               <p className={styles.cookieDescription}>Placa: {vehiculo.placa}</p>
-              <p className={styles.cookieDescription}>Tránsito: {vehiculo.transito}</p>
+              <p className={styles.cookieDescription}>Tránsito: {vehiculo.fechaSOAT}</p>
 
               <div className={styles.buttonContainer}>
 
