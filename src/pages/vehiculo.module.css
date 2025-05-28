@@ -77,6 +77,10 @@
   /* border: 3px solid rgb(0, 0, 0); */
 }
 
+.cookieDescription span {
+  color: var(--primary);
+  
+}
 
 /* BUTTON */
 .buttonContainer {
