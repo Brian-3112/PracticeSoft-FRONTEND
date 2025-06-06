@@ -10,6 +10,7 @@ const BotonVerde = ({ text, onClick }) => {
         padding: '0.5rem 1rem',
         border: 'none',
         borderRadius: '4px',
+        height: '38px',
         cursor: 'pointer',
         fontFamily: "'Poppins', sans-serif",
       }}
