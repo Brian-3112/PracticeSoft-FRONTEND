@@ -79,7 +79,7 @@
 
 .cookieDescription span {
   color: var(--primary);
-  
+
 }
 
 /* BUTTON */
@@ -270,7 +270,7 @@
 
 .modalDialog {
   width: 600px;
-  height: 450px;
+  height: 420px;
   max-width: 90%;
   margin: 1.75rem auto;
   /* border:  1px solid black; */
@@ -311,12 +311,12 @@
   /* border:  1px solid black; */
 }
 
-.modalTitle2{
+.modalTitle2 {
   margin-bottom: 0;
   font-family: "Special Gothic Condensed One", sans-serif;
   font-size: 1.65rem;
   font-weight: 500;
-  color: var(--second);
+  color: var(--primary);
 }
 
 .btnClose {
@@ -332,9 +332,12 @@
 .modalBody {
   position: relative;
   padding: 1rem;
-
   flex-grow: 1;
-  /* border:  1px solid black; */
+  height: 230px;
+  display: flex;
+  justify-content: center;  
+  /* align-items: center;   */
+  /* border:  1px solid rgb(207, 13, 13); */
 }
 
 .modalFooter {
@@ -370,4 +373,40 @@
 .btnSecondary {
   background-color: #ce4e4eec;
   border-color: #ce4e4eec;
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Dos columnas de igual tamaño */
+  gap: 1rem; /* Espacio entre columnas y filas */
+  margin-top: 1rem;
+}
+
+
+.labelFormu {
+  position: relative;
+  display: block;
+  width: 180px;
+  display: flex;
+  border-radius: 6px;
+  border: 1px solid #a0a0a0;
+  padding: 18px 8px 15px 10px;
+  text-align: left;
+}
+
+
+.inputFormu {
+  background-color: transparent;
+  height: 20px;
+  padding: 0px 0px;         
+  outline: none;
+  border: none;
+  font-size: 15px;
+  /* border:  1px solid black; */
+}
+
+.inputFormu::placeholder {
+
+  color: #8c8c8c;          
+  font-size: 15px;      
 }

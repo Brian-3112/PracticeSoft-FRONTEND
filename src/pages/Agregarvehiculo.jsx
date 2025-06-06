@@ -42,7 +42,7 @@ const Agregarvehiculo = () => {
     });
   };
 
-   // Enviar formulario
+  // Enviar formulario
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -80,39 +80,93 @@ const Agregarvehiculo = () => {
                 <form onSubmit={handleSubmit} >
 
                   <div className={styles.modalBody}>
+                    <div className={styles.formGrid}>
+                      <div>
+                        <label className={styles.labelFormu}>
+                          <input
+                            className={styles.inputFormu}
+                            name="nombreVehiculo"
+                            type="text"
+                            placeholder="Vehículo"
+                            value={formData.nombreVehiculo}
+                            onChange={handleChange}
+                            required
+                          />
+                        </label>
+                      </div>
 
-                    <div>
-                      <label>Nombre del Vehículo</label>
-                      <input type="text" name="nombreVehiculo" value={formData.nombreVehiculo} onChange={handleChange} required />
+                      <div>
+                        <label className={styles.labelFormu}>
+                          <input
+                            className={styles.inputFormu}
+                            name="placa"
+                            type="text"
+                            placeholder="Placa"
+                            value={formData.placa}
+                            onChange={handleChange}
+                            required
+                          />
+                        </label>
+                      </div>
+
+                      <div>
+                        <label className={styles.labelFormu}>
+                          <input
+                            className={styles.inputFormu}
+                            name="transito"
+                            type="text"
+                            placeholder="Tránsito"
+                            value={formData.transito}
+                            onChange={handleChange}
+                            required
+                          />
+                        </label>
+                      </div>
+
+                      <div>
+                        <label className={styles.labelFormu}>
+                          <input
+                            className={styles.inputFormu}
+                            name="description"
+                            type="text"
+                            placeholder="Descripción"
+                            value={formData.description}
+                            onChange={handleChange}
+                          />
+                        </label>
+                      </div>
+
+                      <div>
+                        <label className={styles.labelFormu}>
+                          <input
+                            className={styles.inputFormu}
+                            name="fechaSOAT"
+                            type="date"
+                            placeholder="Soat"
+                            value={formData.fechaSOAT}
+                            onChange={handleChange}
+                            required
+                          />
+                        </label>
+                      </div>
+
+                      <div>
+                        <label className={styles.labelFormu}>
+                          <input
+                            className={styles.inputFormu}
+                            name="fechaTecno"
+                            type="date"
+                            placeholder="Tecnomecanica"
+                            value={formData.fechaTecno}
+                            onChange={handleChange}
+                          />
+                        </label>
+                      </div>
+
+
                     </div>
-
-                    <div>
-                      <label>Placa</label>
-                      <input type="text" name="placa" value={formData.placa} onChange={handleChange} required />
-                    </div>
-
-                    <div>
-                      <label>Tránsito</label>
-                      <input type="text" name="transito" value={formData.transito} onChange={handleChange} />
-                    </div>
-
-                    <div>
-                      <label>Fecha SOAT</label>
-                      <input type="date" name="fechaSOAT" value={formData.fechaSOAT} onChange={handleChange} required />
-                    </div>
-
-                    <div>
-                      <label>Fecha Tecnomecánica</label>
-                      <input type="date" name="fechaTecno" value={formData.fechaTecno} onChange={handleChange} required />
-                    </div>
-
-                    <div>
-                      <label>Descripción</label>
-                      <textarea name="description" value={formData.description} onChange={handleChange} />
-                    </div>
-
-
                   </div>
+
 
 
                   <div className={styles.modalFooter}>
