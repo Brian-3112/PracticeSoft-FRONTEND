@@ -6,7 +6,7 @@ const ProtectedRoute = () => {
     const { auth, loading } = useAuth();
 
     if (loading) return <p>Cargando...</p>;
-
+    //si hay usuario autenticado entra a las rutas de lo contario  redirige al usuario al login
     return auth?.id ? <Outlet /> : <Navigate to="/login" />;
 };
 

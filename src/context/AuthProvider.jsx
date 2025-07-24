@@ -25,6 +25,7 @@ const AuthProvider = ({ children }) => {
     //! Este use effect Para que cuando carge la app revisar si el usuario esta autenticado o no
     useEffect(() => {
         const autenticarUsuario = async () => {
+            //  revisa si hay un token en localStorage
             const token = localStorage.getItem('token');
             if (!token) {
                 setLoading(false);

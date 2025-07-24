@@ -26,9 +26,13 @@ const Login = () => {
         e.preventDefault();
 
         try {
+            //Envía correo y contraseña al backend.
             const { data } = await clienteAxios.post("/usuarios/login", { email, password });
+            // Guarda el token en localStorage.
             localStorage.setItem("token", data.token);
+            // Guarda la info del usuario con setAuth.
             setAuth(data);
+            // Redirige al panel privado (/admin).
             navigate("/admin");
         } catch (error) {
             Swal.fire({
