@@ -28,7 +28,7 @@
 
 /* CARD PRINCIPAL */
 .card {
-  width: 300px;
+  width: 310px;
   height: 280px;
   background-color: rgba(255, 255, 255, 0.612);
   border-radius: 14px;
@@ -106,6 +106,7 @@
   position: relative;
   margin: auto;
   cursor: pointer;
+  /* border: 3px solid red; */
 }
 
 .editar .colorimgg {
@@ -128,8 +129,8 @@
 /* Fondo borroso dentro de la tarjeta */
 .bg {
   position: absolute;
-  width: 342px;
-  height: 302px;
+  width: 300px;
+  height: 270px;
   z-index: 2;
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(24px);
@@ -145,14 +146,14 @@
   z-index: 1;
   top: 50%;
   left: 50%;
-  width: 230px;
-  height: 230px;
+  width: 290px;
+  height: 290px;
   border-radius: 50%;
   background-color: var(--primary);
   opacity: 1;
   filter: blur(12px);
   animation: blob-bounce 5s infinite ease;
-  /* border: 3px solid rgb(0, 0, 0); */
+  border: 3px solid rgb(0, 0, 0);
 
 }
 
@@ -185,7 +186,7 @@
   padding: 0 2px;
   box-sizing: border-box;
   position: relative;
-  top: 40px;
+  top: 15px;
   /* border: 3px solid rgb(0, 0, 0); */
 
 }
@@ -242,7 +243,7 @@
   position: relative;
   left: 10%;
   margin-bottom: 2%;
-  margin-top: -1.5%;
+  margin-top: -3%;
   /* border:  1px solid black; */
 }
 
