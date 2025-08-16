@@ -5,16 +5,14 @@ import useAuth from '../hooks/useAuth';
 import Swal from 'sweetalert2';
 
 
-export const VehiculoContext = createContext();
 
+export const VehiculoContext = createContext();
 
 export const VehiculoProvider = ({ children }) => {
 
     const { auth, config } = useAuth();
-    
     //se guarda la info de los vehiculosque se trae del cosultar
     const [vehiculos, setVehiculos] = useState([]);
-
 
 
     const consultarVehiculos = async () => {
@@ -41,8 +39,6 @@ export const VehiculoProvider = ({ children }) => {
     }, [auth]);
 
 
-
-
     const agregarVehiculo = async (nuevoVehiculo, handleClose) => {
         try {
             const token = localStorage.getItem('token');
@@ -50,7 +46,6 @@ export const VehiculoProvider = ({ children }) => {
 
             const { data } = await clienteAxios.post('/vehiculos', nuevoVehiculo, config);
             setVehiculos(prev => [data.vehiculo, ...prev]);
-  
 
             Swal.fire({
                 title: 'Éxito',
@@ -109,9 +104,9 @@ export const VehiculoProvider = ({ children }) => {
                     title: 'Eliminado',
                     icon: 'success',
                     customClass: {
-                    confirmButton: "confirmarBoton",
-                    cancelButton: 'cancelBoton'
-                }
+                        confirmButton: "confirmarBoton",
+                        cancelButton: 'cancelBoton'
+                    }
                 });
             }
 
