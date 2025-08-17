@@ -18,10 +18,9 @@ export const ClienteProvider = ({ children }) => {
             const token = localStorage.getItem('token');
             if (!token) return;
 
-
             const { data } = await clienteAxios.get('/clientes', config);
-
             setClientes(data.reverse());
+            
         } catch (error) {
             console.error('Error al consultar los  clientes:', error);
             Swal.fire({
