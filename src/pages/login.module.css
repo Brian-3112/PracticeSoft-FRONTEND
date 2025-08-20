@@ -54,7 +54,7 @@
     justify-content: center;
     border-top-right-radius: 8px;
     border-bottom-right-radius: 8px;
-    /* border: 3px solid black; */
+    /* border: 3px solid rgb(249, 15, 15); */
 }
 
 .title {
@@ -76,7 +76,7 @@
 
 
 .field {
-    margin-top: .8rem;
+    margin-top: 1rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -110,8 +110,10 @@
 }
 
 .inputField::placeholder {
-    color: #e5e5e5; /* Cambia este valor al color que desees */
-    opacity: 1; /* Opcional: asegura que se vea el color al 100% */
+    color: #e5e5e5;
+    /* Cambia este valor al color que desees */
+    opacity: 1;
+    /* Opcional: asegura que se vea el color al 100% */
     font-weight: 400;
     font-size: 14px;
 }
@@ -121,7 +123,7 @@
     margin: 1rem;
     border: none;
     border-radius: 4px;
-    font-weight: bold;  
+    font-weight: bold;
     font-size: .8em;
     text-transform: uppercase;
     padding: 0.6em 1.2em;
@@ -157,7 +159,7 @@
 
 
 
-
+/* Celulares Pequeños */
 @media (max-width: 480px) {
 
     .card1 {
@@ -166,9 +168,9 @@
     }
 
     .card {
-        width: 330px;
+        width: 340px;
         padding: 1.5rem 1rem;
-        min-height: 60%;
+        min-height: 77%;
         border-radius: 8px;
     }
 
@@ -189,7 +191,12 @@
     }
 
     .inputField {
-        font-size: 0.9rem;
+        font-size: 0.83rem;
+    }
+
+    .inputField::placeholder {
+        font-size: 13px;
+
     }
 
     .btn {
@@ -202,3 +209,15 @@
         margin-top: -2px;
     }
 }
+
+
+
+/* @media (max-height: 915px) {
+
+    .card {
+        min-height: 60%;
+        
+    }
+
+} */
+
