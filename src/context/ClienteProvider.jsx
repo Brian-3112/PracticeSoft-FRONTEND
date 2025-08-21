@@ -30,18 +30,52 @@ export const ClienteProvider = ({ children }) => {
             });
         }
     };
-
-
     useEffect(() => {
         if (auth) {
             consultarClientes();
         }
     }, [auth]);
 
+    const agregarCliente = async (nuevoCliente, handleClose) => {
+        try {
+            const token = localStorage.getItem('token');
+            if (!token) return;
+
+            const { data } = await clienteAxios.post('/clientes', nuevoCliente, config);
+            setClientes(prev => [data.cliente, ...prev]);
+
+            Swal.fire({
+                title: 'Éxito',
+                text: data.message,
+                icon: 'success',
+            }).then(() => {
+                handleClose();
+            });
+
+        } catch (error) {
+
+            if (error.response && error.response.status === 403) {
+
+                Swal.fire({
+                    title: 'Error',
+                    text: error.response.data.message,
+                    icon: 'error',
+                });
+
+            } else {
+                Swal.fire({
+                    title: 'Error',
+                    text: 'No se pudo agregar el cliente.',
+                    icon: 'error',
+                });
+            }
+        }
+    };
+
 
 
     return (
-        <ClienteContext.Provider value={{ clientes }}>
+        <ClienteContext.Provider value={{ clientes, agregarCliente }}>
             {children}
         </ClienteContext.Provider>
     );

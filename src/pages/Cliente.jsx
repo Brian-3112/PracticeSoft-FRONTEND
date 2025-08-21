@@ -3,6 +3,7 @@ import { Navigate } from 'react-router-dom';
 import useCliente from '../hooks/useCliente.jsx';
 import styles from '../pages/cliente.module.css';
 import useAuth from '../hooks/useAuth';
+import Agregarcliente from './Agregarcliente.jsx';
 
 
 
@@ -54,9 +55,9 @@ const Cliente = () => {
         <div className={styles.wrapper}>
       <h2 className={styles.heading}>CLIENTES</h2>
 
-      {/* <div className={styles.divAddVehiculo}>
-        <Agregarvehiculo />
-      </div> */}
+      <div className={styles.divAddVehiculo}>
+        <Agregarcliente />
+      </div>
 
 
 
