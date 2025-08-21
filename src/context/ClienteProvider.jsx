@@ -72,10 +72,55 @@ export const ClienteProvider = ({ children }) => {
         }
     };
 
+    const eliminarCliente = async (id) => {
+        try {
+            const token = localStorage.getItem('token');
+            if (!token) return;
+
+            const resultado = await Swal.fire({
+                title: '¿Estás seguro?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Si, eliminar',
+                cancelButtonText: 'Cancelar',
+                customClass: {
+                    confirmButton: "confirmarBoton",
+                    cancelButton: 'cancelBoton'
+                }
+            });
+
+            if (resultado.isConfirmed) {
+                await clienteAxios.delete(`/clientes/${id}`, config);
+
+                setClientes(prevClientes =>
+                    prevClientes.filter(cliente => cliente.id !== id)
+                );
+
+                Swal.fire({
+                    title: 'Eliminado',
+                    icon: 'success',
+                    customClass: {
+                        confirmButton: "confirmarBoton",
+                        cancelButton: 'cancelBoton'
+                    }
+                });
+            }
+
+        } catch (error) {
+            console.error('Error al eliminar cliente:', error);
+
+            Swal.fire({
+                title: 'Error',
+                text: 'No se pudo eliminar el cliente.',
+                icon: 'error',
+            });
+        }
+    };
+
 
 
     return (
-        <ClienteContext.Provider value={{ clientes, agregarCliente }}>
+        <ClienteContext.Provider value={{ clientes, agregarCliente, eliminarCliente }}>
             {children}
         </ClienteContext.Provider>
     );
