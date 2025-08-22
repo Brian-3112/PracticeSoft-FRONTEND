@@ -13,6 +13,11 @@
 }
 
 
+.wrapper {
+  position: relative;
+  top: 15px;
+}
+
 /* TITLE */
 .heading {
   font-family: "Special Gothic Condensed One", sans-serif;
@@ -21,8 +26,6 @@
   font-size: 43px;
   color: var(--primary);
   position: relative;
-  top: -10PX;
+  top: -25px;
   /* border: 3px solid rgb(0, 0, 0); */
 }
-
-
