@@ -22,11 +22,12 @@ const Renta = () => {
 
 
         <div className={styles.wrapper}>
-            <h2 className={styles.heading}>CLIENTES</h2>
+            <h2 className={styles.heading}>RENTAS</h2>
 
             {/* <div className={styles.divAddVehiculo}>
                 <Agregarcliente />
             </div> */}
+
 
 
         </div>

@@ -1,0 +1,28 @@
+@import url('https://fonts.googleapis.com/css2?family=Special+Gothic+Condensed+One&display=swap');
+
+
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: center;
+  position: relative;
+  top: 25px;
+  /* border: 3px solid rgb(107, 28, 28); */
+}
+
+
+/* TITLE */
+.heading {
+  font-family: "Special Gothic Condensed One", sans-serif;
+  width: 100%;
+  text-align: center;
+  font-size: 43px;
+  color: var(--primary);
+  position: relative;
+  top: -10PX;
+  /* border: 3px solid rgb(0, 0, 0); */
+}
+
+
