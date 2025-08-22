@@ -9,22 +9,45 @@ import Swal from 'sweetalert2';
 export const RentaContext = createContext();
 
 export const RentaProvider = ({ children }) => {
-
     const { auth, config } = useAuth();
-    //se guarda la info de las rentas que se trae del cosultar
+
     const [rentas, setRentas] = useState([]);
 
 
-    
+    const consultarRentas = async () => {
+        try {
+            const token = localStorage.getItem('token');
+            if (!token) return;
+
+            const { data } = await clienteAxios.get('/rentas', config);
+            setRentas(data.reverse());
+
+        } catch (error) {
+            console.error('Error al consultar la Renta:', error);
+            Swal.fire({
+                title: 'Error',
+                text: 'Error al consultar las Rentas. Vuelva a intentarlo.',
+                icon: 'error',
+            });
+        }
+    };
+    useEffect(() => {
+        if (auth) {
+            consultarRentas();
+        }
+    }, [auth]);
+
+
+
 
 
 
 
 
     return (
-        <RentaProvider.Provider value={{ rentas  }}>
+        <RentaContext.Provider value={{ rentas }}>
             {children}
-        </RentaProvider.Provider>
+        </RentaContext.Provider>
     );
 };
 
