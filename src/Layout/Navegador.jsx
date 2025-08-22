@@ -16,7 +16,7 @@ const Navegador = () => {
           <li><Link to="/admin">Dashboard</Link></li>
           <li><Link to="clientes">Clientes</Link></li>
           <li><Link to="vehiculos">Vehiculos</Link></li>
-          <li><a href="#">Rentas</a></li>
+          <li><a href="rentas">Rentas</a></li>
           <li><button
             onClick={cerrarSesion}
             className={styles.logoutButton}
