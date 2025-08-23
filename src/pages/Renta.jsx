@@ -73,11 +73,11 @@ const Renta = () => {
                             <div className={styles.blob}></div>
 
                             <p className={styles.cookieHeading}>{renta.cliente?.nombre}</p>
-                            <p className={styles.cookieDescriptionn}><span></span>Chevrolet onix</p>
-                            <p className={styles.cookieDescription}><span></span>FXO599</p>
-                            <p className={styles.cookieDescription}><span></span>2025-08-20</p>
-                            <p className={styles.cookieDescription}><span></span>2025-09-10</p>
-                            <p className={styles.cookieDescriptionP}><span></span>$ 1.200.000</p>
+                            <p className={styles.cookieDescriptionn}><span></span>{renta.vehiculo?.nombreVehiculo}</p>
+                            <p className={styles.cookieDescription}><span></span>{renta.vehiculo?.placa}</p>
+                            <p className={styles.cookieDescription}><span></span>{renta.fechaEntrega}</p>
+                            <p className={styles.cookieDescription}><span></span>{renta.fechaDevolucion}</p>
+                            <p className={styles.cookieDescriptionP}><span></span>${renta.valorTotal}</p>
 
                             <div className={styles.buttonContainer}>
 
