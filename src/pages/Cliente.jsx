@@ -74,8 +74,8 @@ const Cliente = () => {
 
               <p className={styles.cookieHeading}>{cliente.nombre}</p>
               <p className={styles.cookieDescription}><span>C.C </span>{cliente.identificacion}</p>
-              <p className={styles.cookieDescription}><span>Direccion </span> {cliente.direccion}</p>
-              <p className={styles.cookieDescription}><span>Cel </span> {cliente.celular}</p>
+              <p className={styles.cookieDescription}><span>Dir. </span> {cliente.direccion}</p>
+              <p className={styles.cookieDescription}><span>Cel. </span> {cliente.celular}</p>
 
               <div className={styles.buttonContainer}>
 
