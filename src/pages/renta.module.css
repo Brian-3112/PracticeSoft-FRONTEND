@@ -29,7 +29,7 @@
 /* CARD PRINCIPAL */
 .card {
   width: 300px;
-  height: 230px;
+  height: 260px;
   background-color: rgba(255, 255, 255, 0.612);
   border-radius: 14px;
   display: flex;
@@ -52,7 +52,8 @@
 
 .cookieHeading,
 .cookieDescription,
-.cookieDescriptionn {
+.cookieDescriptionn,
+.cookieDescriptionP {
   margin: 0;
   position: relative;
   bottom: 10px;
@@ -62,10 +63,10 @@
 /* TITLE CARD */
 .cookieHeading {
   font-family: "Special Gothic Condensed One", sans-serif;
-  font-size: 32px;
+  font-size: 30px;
   font-weight: 500;
   position: relative;
-  top: -40px;
+  top: -33px;
   /* border: 3px solid rgb(213, 17, 17); */
 }
 
@@ -75,15 +76,23 @@
   text-align: center;
   font-size: 0.9em;
   font-weight: 400;
-  top: -20px;
+  top: -10px;
   /* border: 3px solid rgb(0, 0, 0); */
 }
 
 .cookieDescriptionn{
-   text-align: center;
+  font-size: 0.9em;
+  font-weight: 400;
+  top: -10px;
+
+}
+
+.cookieDescriptionP{
+  position: relative;
+  right: 90px;
+  top: 35px;
   font-size: 1em;
-  font-weight: 600;
-  top: -40px;
+  font-weight: 800;
 
 }
 
@@ -139,8 +148,8 @@
 /* Fondo borroso dentro de la tarjeta */
 .bg {
   position: absolute;
-  width: 288px;
-  height: 218px;
+  width: 289px;
+  height: 250px;
   z-index: 2;
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(24px);

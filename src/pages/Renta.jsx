@@ -67,16 +67,17 @@ const Renta = () => {
                 </button>
 
                 <div className={styles.carousel}>
-                    {visibleRentas.map((vehiculo) => (
-                        <div className={styles.card} key={vehiculo.fechaEntrega}>
+                    {visibleRentas.map((renta) => (
+                        <div className={styles.card} key={renta.fechaEntrega}>
                             <div className={styles.bg}></div>
                             <div className={styles.blob}></div>
 
-                            <p className={styles.cookieHeading}>Danna Arrieta</p>
-                            <p className={styles.cookieDescriptionn}><span></span>KIA RIO</p>
-                            {/* <p className={styles.cookieDescription}><span></span>KIA RIO</p> */}
-                            <p className={styles.cookieDescription}><span></span>8 Dias</p>
-                            <p className={styles.cookieDescription}><span></span>2025-08-20 - 2025-08-29</p>
+                            <p className={styles.cookieHeading}>{renta.cliente?.nombre}</p>
+                            <p className={styles.cookieDescriptionn}><span></span>Chevrolet onix</p>
+                            <p className={styles.cookieDescription}><span></span>FXO599</p>
+                            <p className={styles.cookieDescription}><span></span>2025-08-20</p>
+                            <p className={styles.cookieDescription}><span></span>2025-09-10</p>
+                            <p className={styles.cookieDescriptionP}><span></span>$ 1.200.000</p>
 
                             <div className={styles.buttonContainer}>
 
