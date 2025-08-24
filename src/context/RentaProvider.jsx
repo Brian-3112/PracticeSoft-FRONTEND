@@ -38,6 +38,49 @@ export const RentaProvider = ({ children }) => {
     }, [auth]);
 
 
+    const agregarRenta = async (nuevaRenta, handleClose) => {
+        try {
+            const token = localStorage.getItem('token');
+            if (!token) return;
+
+            const { data } = await clienteAxios.post('/rentas', nuevaRenta, config);
+            setRentas(prev => [data.renta, ...prev]);
+
+            Swal.fire({
+                title: 'Éxito',
+                text: data.message,
+                icon: 'success',
+            }).then(() => {
+                handleClose();
+            });
+
+        } catch (error) {
+
+            if (error.response) {
+
+                Swal.fire({
+                    title: 'Error',
+                    text: error.response.data.message,
+                    icon: 'error',
+                });
+
+            }
+        }
+    };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -45,7 +88,7 @@ export const RentaProvider = ({ children }) => {
 
 
     return (
-        <RentaContext.Provider value={{ rentas }}>
+        <RentaContext.Provider value={{ rentas, agregarRenta }}>
             {children}
         </RentaContext.Provider>
     );

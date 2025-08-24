@@ -1,35 +1,37 @@
 import { useState, useEffect } from 'react';
 import useAuth from '../hooks/useAuth.jsx';
 import BotonVerde from '../components/BotonVerde.jsx';
-import styles from '../pages/cliente.module.css';
-import useCliente from '../hooks/useCliente.jsx';
+import styles from '../pages/renta.module.css';
+import useRenta from '../hooks/useRenta.jsx';
 import { useForm } from 'react-hook-form';
 
 
-const Agregarcliente = () => {
+const Agregarrenta = () => {
 
     const { auth, loading } = useAuth();
     if (loading) return 'Cargando...';
 
 
-    const { agregarCliente } = useCliente();
+    const { agregarRenta } = useRenta();
 
     /// Funcionalidad para cerra el modal
     const [show, setShow] = useState(false);
 
-    // Estado para el formulario Cliente
+    // Estado para el formulario Renta
     const [formData, setFormData] = useState({
-        nombre: '', identificacion: '', direccion: '', celular: '', correo: '', nombreFamiliar: '', direccionFamiliar: '', telefonoFamiliar: '',
-        nombrePersonal: '', direccionPersonal: '', telefonoPersonal: ''
+        vehiculoId: '', clienteId: '', fechaEntrega: '', horaEntrega: '', fechaDevolucion: '', horaDevolucion: '', numeroDias: '', valorDia: '',
+        valorTotal: ''
     });
+
 
     // Limpiar formulario
     const limpiarFormulario = () => {
         setFormData({
-            nombre: '', identificacion: '', direccion: '', celular: '', correo: '', nombreFamiliar: '', direccionFamiliar: '', telefonoFamiliar: '',
-            nombrePersonal: '', direccionPersonal: '', telefonoPersonal: ''
+            vehiculoId: '', clienteId: '', fechaEntrega: '', horaEntrega: '', fechaDevolucion: '', horaDevolucion: '', numeroDias: '', valorDia: '',
+            valorTotal: ''
         });
     };
+
 
     // Logica cierre modal
     const handleClose = () => { limpiarFormulario(); setShow(false); };
@@ -48,30 +50,29 @@ const Agregarcliente = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        agregarCliente(
+        agregarRenta(
             {
-                nombre: formData.nombre.trim(),
-                identificacion: formData.identificacion.trim(),
-                direccion: formData.direccion.trim(), 
-                celular: formData.celular.trim(),
-                correo: formData.correo.trim(),
-                nombreFamiliar: formData.nombreFamiliar.trim(),
-                direccionFamiliar: formData.direccionFamiliar.trim(),
-                telefonoFamiliar: formData.telefonoFamiliar.trim(),
-                nombrePersonal: formData.nombrePersonal.trim(),
-                direccionPersonal: formData.direccionPersonal.trim(),
-                telefonoPersonal: formData.telefonoPersonal.trim()
+                vehiculoId: parseInt(formData.vehiculoId),   // lo convertimos a número
+                clienteId: parseInt(formData.clienteId),
+                fechaEntrega: formData.fechaEntrega.trim(),
+                horaEntrega: formData.horaEntrega.trim(),
+                fechaDevolucion: formData.fechaDevolucion.trim(),
+                horaDevolucion: formData.horaDevolucion.trim(),
+                numeroDias: parseInt(formData.numeroDias),
+                valorDia: parseFloat(formData.valorDia),
+                valorTotal: parseFloat(formData.valorTotal)
             },
             () => {
                 limpiarFormulario();
                 handleClose();
             }
         );
+
     };
 
     return (
         <div>
-            <BotonVerde text="Agregar Cliente" onClick={handleShow} />
+            <BotonVerde text="Agregar Renta" onClick={handleShow} />
 
             {show && (
                 <div className={styles.modalBackdrop}>
@@ -259,4 +260,4 @@ const Agregarcliente = () => {
     );
 };
 
-export default Agregarcliente;
+export default Agregarrenta;

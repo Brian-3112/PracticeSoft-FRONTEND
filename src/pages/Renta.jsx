@@ -3,6 +3,7 @@ import { Navigate } from 'react-router-dom';
 import useRenta from '../hooks/useRenta.jsx';
 import styles from '../pages/renta.module.css';
 import useAuth from '../hooks/useAuth';
+import Agregarrenta from './Agregarrenta.jsx';
 
 
 
@@ -55,9 +56,9 @@ const Renta = () => {
         <div className={styles.wrapper}>
             <h2 className={styles.heading}>RENTAS</h2>
 
-            {/* <div className={styles.divAddVehiculo}>
-                <Agregarvehiculo />
-            </div> */}
+            <div className={styles.divAddVehiculo}>
+                <Agregarrenta />
+            </div>
 
 
 
@@ -77,7 +78,14 @@ const Renta = () => {
                             <p className={styles.cookieDescription}><span></span>{renta.vehiculo?.placa}</p>
                             <p className={styles.cookieDescription}><span></span>{renta.fechaEntrega}</p>
                             <p className={styles.cookieDescription}><span></span>{renta.fechaDevolucion}</p>
-                            <p className={styles.cookieDescriptionP}><span></span>${renta.valorTotal}</p>
+                            <p className={styles.cookieDescriptionP}>
+                                {renta.valorTotal.toLocaleString("es-CO", {
+                                    style: "currency",
+                                    currency: "COP",
+                                    minimumFractionDigits: 0,
+                                    maximumFractionDigits: 0
+                                })}
+                            </p>
 
                             <div className={styles.buttonContainer}>
 
