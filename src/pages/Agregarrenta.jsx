@@ -135,10 +135,10 @@ const Agregarrenta = () => {
                                                 <label className={styles.labelFormu}>
                                                     <input
                                                         className={styles.inputFormu}
-                                                        name="direccion"
-                                                        type="text"
-                                                        placeholder="direccion"
-                                                        value={formData.direccion}
+                                                        name="fechaEntrega"
+                                                        type="date"
+                                                        placeholder="Fecha de Entrega"
+                                                        value={formData.fechaEntrega}
                                                         onChange={handleChange}
                                                         required
                                                     />
@@ -162,11 +162,12 @@ const Agregarrenta = () => {
                                                 <label className={styles.labelFormu}>
                                                     <input
                                                         className={styles.inputFormu}
-                                                        name="correo"
-                                                        type="text"
-                                                        placeholder="correo"
-                                                        value={formData.correo}
+                                                        name="fechaDevolucion"
+                                                        type="date"
+                                                        placeholder="Fecha de Devolución"
+                                                        value={formData.fechaDevolucion}
                                                         onChange={handleChange}
+                                                        required
                                                     />
                                                 </label>
                                             </div>
@@ -197,57 +198,8 @@ const Agregarrenta = () => {
                                                 </label>
                                             </div>
 
-                                            <div>
-                                                <label className={styles.labelFormu}>
-                                                    <input
-                                                        className={styles.inputFormu}
-                                                        name="telefonoFamiliar"
-                                                        type="text"
-                                                        placeholder="Telefono del familiar"
-                                                        value={formData.telefonoFamiliar}
-                                                        onChange={handleChange}
-                                                    />
-                                                </label>
-                                            </div>
 
-                                            <div>
-                                                <label className={styles.labelFormu}>
-                                                    <input
-                                                        className={styles.inputFormu}
-                                                        name="nombrePersonal"
-                                                        type="text"
-                                                        placeholder="Nombre de una referencia personal"
-                                                        value={formData.nombrePersonal}
-                                                        onChange={handleChange}
-                                                    />
-                                                </label>
-                                            </div>
 
-                                            <div>
-                                                <label className={styles.labelFormu}>
-                                                    <input
-                                                        className={styles.inputFormu}
-                                                        name="direccionPersonal"
-                                                        type="text"
-                                                        placeholder="Dirrecion de la Referencia personal"
-                                                        value={formData.direccionPersonal}
-                                                        onChange={handleChange}
-                                                    />
-                                                </label>
-                                            </div>
-
-                                            <div>
-                                                <label className={styles.labelFormu}>
-                                                    <input
-                                                        className={styles.inputFormu}
-                                                        name="telefonoPersonal"
-                                                        type="text"
-                                                        placeholder="Telefono de la Referencia personal"
-                                                        value={formData.telefonoPersonal}
-                                                        onChange={handleChange}
-                                                    />
-                                                </label>
-                                            </div>
 
 
                                         </div>
