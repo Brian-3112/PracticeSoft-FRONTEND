@@ -3,6 +3,8 @@ import useAuth from '../hooks/useAuth.jsx';
 import BotonVerde from '../components/BotonVerde.jsx';
 import styles from '../pages/renta.module.css';
 import useRenta from '../hooks/useRenta.jsx';
+import useCliente from '../hooks/useCliente.jsx';
+import useVehiculo from '../hooks/useVehiculo.jsx';
 import { useForm } from 'react-hook-form';
 
 
@@ -12,7 +14,9 @@ const Agregarrenta = () => {
     if (loading) return 'Cargando...';
 
 
-    const { agregarRenta } = useRenta();
+    const { agregarRenta, rentas } = useRenta();
+    const { clientes } = useCliente();
+    const { vehiculos } = useVehiculo();
 
     /// Funcionalidad para cerra el modal
     const [show, setShow] = useState(false);
@@ -91,29 +95,39 @@ const Agregarrenta = () => {
                                         <div className={styles.formGrid}>
                                             <div>
                                                 <label className={styles.labelFormu}>
-                                                    <input
+                                                    <select
                                                         className={styles.inputFormu}
-                                                        name="nombre"
-                                                        type="text"
-                                                        placeholder="nombre"
-                                                        value={formData.nombre}
+                                                        name="clienteId"
+                                                        value={formData.clienteId}
                                                         onChange={handleChange}
                                                         required
-                                                    />
+                                                    >
+                                                        <option value="">Seleccione un cliente</option>
+                                                        {clientes.map((cliente) => (
+                                                            <option key={cliente.id} value={cliente.id}>
+                                                                {cliente.nombre}
+                                                            </option>
+                                                        ))}
+                                                    </select>
                                                 </label>
                                             </div>
 
                                             <div>
                                                 <label className={styles.labelFormu}>
-                                                    <input
+                                                    <select
                                                         className={styles.inputFormu}
-                                                        name="identificacion"
-                                                        type="text"
-                                                        placeholder="identificacion"
-                                                        value={formData.identificacion}
+                                                        name="vehiculoId"
+                                                        value={formData.vehiculoId}
                                                         onChange={handleChange}
                                                         required
-                                                    />
+                                                    >
+                                                        <option value="">Seleccione un Vehiculo</option>
+                                                        {vehiculos.map((vehiculo) => (
+                                                            <option key={vehiculo.id} value={vehiculo.id}>
+                                                                {vehiculo.nombreVehiculo}
+                                                            </option>
+                                                        ))}
+                                                    </select>
                                                 </label>
                                             </div>
 
