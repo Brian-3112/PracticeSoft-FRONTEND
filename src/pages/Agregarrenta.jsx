@@ -21,6 +21,16 @@ const Agregarrenta = () => {
     /// Funcionalidad para cerra el modal
     const [show, setShow] = useState(false);
 
+    // Manejar cambios en los inputs, optiene lo que uno va escribienod en los imput, ...formData trae los valores acutales y solo actualice el input que este modificando
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({
+            ...formData,
+            [name]: value
+        });
+    };
+
+
     // Estado para el formulario Renta
     const [formData, setFormData] = useState({
         vehiculoId: '', clienteId: '', fechaEntrega: '', horaEntrega: '', fechaDevolucion: '', horaDevolucion: '', numeroDias: '', valorDia: '',
@@ -41,14 +51,7 @@ const Agregarrenta = () => {
     const handleClose = () => { limpiarFormulario(); setShow(false); };
     const handleShow = () => { setShow(true); };
 
-    // Manejar cambios en los inputs, optiene lo que uno va escribienod en los imput, ...formData trae los valores acutales y solo actualice el input que este modificando
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({
-            ...formData,
-            [name]: value
-        });
-    };
+    
 
     // Enviar formulario
     const handleSubmit = (e) => {
@@ -149,10 +152,10 @@ const Agregarrenta = () => {
                                                 <label className={styles.labelFormu}>
                                                     <input
                                                         className={styles.inputFormu}
-                                                        name="celular"
+                                                        name="horaEntrega"
                                                         type="text"
-                                                        placeholder="celular"
-                                                        value={formData.celular}
+                                                        placeholder="Hora de Entrega"
+                                                        value={formData.horaEntrega}
                                                         onChange={handleChange}
                                                     />
                                                 </label>

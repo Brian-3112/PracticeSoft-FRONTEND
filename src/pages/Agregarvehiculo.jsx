@@ -17,6 +17,17 @@ const Agregarvehiculo = () => {
   /// Funcionalidad para cerra el modal
   const [show, setShow] = useState(false);
 
+
+  // Manejar cambios en los inputs, optiene lo que uno va escribienod en los imput, ...formData trae los valores acutales y solo actualice el input que este modificando
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value
+    });
+  };
+  
+
   // Estado para el formulario
   const [formData, setFormData] = useState({
     nombreVehiculo: '', placa: '', transito: '', fechaSOAT: '', fechaTecno: '', description: ''
@@ -33,14 +44,7 @@ const Agregarvehiculo = () => {
   const handleClose = () => { limpiarFormulario(); setShow(false); };
   const handleShow = () => { setShow(true); };
 
-  // Manejar cambios en los inputs, optiene lo que uno va escribienod en los imput, ...formData trae los valores acutales y solo actualice el input que este modificando
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value
-    });
-  };
+
 
   // Enviar formulario
   const handleSubmit = (e) => {
