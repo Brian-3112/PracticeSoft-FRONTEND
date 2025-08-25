@@ -44,7 +44,7 @@ const Vehiculo = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentSlide(prev => (prev < totalSlides - 1 ? prev + 1 : 0));
-    }, 15000); // 5000 ms = 5 segundos
+    }, 5000); // 5000 ms = 5 segundos
 
     return () => clearInterval(interval); // Limpieza del intervalo
   }, [totalSlides]);
