@@ -49,7 +49,6 @@
 }
 
 
-
 .cookieHeading,
 .cookieDescription,
 .cookieDescriptionn,
@@ -70,6 +69,16 @@
 }
 
 
+/* TEXT OF CARD */
+.cookieDescription {
+  text-align: center;
+  font-size: 0.9em;
+  font-weight: 400;
+  /* border: 3px solid rgb(0, 0, 0); */
+}
+
+
+
 .cookieDescriptionn{
   font-size: 0.9em;
   font-weight: 400;
@@ -86,24 +95,6 @@
 
 }
 
-
-
-
-
-
-
-
-
-
-
-
-/* TEXT OF CARD */
-.cookieDescription {
-  text-align: center;
-  font-size: 0.9em;
-  font-weight: 400;
-  /* border: 3px solid rgb(0, 0, 0); */
-}
 
 .cookieDescription span {
   color: var(--primary);
