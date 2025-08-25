@@ -17,7 +17,7 @@ const Cliente = () => {
 
 
      // invertimos para que los más recientes queden al final
-    const orderedClientes = [...rentas].reverse();
+    const orderedClientes = [...clientes].reverse();
 
 
   //------------- CARUCEL

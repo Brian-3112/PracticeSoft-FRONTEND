@@ -16,7 +16,7 @@ const Vehiculo = () => {
 
 
   // invertimos para que los más recientes queden al final
-    const orderedVehiculos = [...rentas].reverse();
+    const orderedVehiculos = [...vehiculos].reverse();
 
 
   //------------- CARUCEL
