@@ -33,16 +33,18 @@ const Agregarrenta = () => {
 
     // Estado para el formulario Renta
     const [formData, setFormData] = useState({
-        vehiculoId: '', clienteId: '', fechaEntrega: '', horaEntrega: '', fechaDevolucion: '', horaDevolucion: '', numeroDias: '', valorDia: '',
-        valorTotal: ''
+        vehiculoId: '', clienteId: '', fechaEntrega: '', horaEntrega: '', fechaDevolucion: '', horaDevolucion: '', valorDia: '',
+        // valorTotal: '',
+        // numeroDias: ''
     });
 
 
     // Limpiar formulario
     const limpiarFormulario = () => {
         setFormData({
-            vehiculoId: '', clienteId: '', fechaEntrega: '', horaEntrega: '', fechaDevolucion: '', horaDevolucion: '', numeroDias: '', valorDia: '',
-            valorTotal: ''
+            vehiculoId: '', clienteId: '', fechaEntrega: '', horaEntrega: '', fechaDevolucion: '', horaDevolucion: '', valorDia: '',
+            // valorTotal: '', 
+            // numeroDias: ''
         });
     };
 
@@ -65,9 +67,9 @@ const Agregarrenta = () => {
                 horaEntrega: formData.horaEntrega.trim(),
                 fechaDevolucion: formData.fechaDevolucion.trim(),
                 horaDevolucion: formData.horaDevolucion.trim(),
-                numeroDias: parseInt(formData.numeroDias),
+                // numeroDias: parseInt(formData.numeroDias),
                 valorDia: parseFloat(formData.valorDia),
-                valorTotal: parseFloat(formData.valorTotal)
+                // valorTotal: parseFloat(formData.valorTotal)
             },
             () => {
                 limpiarFormulario();
@@ -188,7 +190,7 @@ const Agregarrenta = () => {
                                                 </label>
                                             </div>
 
-                                            <div>
+                                            {/* <div>
                                                 <label className={styles.labelFormu}>
                                                     <input
                                                         className={styles.inputFormu}
@@ -199,7 +201,7 @@ const Agregarrenta = () => {
                                                         onChange={handleChange}
                                                     />
                                                 </label>
-                                            </div>
+                                            </div> */}
 
                                             <div>
                                                 <label className={styles.labelFormu}>
