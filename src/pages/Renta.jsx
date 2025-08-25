@@ -73,7 +73,7 @@ const Renta = () => {
 
                 <div className={styles.carousel}>
                     {visibleRentas.map((renta) => (
-                        <div className={styles.card} key={renta.fechaEntrega}>
+                        <div className={styles.card} key={renta.id}>
                             <div className={styles.bg}></div>
                             <div className={styles.blob}></div>
 
