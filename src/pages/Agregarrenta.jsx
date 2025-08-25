@@ -88,7 +88,7 @@ const Agregarrenta = () => {
                             <div className={styles.modalContent}>
 
                                 <div className={styles.modalHeader}>
-                                    <h5 className={styles.modalTitle}>Agregar <span className={styles.modalTitle2}>Cliente</span></h5>
+                                    <h5 className={styles.modalTitle}>Agregar <span className={styles.modalTitle2}>Renta</span></h5>
                                     <button type="button" className={styles.btnClose} onClick={handleClose}>×</button>
                                 </div>
 
