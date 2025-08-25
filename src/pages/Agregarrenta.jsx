@@ -107,7 +107,7 @@ const Agregarrenta = () => {
                                                         onChange={handleChange}
                                                         required
                                                     >
-                                                        <option value="">Seleccione un cliente</option>
+                                                        <option value="">Seleccione un Cliente</option>
                                                         {clientes.map((cliente) => (
                                                             <option key={cliente.id} value={cliente.id}>
                                                                 {cliente.nombre}

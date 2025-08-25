@@ -96,7 +96,7 @@ const Agregarcliente = () => {
                                                         className={styles.inputFormu}
                                                         name="nombre"
                                                         type="text"
-                                                        placeholder="nombre"
+                                                        placeholder="Nombre"
                                                         value={formData.nombre}
                                                         onChange={handleChange}
                                                         required
@@ -110,7 +110,7 @@ const Agregarcliente = () => {
                                                         className={styles.inputFormu}
                                                         name="identificacion"
                                                         type="text"
-                                                        placeholder="identificacion"
+                                                        placeholder="Identificacion"
                                                         value={formData.identificacion}
                                                         onChange={handleChange}
                                                         required
@@ -124,7 +124,7 @@ const Agregarcliente = () => {
                                                         className={styles.inputFormu}
                                                         name="direccion"
                                                         type="text"
-                                                        placeholder="direccion"
+                                                        placeholder="Direccion"
                                                         value={formData.direccion}
                                                         onChange={handleChange}
                                                         required
@@ -138,7 +138,7 @@ const Agregarcliente = () => {
                                                         className={styles.inputFormu}
                                                         name="celular"
                                                         type="text"
-                                                        placeholder="celular"
+                                                        placeholder="Celular"
                                                         value={formData.celular}
                                                         onChange={handleChange}
                                                     />
@@ -151,7 +151,7 @@ const Agregarcliente = () => {
                                                         className={styles.inputFormu}
                                                         name="correo"
                                                         type="text"
-                                                        placeholder="correo"
+                                                        placeholder="Correo"
                                                         value={formData.correo}
                                                         onChange={handleChange}
                                                     />
@@ -164,7 +164,7 @@ const Agregarcliente = () => {
                                                         className={styles.inputFormu}
                                                         name="nombreFamiliar"
                                                         type="text"
-                                                        placeholder="Nombre del familiar"
+                                                        placeholder="Nombre del Familiar"
                                                         value={formData.nombreFamiliar}
                                                         onChange={handleChange}
                                                     />
@@ -177,7 +177,7 @@ const Agregarcliente = () => {
                                                         className={styles.inputFormu}
                                                         name="direccionFamiliar"
                                                         type="text"
-                                                        placeholder="Direccion del familiar"
+                                                        placeholder="Direccion del Familiar"
                                                         value={formData.direccionFamiliar}
                                                         onChange={handleChange}
                                                     />
@@ -190,7 +190,7 @@ const Agregarcliente = () => {
                                                         className={styles.inputFormu}
                                                         name="telefonoFamiliar"
                                                         type="text"
-                                                        placeholder="Telefono del familiar"
+                                                        placeholder="Telefono del Familiar"
                                                         value={formData.telefonoFamiliar}
                                                         onChange={handleChange}
                                                     />
@@ -203,7 +203,7 @@ const Agregarcliente = () => {
                                                         className={styles.inputFormu}
                                                         name="nombrePersonal"
                                                         type="text"
-                                                        placeholder="Nombre de una referencia personal"
+                                                        placeholder="Nombre de una Referencia Personal"
                                                         value={formData.nombrePersonal}
                                                         onChange={handleChange}
                                                     />
@@ -216,7 +216,7 @@ const Agregarcliente = () => {
                                                         className={styles.inputFormu}
                                                         name="direccionPersonal"
                                                         type="text"
-                                                        placeholder="Dirrecion de la Referencia personal"
+                                                        placeholder="Dirrecion de la Referencia Personal"
                                                         value={formData.direccionPersonal}
                                                         onChange={handleChange}
                                                     />
@@ -229,7 +229,7 @@ const Agregarcliente = () => {
                                                         className={styles.inputFormu}
                                                         name="telefonoPersonal"
                                                         type="text"
-                                                        placeholder="Telefono de la Referencia personal"
+                                                        placeholder="Telefono de la Referencia Personal"
                                                         value={formData.telefonoPersonal}
                                                         onChange={handleChange}
                                                     />
