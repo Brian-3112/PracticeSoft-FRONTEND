@@ -28,8 +28,8 @@
 
 /* CARD PRINCIPAL */
 .card {
-  width: 300px;
-  height: 260px;
+  width: 310px;
+  height: 280px;
   background-color: rgba(255, 255, 255, 0.612);
   border-radius: 14px;
   display: flex;
@@ -59,26 +59,16 @@
   bottom: 10px;
 }
 
-
 /* TITLE CARD */
 .cookieHeading {
   font-family: "Special Gothic Condensed One", sans-serif;
-  font-size: 30px;
+  font-size: 32px;
   font-weight: 500;
   position: relative;
-  top: -33px;
+  top: -35px;
   /* border: 3px solid rgb(213, 17, 17); */
 }
 
-
-/* TEXT OF CARD */
-.cookieDescription {
-  text-align: center;
-  font-size: 0.9em;
-  font-weight: 400;
-  top: -10px;
-  /* border: 3px solid rgb(0, 0, 0); */
-}
 
 .cookieDescriptionn{
   font-size: 0.9em;
@@ -94,6 +84,25 @@
   font-size: 0.97em;
   font-weight: 600;
 
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/* TEXT OF CARD */
+.cookieDescription {
+  text-align: center;
+  font-size: 0.9em;
+  font-weight: 400;
+  /* border: 3px solid rgb(0, 0, 0); */
 }
 
 .cookieDescription span {
@@ -148,8 +157,8 @@
 /* Fondo borroso dentro de la tarjeta */
 .bg {
   position: absolute;
-  width: 289px;
-  height: 250px;
+  width: 300px;
+  height: 270px;
   z-index: 2;
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(24px);
