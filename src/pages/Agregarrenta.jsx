@@ -153,7 +153,7 @@ const Agregarrenta = () => {
                                                     <input
                                                         className={styles.inputFormu}
                                                         name="horaEntrega"
-                                                        type="text"
+                                                        type="time"
                                                         placeholder="Hora de Entrega"
                                                         value={formData.horaEntrega}
                                                         onChange={handleChange}
@@ -179,10 +179,10 @@ const Agregarrenta = () => {
                                                 <label className={styles.labelFormu}>
                                                     <input
                                                         className={styles.inputFormu}
-                                                        name="nombreFamiliar"
-                                                        type="text"
-                                                        placeholder="Nombre del familiar"
-                                                        value={formData.nombreFamiliar}
+                                                        name="horaDevolucion"
+                                                        type="time"
+                                                        placeholder="Hora de Devolución"
+                                                        value={formData.horaDevolucion }
                                                         onChange={handleChange}
                                                     />
                                                 </label>
@@ -192,10 +192,23 @@ const Agregarrenta = () => {
                                                 <label className={styles.labelFormu}>
                                                     <input
                                                         className={styles.inputFormu}
-                                                        name="direccionFamiliar"
+                                                        name="numeroDias"
                                                         type="text"
-                                                        placeholder="Direccion del familiar"
-                                                        value={formData.direccionFamiliar}
+                                                        placeholder="Número de Días"
+                                                        value={formData.numeroDias}
+                                                        onChange={handleChange}
+                                                    />
+                                                </label>
+                                            </div>
+
+                                            <div>
+                                                <label className={styles.labelFormu}>
+                                                    <input
+                                                        className={styles.inputFormu}
+                                                        name="valorDia"
+                                                        type="text"
+                                                        placeholder="Valor por Día"
+                                                        value={formData.valorDia}
                                                         onChange={handleChange}
                                                     />
                                                 </label>
