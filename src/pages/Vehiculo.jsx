@@ -15,15 +15,12 @@ const Vehiculo = () => {
   const { vehiculos, eliminarVehiculo } = useVehiculo();
 
 
-  // invertimos para que los más recientes queden al final
-    const orderedVehiculos = [...vehiculos].reverse();
-
 
   //------------- CARUCEL
   const [currentSlide, setCurrentSlide] = useState(0);
   const cardsPerPage = 4;
 
-  const totalSlides = Math.ceil(orderedVehiculos.length / cardsPerPage);
+  const totalSlides = Math.ceil(vehiculos.length / cardsPerPage);
 
   const nextSlide = () => {
     if (currentSlide < totalSlides - 1) {
@@ -38,7 +35,7 @@ const Vehiculo = () => {
   };
 
   const startIndex = currentSlide * cardsPerPage;
-  const visibleVehiculos = orderedVehiculos.slice(startIndex, startIndex + cardsPerPage);
+  const visibleVehiculos = vehiculos.slice(startIndex, startIndex + cardsPerPage);
 
   // ⏱ Cambio automático de slide cada 5 segundos
   useEffect(() => {

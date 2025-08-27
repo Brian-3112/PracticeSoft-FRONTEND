@@ -15,14 +15,13 @@ const Renta = () => {
 
     const { rentas } = useRenta();
 
-    // invertimos para que los más recientes queden al final
-    const orderedRentas = [...rentas].reverse();
+  
 
     //------------- CARUCEL
     const [currentSlide, setCurrentSlide] = useState(0);
     const cardsPerPage = 4;
 
-    const totalSlides = Math.ceil(orderedRentas.length / cardsPerPage);
+    const totalSlides = Math.ceil(rentas.length / cardsPerPage);
 
     const nextSlide = () => {
         if (currentSlide < totalSlides - 1) {
@@ -37,7 +36,7 @@ const Renta = () => {
     };
 
     const startIndex = currentSlide * cardsPerPage;
-    const visibleRentas = orderedRentas.slice(startIndex, startIndex + cardsPerPage);
+    const visibleRentas = rentas.slice(startIndex, startIndex + cardsPerPage);
 
     // ⏱ Cambio automático de slide cada 5 segundos
     useEffect(() => {
