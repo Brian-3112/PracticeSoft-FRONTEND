@@ -2,7 +2,7 @@ import { createContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import clienteAxios from '../config/axios';
 import { useNavigate } from 'react-router-dom';
-import '../GeneralCSS/generalCss.css';
+import '../styles/generalCss.css';
 import Swal from 'sweetalert2';
 
 const AuthContext = createContext();
