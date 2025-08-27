@@ -9,11 +9,11 @@ import Swal from 'sweetalert2';
 export const VehiculoContext = createContext();
 
 export const VehiculoProvider = ({ children }) => {
-
     const { auth, config } = useAuth();
-    //se guarda la info de los vehiculosque se trae del cosultar
-    const [vehiculos, setVehiculos] = useState([]);
 
+
+
+    const [vehiculos, setVehiculos] = useState([]);
 
     const consultarVehiculos = async () => {
         try {
@@ -37,6 +37,7 @@ export const VehiculoProvider = ({ children }) => {
             consultarVehiculos();
         }
     }, [auth]);
+
 
 
     const agregarVehiculo = async (nuevoVehiculo, handleClose) => {
@@ -99,7 +100,6 @@ export const VehiculoProvider = ({ children }) => {
                 setVehiculos(prevVehiculos =>
                     prevVehiculos.filter(vehiculo => vehiculo.id !== id)
                 );
-
                 Swal.fire({
                     title: 'Eliminado',
                     icon: 'success',
@@ -109,7 +109,6 @@ export const VehiculoProvider = ({ children }) => {
                     }
                 });
             }
-
         } catch (error) {
             console.error('Error al eliminar vehículo:', error);
 
@@ -120,7 +119,6 @@ export const VehiculoProvider = ({ children }) => {
             });
         }
     };
-
 
 
 

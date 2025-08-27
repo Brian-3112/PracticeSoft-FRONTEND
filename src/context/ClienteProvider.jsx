@@ -1,14 +1,16 @@
 import { createContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import clienteAxios from '../config/axios';
-import { useNavigate } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
 import Swal from 'sweetalert2';
 
-export const ClienteContext = createContext(); // <-- cambia esto
+
+
+export const ClienteContext = createContext();
 
 export const ClienteProvider = ({ children }) => {
     const { auth, config } = useAuth();
+    
 
     const [clientes, setClientes] = useState([]);
 
@@ -20,7 +22,7 @@ export const ClienteProvider = ({ children }) => {
 
             const { data } = await clienteAxios.get('/clientes', config);
             setClientes(data.reverse());
-            
+
         } catch (error) {
             console.error('Error al consultar los  clientes:', error);
             Swal.fire({
@@ -35,6 +37,7 @@ export const ClienteProvider = ({ children }) => {
             consultarClientes();
         }
     }, [auth]);
+
 
     const agregarCliente = async (nuevoCliente, handleClose) => {
         try {
@@ -105,7 +108,6 @@ export const ClienteProvider = ({ children }) => {
                     }
                 });
             }
-
         } catch (error) {
             console.error('Error al eliminar cliente:', error);
 

@@ -9,19 +9,20 @@ const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
     
-    const [auth, setAuth] = useState({});
+    const [auth, setAuth] = useState({}); 
     const [loading, setLoading] = useState(true);
+
     const navigate = useNavigate();
 
     const token = localStorage.getItem('token');
-
     const config = {
         headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
         },
     };
-    
+
+
     //! Este use effect Para que cuando carge la app revisar si el usuario esta autenticado o no
     useEffect(() => {
         const autenticarUsuario = async () => {
@@ -31,14 +32,12 @@ const AuthProvider = ({ children }) => {
                 setLoading(false);
                 return;
             }
-
             const config = {
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: `Bearer ${token}`,
                 },
             };
-
             try {
                 const { data } = await clienteAxios.get('/usuarios', config);
                 setAuth(data);
@@ -48,12 +47,11 @@ const AuthProvider = ({ children }) => {
                 }
                 setAuth({});
             }
-
             setLoading(false);
         };
-
         autenticarUsuario();
     }, []);
+
 
     const cerrarSesion = () => {
         Swal.fire({

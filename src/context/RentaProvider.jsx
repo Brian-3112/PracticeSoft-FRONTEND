@@ -72,21 +72,6 @@ export const RentaProvider = ({ children }) => {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     return (
         <RentaContext.Provider value={{ rentas, agregarRenta }}>
             {children}
