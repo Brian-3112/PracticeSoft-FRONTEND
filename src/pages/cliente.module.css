@@ -372,13 +372,14 @@
 }
 
 
-.labelFormu {
+.labelFormu{
   display: flex;
   flex-direction: column;
   font-weight: 500;
   font-size: 14px;
-  color: #333;
+  color: #999; 
 }
+
 
 
 .inputFormu {
@@ -393,4 +394,21 @@
 
 .inputFormu:focus {
   border-color: #007bff;
+}
+
+
+
+/* Modal ver info */
+
+.labelFormuu{
+  display: flex;
+  flex-direction: column;
+  /* border: 1px solid black; */
+}
+
+.labelFormuu p {
+  font-weight: 400;
+  font-size: 14px;
+  margin-bottom: -5px;
+  color: #999;
 }

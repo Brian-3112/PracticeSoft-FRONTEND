@@ -104,7 +104,7 @@ const VerInfoCliente = ({ cliente, onClose }) => {
                                         </div> */}
 
                                         <div>
-                                            <label className={styles.labelFormu}>
+                                            <label className={styles.labelFormuu}> <p>Correo</p>
                                                 <input
                                                     className={styles.inputFormu}
                                                     name="correo"
@@ -118,7 +118,7 @@ const VerInfoCliente = ({ cliente, onClose }) => {
                                         </div>
 
                                         <div>
-                                            <label className={styles.labelFormu}>
+                                            <label className={styles.labelFormuu}><p>Nombre del Familiar </p>
                                                 <input
                                                     className={styles.inputFormu}
                                                     name="nombreFamiliar"
@@ -132,7 +132,7 @@ const VerInfoCliente = ({ cliente, onClose }) => {
                                         </div>
 
                                         <div>
-                                            <label className={styles.labelFormu}>
+                                            <label className={styles.labelFormuu}> <p>Direccion del Familiar</p> 
                                                 <input
                                                     className={styles.inputFormu}
                                                     name="direccionFamiliar"
@@ -146,7 +146,7 @@ const VerInfoCliente = ({ cliente, onClose }) => {
                                         </div>
 
                                         <div>
-                                            <label className={styles.labelFormu}>
+                                            <label className={styles.labelFormuu}> <p>Telefono del Familiar</p>
                                                 <input
                                                     className={styles.inputFormu}
                                                     name="telefonoFamiliar"
@@ -160,7 +160,7 @@ const VerInfoCliente = ({ cliente, onClose }) => {
                                         </div>
 
                                         <div>
-                                            <label className={styles.labelFormu}>
+                                            <label className={styles.labelFormuu}><p>Nombre de una Referencia Personal</p> 
                                                 <input
                                                     className={styles.inputFormu}
                                                     name="nombrePersonal"
@@ -174,7 +174,7 @@ const VerInfoCliente = ({ cliente, onClose }) => {
                                         </div>
 
                                         <div>
-                                            <label className={styles.labelFormu}>
+                                            <label className={styles.labelFormuu}> <p>Direccion de la Referencia Personal</p> 
                                                 <input
                                                     className={styles.inputFormu}
                                                     name="direccionPersonal"
@@ -188,7 +188,7 @@ const VerInfoCliente = ({ cliente, onClose }) => {
                                         </div>
 
                                         <div>
-                                            <label className={styles.labelFormu}>
+                                            <label className={styles.labelFormuu}> <p>Telefono de la Referencia Personal</p>
                                                 <input
                                                     className={styles.inputFormu}
                                                     name="telefonoPersonal"
