@@ -41,14 +41,14 @@ const VerInfoCliente = ({ cliente, onClose }) => {
 
                             <div className={styles.modalHeader}>
                                 <h5 className={styles.modalTitle}>Informacion del <span className={styles.modalTitle2}>Cliente</span></h5>
-                                <button type="button" className={styles.btnClose} onClick={handleClose}>×</button>
+                                <button type="button" className={styles.btnClose} onClick={onClose}>×</button>
                             </div>
 
                             <form  >
 
                                 <div className={styles.modalBody}>
                                     <div className={styles.formGrid}>
-                                        <div>
+                                        {/* <div>
                                             <label className={styles.labelFormu}>
                                                 <input
                                                     className={styles.inputFormu}
@@ -73,9 +73,9 @@ const VerInfoCliente = ({ cliente, onClose }) => {
 
                                                 />
                                             </label>
-                                        </div>
+                                        </div> */}
 
-                                        <div>
+                                        {/* <div>
                                             <label className={styles.labelFormu}>
                                                 <input
                                                     className={styles.inputFormu}
@@ -101,7 +101,7 @@ const VerInfoCliente = ({ cliente, onClose }) => {
 
                                                 />
                                             </label>
-                                        </div>
+                                        </div> */}
 
                                         <div>
                                             <label className={styles.labelFormu}>
@@ -206,7 +206,6 @@ const VerInfoCliente = ({ cliente, onClose }) => {
                                 </div>
 
 
-
                                 <div className={styles.modalFooter}>
                                     <button className={`${styles.btn} ${styles.btnSecondary}`} onClick={onClose}>
                                         Cerrar
@@ -216,12 +215,10 @@ const VerInfoCliente = ({ cliente, onClose }) => {
                                         </button> */}
                                 </div>
                             </form>
-
                         </div>
                     </div>
                 </div>
             </div>
-
         </div>
     );
 };
