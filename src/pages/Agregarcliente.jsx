@@ -3,7 +3,7 @@ import useAuth from '../hooks/useAuth.jsx';
 import BotonVerde from '../components/BotonVerde.jsx';
 import styles from '../pages/cliente.module.css';
 import useCliente from '../hooks/useCliente.jsx';
-import { useForm } from 'react-hook-form';
+
 
 
 const Agregarcliente = () => {
@@ -11,13 +11,13 @@ const Agregarcliente = () => {
     const { auth, loading } = useAuth();
     if (loading) return 'Cargando...';
 
-
     const { agregarCliente } = useCliente();
+
 
     /// Funcionalidad para cerra el modal
     const [show, setShow] = useState(false);
 
-     // Manejar cambios en los inputs, optiene lo que uno va escribienod en los imput, ...formData trae los valores acutales y solo actualice el input que este modificando
+    // Manejar cambios en los inputs, optiene lo que uno va escribienod en los imput, ...formData trae los valores acutales y solo actualice el input que este modificando
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({
@@ -44,7 +44,7 @@ const Agregarcliente = () => {
     const handleClose = () => { limpiarFormulario(); setShow(false); };
     const handleShow = () => { setShow(true); };
 
-   
+
 
     // Enviar formulario
     const handleSubmit = (e) => {
@@ -54,7 +54,7 @@ const Agregarcliente = () => {
             {
                 nombre: formData.nombre.trim(),
                 identificacion: formData.identificacion.trim(),
-                direccion: formData.direccion.trim(), 
+                direccion: formData.direccion.trim(),
                 celular: formData.celular.trim(),
                 correo: formData.correo.trim(),
                 nombreFamiliar: formData.nombreFamiliar.trim(),
