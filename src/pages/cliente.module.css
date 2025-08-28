@@ -85,7 +85,7 @@
 /* BUTTON */
 .buttonContainer {
   display: flex;
-  gap: 13px;
+  gap: 10px;
   flex-direction: row;
   position: relative;
   top: 35px;
@@ -119,6 +119,22 @@
   stroke: rgb(255, 0, 0);
 }
 
+.ver .colorimgg {
+  fill: #28A087;
+  stroke: #28A087;
+}
+
+.verButton {
+  position: absolute;
+  top: 40px;
+  left: 160px;
+}
+
+.verButton .ver {
+  width: 25px;   /* más pequeño */
+  height: 25px;
+  stroke: rgb(131, 131, 131) /* color */
+}
 
 
 
@@ -280,7 +296,8 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  background: #fff; /* aseguro fondo blanco como tenías */
+  background: #fff;
+  /* aseguro fondo blanco como tenías */
   border-radius: 10px;
   padding: 1rem;
 }
@@ -326,7 +343,8 @@
 
 .modalBody {
   flex-grow: 1;
-  overflow-y: auto;  /* 👉 solo el body tendrá scroll si es muy largo */
+  overflow-y: auto;
+  /* 👉 solo el body tendrá scroll si es muy largo */
   padding: 1rem;
 }
 
@@ -372,12 +390,12 @@
 }
 
 
-.labelFormu{
+.labelFormu {
   display: flex;
   flex-direction: column;
   font-weight: 500;
   font-size: 14px;
-  color: #999; 
+  color: #999;
 }
 
 
@@ -400,7 +418,7 @@
 
 /* Modal ver info */
 
-.labelFormuu{
+.labelFormuu {
   display: flex;
   flex-direction: column;
   /* border: 1px solid black; */
