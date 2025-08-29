@@ -25,7 +25,7 @@ const VerInfoVehiculo = ({ vehiculo, onClose }) => {
                         <div className={styles.modalContent}>
 
                             <div className={styles.modalHeader}>
-                                <h5 className={styles.modalTitle}>Informacion del <span className={styles.modalTitle2}>Cliente</span></h5>
+                                <h5 className={styles.modalTitle}>Informacion del <span className={styles.modalTitle2}>Vehiculo</span></h5>
                                 <button type="button" className={styles.btnClose} onClick={onClose}>×</button>
                             </div>
 
