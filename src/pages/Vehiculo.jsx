@@ -111,7 +111,7 @@ const Vehiculo = () => {
       </div>
 
       {selectedVehiculo && (
-        <VerInfoCliente
+        <VerInfoVehiculo
           vehiculo={selectedVehiculo}
           onClose={() => setSelectedVehiculo(null)}
         />
