@@ -10,7 +10,7 @@ const VerInfoVehiculo = ({ vehiculo, onClose }) => {
     if (loading) return 'Cargando...';
 
 
-    if (!cliente) return null;
+    if (!vehiculo) return null;
 
 
 
