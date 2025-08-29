@@ -119,6 +119,22 @@
   stroke: rgb(255, 0, 0);
 }
 
+.ver .colorimgg {
+  fill: #28A087;
+  stroke: #28A087;
+}
+
+.verButton {
+  position: absolute;
+  top: 40px;
+  left: 160px;
+}
+
+.verButton .ver {
+  width: 25px;   /* más pequeño */
+  height: 25px;
+  stroke: rgb(131, 131, 131) /* color */
+}
 
 
 
@@ -393,4 +409,19 @@
 
 .inputFormu:focus {
   border-color: #007bff;
+}
+
+/* Modal ver info */
+
+.labelFormuu {
+  display: flex;
+  flex-direction: column;
+  /* border: 1px solid black; */
+}
+
+.labelFormuu p {
+  font-weight: 400;
+  font-size: 14px;
+  margin-bottom: -5px;
+  color: #999;
 }

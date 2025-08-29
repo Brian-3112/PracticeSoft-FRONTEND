@@ -1,9 +1,7 @@
 import { useState, useEffect } from 'react';
 import useAuth from '../hooks/useAuth.jsx';
-import BotonVerde from '../components/BotonVerde.jsx';
 import styles from '../pages/cliente.module.css';
-import useCliente from '../hooks/useCliente.jsx';
-import { useForm } from 'react-hook-form';
+
 
 
 const VerInfoCliente = ({ cliente, onClose }) => {
@@ -15,17 +13,7 @@ const VerInfoCliente = ({ cliente, onClose }) => {
     if (!cliente) return null;
 
 
-    const { agregarCliente } = useCliente();
 
-    /// Funcionalidad para cerra el modal
-    const [show, setShow] = useState(false);
-
-
-
-
-    // Logica cierre modal
-    const handleClose = () => { setShow(false); };
-    const handleShow = () => { setShow(true); };
 
 
 
@@ -48,61 +36,6 @@ const VerInfoCliente = ({ cliente, onClose }) => {
 
                                 <div className={styles.modalBody}>
                                     <div className={styles.formGrid}>
-                                        {/* <div>
-                                            <label className={styles.labelFormu}>
-                                                <input
-                                                    className={styles.inputFormu}
-                                                    name="nombre"
-                                                    type="text"
-                                                    placeholder="Nombre"
-                                                    value={cliente.nombre}
-                                                    readOnly
-                                                />
-                                            </label>
-                                        </div>
-
-                                        <div>
-                                            <label className={styles.labelFormu}>
-                                                <input
-                                                    className={styles.inputFormu}
-                                                    name="identificacion"
-                                                    type="text"
-                                                    placeholder="Identificacion"
-                                                    value={cliente.identificacion}
-                                                    readOnly
-
-                                                />
-                                            </label>
-                                        </div> */}
-
-                                        {/* <div>
-                                            <label className={styles.labelFormu}>
-                                                <input
-                                                    className={styles.inputFormu}
-                                                    name="direccion"
-                                                    type="text"
-                                                    placeholder="Direccion"
-                                                    value={cliente.direccion}
-                                                    readOnly
-
-                                                />
-                                            </label>
-                                        </div>
-
-                                        <div>
-                                            <label className={styles.labelFormu}>
-                                                <input
-                                                    className={styles.inputFormu}
-                                                    name="celular"
-                                                    type="text"
-                                                    placeholder="Celular"
-                                                    value={cliente.celular}
-                                                    readOnly
-
-                                                />
-                                            </label>
-                                        </div> */}
-
                                         <div>
                                             <label className={styles.labelFormuu}> <p>Correo</p>
                                                 <input
@@ -132,7 +65,7 @@ const VerInfoCliente = ({ cliente, onClose }) => {
                                         </div>
 
                                         <div>
-                                            <label className={styles.labelFormuu}> <p>Direccion del Familiar</p> 
+                                            <label className={styles.labelFormuu}> <p>Direccion del Familiar</p>
                                                 <input
                                                     className={styles.inputFormu}
                                                     name="direccionFamiliar"
@@ -160,7 +93,7 @@ const VerInfoCliente = ({ cliente, onClose }) => {
                                         </div>
 
                                         <div>
-                                            <label className={styles.labelFormuu}><p>Nombre de una Referencia Personal</p> 
+                                            <label className={styles.labelFormuu}><p>Nombre de una Referencia Personal</p>
                                                 <input
                                                     className={styles.inputFormu}
                                                     name="nombrePersonal"
@@ -174,7 +107,7 @@ const VerInfoCliente = ({ cliente, onClose }) => {
                                         </div>
 
                                         <div>
-                                            <label className={styles.labelFormuu}> <p>Direccion de la Referencia Personal</p> 
+                                            <label className={styles.labelFormuu}> <p>Direccion de la Referencia Personal</p>
                                                 <input
                                                     className={styles.inputFormu}
                                                     name="direccionPersonal"
@@ -210,9 +143,7 @@ const VerInfoCliente = ({ cliente, onClose }) => {
                                     <button className={`${styles.btn} ${styles.btnSecondary}`} onClick={onClose}>
                                         Cerrar
                                     </button>
-                                    {/* <button type="submit" className={`${styles.btn} ${styles.btnPrimary}`}>
-                                            Guardar
-                                        </button> */}
+
                                 </div>
                             </form>
                         </div>
