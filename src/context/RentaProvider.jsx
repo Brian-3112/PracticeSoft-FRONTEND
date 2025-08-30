@@ -50,7 +50,21 @@ export const RentaProvider = ({ children }) => {
                 title: 'Éxito',
                 text: data.message,
                 icon: 'success',
-            }).then(() => {
+            }).then(async () => {
+                // 🔹 Descargar comprobante después de crear la renta
+                const response = await clienteAxios.get(`/rentas/${data.renta.id}/comprobante`, {
+                    ...config,
+                    responseType: 'blob'
+                });
+
+                const url = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', `comprobante-renta-${data.renta.id}.pdf`);
+                document.body.appendChild(link);
+                link.click();
+                link.remove();
+
                 handleClose();
             });
 
