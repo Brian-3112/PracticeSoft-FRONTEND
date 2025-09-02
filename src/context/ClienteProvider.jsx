@@ -10,7 +10,7 @@ export const ClienteContext = createContext();
 
 export const ClienteProvider = ({ children }) => {
     const { auth, config } = useAuth();
-    
+
 
     const [clientes, setClientes] = useState([]);
 
@@ -75,6 +75,49 @@ export const ClienteProvider = ({ children }) => {
         }
     };
 
+
+    const actualizarCliente = async (id, datosActualizados, handleClose) => {
+        try {
+            const token = localStorage.getItem('token');
+            if (!token) return;
+
+            const { data } = await clienteAxios.patch(`/clientes/${id}`, datosActualizados, config);
+            // Actualizar el estado local reemplazando el cliente modificado
+            setClientes(prevClientes =>
+                prevClientes.map(cliente =>
+                    cliente.id === id ? { ...cliente, ...data } : cliente
+                )
+            );
+
+            Swal.fire({
+                title: 'Éxito',
+                text: data.message || 'Cliente actualizado correctamente.',
+                icon: 'success',
+            }).then(() => {
+                handleClose();
+                consultarClientes();
+            });
+
+        } catch (error) {
+            console.error('Error al actualizar cliente:', error);
+
+            if (error.response && error.response.status === 403) {
+                Swal.fire({
+                    title: 'Error',
+                    text: error.response.data.message,
+                    icon: 'error',
+                });
+            } else {
+                Swal.fire({
+                    title: 'Error',
+                    text: 'No se pudo actualizar el cliente.',
+                    icon: 'error',
+                });
+            }
+        }
+    };
+
+
     const eliminarCliente = async (id) => {
         try {
             const token = localStorage.getItem('token');
@@ -122,7 +165,7 @@ export const ClienteProvider = ({ children }) => {
 
 
     return (
-        <ClienteContext.Provider value={{ clientes, agregarCliente, eliminarCliente }}>
+        <ClienteContext.Provider value={{ clientes, agregarCliente, actualizarCliente, eliminarCliente }}>
             {children}
         </ClienteContext.Provider>
     );
