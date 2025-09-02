@@ -77,6 +77,48 @@ export const VehiculoProvider = ({ children }) => {
     };
 
 
+    const actualizarVehiculo = async (id, datosActualizados, handleClose) => {
+        try {
+            const token = localStorage.getItem('token');
+            if (!token) return;
+
+            const { data } = await clienteAxios.patch(`/vehiculos/${id}`, datosActualizados, config);
+            // Actualizar el estado local reemplazando el cliente modificado
+            setVehiculos(prevVehiculos =>
+                prevVehiculos.map(vehiculo =>
+                    vehiculo.id === id ? { ...vehiculo, ...data } : vehiculo
+                )
+            );
+
+            Swal.fire({
+                title: 'Éxito',
+                text: data.message || 'Vehiculo actualizado correctamente.',
+                icon: 'success',
+            }).then(() => {
+                handleClose();
+                consultarVehiculos();
+            });
+
+        } catch (error) {
+            console.error('Error al actualizar el vehiculo:', error);
+
+            if (error.response && error.response.status === 403) {
+                Swal.fire({
+                    title: 'Error',
+                    text: error.response.data.message,
+                    icon: 'error',
+                });
+            } else {
+                Swal.fire({
+                    title: 'Error',
+                    text: 'No se pudo actualizar el vehiculo.',
+                    icon: 'error',
+                });
+            }
+        }
+    };
+
+
     const eliminarVehiculo = async (id) => {
         try {
             const token = localStorage.getItem('token');
@@ -128,7 +170,7 @@ export const VehiculoProvider = ({ children }) => {
 
 
     return (
-        <VehiculoContext.Provider value={{ vehiculos, agregarVehiculo, eliminarVehiculo }}>
+        <VehiculoContext.Provider value={{ vehiculos, agregarVehiculo, actualizarVehiculo, eliminarVehiculo }}>
             {children}
         </VehiculoContext.Provider>
     );
