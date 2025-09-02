@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react';
-import useAuth from '../hooks/useAuth';
-import BotonVerde from '../components/BotonVerde';
-import styles from '../pages/vehiculo.module.css';
-import useVehiculo from '../hooks/useVehiculo.jsx';
-import { useForm } from 'react-hook-form';
+import useAuth from '../../hooks/useAuth.jsx';
+import BotonVerde from '../../components/BotonVerde.jsx';
+import styles from '../Vehiculo/vehiculo.module.css';
+import useVehiculo from '../../hooks/useVehiculo.jsx';
 
 
 const Agregarvehiculo = () => {

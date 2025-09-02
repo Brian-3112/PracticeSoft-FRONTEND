@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react';
-import { Navigate } from 'react-router-dom';
-import useRenta from '../hooks/useRenta.jsx';
-import styles from '../pages/renta.module.css';
-import useAuth from '../hooks/useAuth';
-import Agregarrenta from './Agregarrenta.jsx';
+import useRenta from '../../hooks/useRenta.jsx';
+import styles from '../Renta/renta.module.css';
+import useAuth from '../../hooks/useAuth.jsx';
+import Agregarrenta from '../Renta/Agregarrenta.jsx';
 
 
 

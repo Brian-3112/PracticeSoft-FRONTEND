@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
-import useAuth from '../hooks/useAuth.jsx';
-import BotonVerde from '../components/BotonVerde.jsx';
-import styles from '../pages/cliente.module.css';
-import useCliente from '../hooks/useCliente.jsx';
+import { useState } from 'react';
+import useAuth from '../../hooks/useAuth.jsx';
+import BotonVerde from '../../components/BotonVerde.jsx';
+import styles from '../Cliente/cliente.module.css';
+import useCliente from '../../hooks/useCliente.jsx';
 
 
 

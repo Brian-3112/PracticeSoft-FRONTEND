@@ -1,6 +1,5 @@
-import { useState, useEffect } from 'react';
-import useAuth from '../hooks/useAuth.jsx';
-import styles from '../pages/cliente.module.css';
+import useAuth from '../../hooks/useAuth.jsx';
+import styles from '../Vehiculo/vehiculo.module.css';
 
 
 

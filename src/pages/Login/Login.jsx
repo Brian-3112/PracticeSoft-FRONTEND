@@ -1,9 +1,9 @@
 import { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import useAuth from '../hooks/useAuth';
-import clienteAxios from "../config/axios";
+import useAuth from '../../hooks/useAuth';
+import clienteAxios from "../../config/axios.jsx";
 import Swal from "sweetalert2";
-import styles from '../pages/login.module.css';
+import styles from '../Login/login.module.css';
 
 
 

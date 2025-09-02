@@ -2,12 +2,12 @@
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 import ProtectedRoute from './ProtectedRoute';
 
-import Login from '../pages/Login';
+import Login from '../pages/Login/Login';
 import Navegador from '../Layout/Navegador';
 import Dashboard from '../pages/Dashboard';
-import Vehiculo from '../pages/Vehiculo';
-import Cliente from '../pages/Cliente';
-import Renta from '../pages/Renta';
+import Vehiculo from '../pages/Vehiculo/Vehiculo';
+import Cliente from '../pages/Cliente/Cliente';
+import Renta from '../pages/Renta/Renta';
 import { AuthProvider } from '../context/AuthProvider';
 import { VehiculoProvider } from '../context/VehiculoProvider';
 import { ClienteProvider } from '../context/ClienteProvider';

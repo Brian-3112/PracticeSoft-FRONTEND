@@ -1,11 +1,10 @@
 import { useState, useEffect } from 'react';
-import useAuth from '../hooks/useAuth.jsx';
-import BotonVerde from '../components/BotonVerde.jsx';
-import styles from '../pages/renta.module.css';
-import useRenta from '../hooks/useRenta.jsx';
-import useCliente from '../hooks/useCliente.jsx';
-import useVehiculo from '../hooks/useVehiculo.jsx';
-import { useForm } from 'react-hook-form';
+import useAuth from '../../hooks/useAuth.jsx';
+import BotonVerde from '../../components/BotonVerde.jsx';
+import styles from '../Renta/renta.module.css';
+import useRenta from '../../hooks/useRenta.jsx';
+import useCliente from '../../hooks/useCliente.jsx';
+import useVehiculo from '../../hooks/useVehiculo.jsx';
 
 
 const Agregarrenta = () => {

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import useAuth from '../hooks/useAuth.jsx';
-import styles from '../pages/cliente.module.css';
-import useCliente from '../hooks/useCliente.jsx';
+import useAuth from '../../hooks/useAuth.jsx';
+import styles from '../Cliente/cliente.module.css';
+import useCliente from '../../hooks/useCliente.jsx';
 
 
 
