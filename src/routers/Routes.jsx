@@ -4,7 +4,7 @@ import ProtectedRoute from './ProtectedRoute';
 
 import Login from '../pages/Login/Login';
 import Navegador from '../Layout/Navegador';
-import Dashboard from '../pages/Dashboard';
+import Dashboard from '../pages/Dashboard/Dashboard';
 import Vehiculo from '../pages/Vehiculo/Vehiculo';
 import Cliente from '../pages/Cliente/Cliente';
 import Renta from '../pages/Renta/Renta';
@@ -12,6 +12,8 @@ import { AuthProvider } from '../context/AuthProvider';
 import { VehiculoProvider } from '../context/VehiculoProvider';
 import { ClienteProvider } from '../context/ClienteProvider';
 import { RentaProvider } from '../context/RentaProvider';
+import { DashboardProvider } from '../context/DashboardProvider';
+
 
 
 const MyRoutes = () => {
@@ -21,43 +23,45 @@ const MyRoutes = () => {
                 <VehiculoProvider>
                     <ClienteProvider>
                         <RentaProvider>
-                            <Routes>
-                                <Route path="/" element={<Navigate to="/login" />} />
-                                <Route path="/login" element={<Login />} />
+                            <DashboardProvider>
+                                <Routes>
+                                    <Route path="/" element={<Navigate to="/login" />} />
+                                    <Route path="/login" element={<Login />} />
 
 
-                                <Route
-                                    path="/admin"
-                                    element={<Navegador />}
-                                >
+                                    <Route
+                                        path="/admin"
+                                        element={<Navegador />}
+                                    >
 
-                                    <Route index element={<Dashboard />} />
+                                        <Route index element={<Dashboard />} />
 
-                                    <Route path="vehiculos" element={<Vehiculo />} />
+                                        <Route path="vehiculos" element={<Vehiculo />} />
 
-                                    <Route path="clientes" element={<Cliente />} />
+                                        <Route path="clientes" element={<Cliente />} />
 
-                                    <Route path="rentas" element={<Renta />} />
-
-
-
-
-
-                                </Route>
+                                        <Route path="rentas" element={<Renta />} />
 
 
 
 
-                                {/* Rutas protegidas */}
-                                <Route element={<ProtectedRoute />}>
 
-                                    {/* Puedes agregar más rutas protegidas aquí en el futuro */}
-                                    {/* <Route path="/admin" element={<AdminPanel />} /> */}
-                                </Route>
+                                    </Route>
 
 
 
-                            </Routes>
+
+                                    {/* Rutas protegidas */}
+                                    <Route element={<ProtectedRoute />}>
+
+                                        {/* Puedes agregar más rutas protegidas aquí en el futuro */}
+                                        {/* <Route path="/admin" element={<AdminPanel />} /> */}
+                                    </Route>
+
+
+
+                                </Routes>
+                            </DashboardProvider>
                         </RentaProvider>
                     </ClienteProvider>
                 </VehiculoProvider>
