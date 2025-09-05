@@ -1,0 +1,310 @@
+/* Dashboard.module.css */
+
+
+.wrapper {
+    width: 100%;
+    padding: 0 20px;
+    box-sizing: border-box;
+    position: relative;
+    max-width: 1600px;
+    margin: 0 auto;
+}
+
+/* TITLE */
+.heading {
+    font-family: "Special Gothic Condensed One", sans-serif;
+    width: 100%;
+    text-align: center;
+    font-size: 43px;
+    color: var(--primary);
+    position: relative;
+    top: -13px;
+    margin-bottom: 10px;
+}
+
+/* Container principal del dashboard */
+.dashboardContainer {
+    padding: 14px;
+    margin: 0;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    min-height: 500px;
+}
+
+
+/* Container de las tarjetas de estadísticas */
+.statsContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+/* Tarjetas individuales de estadísticas */
+.statCard {
+    background: var(--light);
+    /* ahora verde */
+    color: var(--dark);
+    ;
+    padding: 18px;
+    /* reducido */
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(40, 160, 135, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    min-height: 110px;
+    /* más compacto */
+}
+
+.statCard::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background: linear-gradient(90deg, #28A087 0%, #1F7D6A 100%);
+    pointer-events: none;
+}
+
+.statCard:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(40, 160, 135, 0.4);
+}
+
+/* Icono de la tarjeta */
+.statIcon {
+    font-size: 2.5rem;
+    /* más pequeño */
+    opacity: 0.9;
+    min-width: 50px;
+}
+
+/* Contenido de texto */
+.statContent {
+    flex: 1;
+}
+
+.statTitle {
+    font-size: 0.85rem;
+    /* reducido */
+    font-weight: 600;
+    margin: 0 0 5px 0;
+    opacity: 0.9;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.statValue {
+    font-size: 1.8rem;
+    /* más compacto */
+    font-weight: 700;
+    margin: 0;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+/* Cambio adicional para las estadísticas */
+.statChange {
+    font-size: 0.9rem;
+    color: #10b981;
+    font-weight: 600;
+    margin-top: 5px;
+    padding: 8px 16px;
+    background: rgba(16, 185, 129, 0.1);
+    border-radius: 20px;
+    border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.chartTableWrapper {
+    display: flex;
+    gap: 2rem;
+    /* espacio entre gráfico y tabla */
+    align-items: flex-start;
+    /* alineación arriba */
+}
+
+/* Container del gráfico */
+.chartContainer {
+    background: white;
+    flex: 1;
+    padding: 20px;
+    /* antes 30px */
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    max-width: 650px;
+    /* limita el ancho */
+    margin: 0 auto;
+    /* centra la gráfica */
+}
+
+/* Título de la gráfica */
+.chartTitle {
+    font-size: 1.2rem;
+    /* reducido */
+    font-weight: 600;
+    color: #333;
+    margin: 0 0 15px 0;
+    text-align: center;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+/* Wrapper del gráfico con altura más pequeña */
+.chartWrapper {
+    height: 280px;
+    /* antes 400px */
+    width: 100%;
+    position: relative;
+}
+
+/* Media queries para responsividad */
+@media (max-width: 768px) {
+    .wrapper {
+        padding: 0 15px;
+    }
+
+    .heading {
+        font-size: 32px;
+    }
+
+    .dashboardContainer {
+        padding: 20px;
+    }
+
+    .statsContainer {
+        grid-template-columns: 1fr;
+        gap: 25px;
+        margin-bottom: 30px;
+    }
+
+    .statCard {
+        padding: 25px 20px;
+        gap: 12px;
+        min-height: 180px;
+    }
+
+    .statIcon {
+        font-size: 3.2rem;
+    }
+
+    .statValue {
+        font-size: 2.8rem;
+    }
+
+    .statTitle {
+        font-size: 1rem;
+        margin-bottom: 15px;
+    }
+
+    .chartContainer {
+        padding: 25px;
+    }
+
+    .chartWrapper {
+        height: 300px;
+    }
+
+    .chartTitle {
+        font-size: 1.3rem;
+        margin-bottom: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .heading {
+        font-size: 28px;
+    }
+
+    .statCard {
+        padding: 20px 15px;
+        min-height: 160px;
+    }
+
+    .statIcon {
+        font-size: 2.8rem;
+    }
+
+    .statValue {
+        font-size: 2.4rem;
+    }
+
+    .statTitle {
+        font-size: 0.9rem;
+    }
+
+    .statChange {
+        font-size: 0.8rem;
+        padding: 6px 12px;
+    }
+
+    .chartTitle {
+        font-size: 1.2rem;
+    }
+
+    .chartContainer {
+        padding: 20px;
+    }
+}
+
+.tableContainer {
+    margin-top: 30px;
+    background: #fff;
+    padding: 10px;
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    overflow-x: auto;
+    width: 90%;
+    flex: 1;
+    /* la otra mitad */
+    overflow-x: auto;
+
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+}
+
+.table th,
+.table td {
+    padding: 12px 10px;
+    border-bottom: 1px solid #eaeaea;
+    text-align: left;
+}
+
+.table th {
+    background: #f8f9fa;
+    font-weight: 600;
+    color: #333;
+}
+
+.table tr:hover {
+    background: #f9f9f9;
+}
+
+/* Estado */
+.status {
+    padding: 5px 10px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.active {
+    background: #28A08720;
+    color: #28A087;
+    border: 1px solid #28A087;
+}
+
+.finished {
+    background: #e74c3c20;
+    color: #e74c3c;
+    border: 1px solid #e74c3c;
+}

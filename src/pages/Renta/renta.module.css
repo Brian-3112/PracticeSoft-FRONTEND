@@ -21,7 +21,7 @@
   font-size: 43px;
   color: var(--primary);
   position: relative;
-  top: -25px;
+  top: -13px;
   /* border: 3px solid rgb(0, 0, 0); */
 }
 
@@ -205,7 +205,6 @@
   padding: 0 2px;
   box-sizing: border-box;
   position: relative;
-  top: 15px;
   /* border: 3px solid rgb(0, 0, 0); */
 
 }
