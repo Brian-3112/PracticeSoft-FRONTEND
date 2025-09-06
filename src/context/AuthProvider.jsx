@@ -8,8 +8,8 @@ import Swal from 'sweetalert2';
 const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
-    
-    const [auth, setAuth] = useState({}); 
+
+    const [auth, setAuth] = useState({});
     const [loading, setLoading] = useState(true);
 
     const navigate = useNavigate();

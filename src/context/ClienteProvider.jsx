@@ -9,10 +9,11 @@ import Swal from 'sweetalert2';
 export const ClienteContext = createContext();
 
 export const ClienteProvider = ({ children }) => {
+
     const { auth, config } = useAuth();
-
-
     const [clientes, setClientes] = useState([]);
+
+
 
 
     const consultarClientes = async () => {
@@ -82,10 +83,11 @@ export const ClienteProvider = ({ children }) => {
             if (!token) return;
 
             const { data } = await clienteAxios.patch(`/clientes/${id}`, datosActualizados, config);
-            // Actualizar el estado local reemplazando el cliente modificado
+            // 
             setClientes(prevClientes =>
-                prevClientes.map(cliente =>
-                    cliente.id === id ? { ...cliente, ...data } : cliente
+                prevClientes.map(cliente => //recorre cada cliente en el array prevCliente
+                    cliente.id === id ? { ...cliente, ...data } : cliente //si el id del cliente coincide con el id ques se paso, actualiza los datos del cliente y 
+                    // añades los datos recibidos del servidor (data)
                 )
             );
 

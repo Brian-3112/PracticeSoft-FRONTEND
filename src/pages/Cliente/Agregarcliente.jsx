@@ -8,14 +8,13 @@ import useCliente from '../../hooks/useCliente.jsx';
 
 const Agregarcliente = () => {
 
+
     const { auth, loading } = useAuth();
     if (loading) return 'Cargando...';
-
     const { agregarCliente } = useCliente();
-
-
     /// Funcionalidad para cerra el modal
     const [show, setShow] = useState(false);
+    
 
     // Manejar cambios en los inputs, optiene lo que uno va escribienod en los imput, ...formData trae los valores acutales y solo actualice el input que este modificando
     const handleChange = (e) => {

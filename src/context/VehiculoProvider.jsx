@@ -9,11 +9,11 @@ import Swal from 'sweetalert2';
 export const VehiculoContext = createContext();
 
 export const VehiculoProvider = ({ children }) => {
+
+    
     const { auth, config } = useAuth();
-
-
-
     const [vehiculos, setVehiculos] = useState([]);
+    
 
     const consultarVehiculos = async () => {
         try {
@@ -40,13 +40,13 @@ export const VehiculoProvider = ({ children }) => {
 
 
 
-    const agregarVehiculo = async (nuevoVehiculo, handleClose) => {
+    const agregarVehiculo = async (nuevoVehiculo, handleClose) => { 
         try {
             const token = localStorage.getItem('token');
             if (!token) return;
 
             const { data } = await clienteAxios.post('/vehiculos', nuevoVehiculo, config);
-            setVehiculos(prev => [data.vehiculo, ...prev]);
+            setVehiculos(prev => [data.vehiculo, ...prev]); 
 
             Swal.fire({
                 title: 'Éxito',
@@ -83,10 +83,11 @@ export const VehiculoProvider = ({ children }) => {
             if (!token) return;
 
             const { data } = await clienteAxios.patch(`/vehiculos/${id}`, datosActualizados, config);
-            // Actualizar el estado local reemplazando el cliente modificado
+
             setVehiculos(prevVehiculos =>
-                prevVehiculos.map(vehiculo =>
-                    vehiculo.id === id ? { ...vehiculo, ...data } : vehiculo
+                prevVehiculos.map(vehiculo => //recorre cada vehiculo en el array prevVehiculos
+                    vehiculo.id === id ? { ...vehiculo, ...data } : vehiculo  //si el id del vehiculo coincide con el id ques se paso, actualiza los datos del vehiculo y 
+                    // añades los datos recibidos del servidor (data
                 )
             );
 
