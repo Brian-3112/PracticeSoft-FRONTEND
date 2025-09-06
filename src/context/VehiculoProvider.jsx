@@ -10,10 +10,29 @@ export const VehiculoContext = createContext();
 
 export const VehiculoProvider = ({ children }) => {
 
-    
+
     const { auth, config } = useAuth();
     const [vehiculos, setVehiculos] = useState([]);
-    
+    const [rentas, setRentas] = useState([]);
+
+
+    //funcion para ver que vehiculos estas disponibles
+    useEffect(() => {
+        const obtenerRentas = async () => {
+            try {
+                const { data } = await clienteAxios.get("/rentas", config);
+                setRentas(data);
+            } catch (error) {
+                console.error("Error cargando rentas", error);
+            }
+        };
+        obtenerRentas();
+    }, []);
+
+
+
+
+
 
     const consultarVehiculos = async () => {
         try {
@@ -40,13 +59,13 @@ export const VehiculoProvider = ({ children }) => {
 
 
 
-    const agregarVehiculo = async (nuevoVehiculo, handleClose) => { 
+    const agregarVehiculo = async (nuevoVehiculo, handleClose) => {
         try {
             const token = localStorage.getItem('token');
             if (!token) return;
 
             const { data } = await clienteAxios.post('/vehiculos', nuevoVehiculo, config);
-            setVehiculos(prev => [data.vehiculo, ...prev]); 
+            setVehiculos(prev => [data.vehiculo, ...prev]);
 
             Swal.fire({
                 title: 'Éxito',
@@ -171,7 +190,7 @@ export const VehiculoProvider = ({ children }) => {
 
 
     return (
-        <VehiculoContext.Provider value={{ vehiculos, agregarVehiculo, actualizarVehiculo, eliminarVehiculo }}>
+        <VehiculoContext.Provider value={{ vehiculos, agregarVehiculo, actualizarVehiculo, eliminarVehiculo, rentas }}>
             {children}
         </VehiculoContext.Provider>
     );
