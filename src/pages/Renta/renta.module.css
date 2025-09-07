@@ -305,6 +305,12 @@
   border: 1px solid #e74c3c;
 }
 
+.pending {
+  background: #f1c40f20;
+  color: #f1c40f;
+  border: 1px solid #f1c40f;
+}
+
 
 
 

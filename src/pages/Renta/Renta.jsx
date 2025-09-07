@@ -95,14 +95,20 @@ const Renta = () => {
                                 </td>
                                 <td>
                                     <span
-                                        className={`${styles.status} ${new Date(renta.fechaDevolucion) >= new Date()
-                                                ? styles.active
-                                                : styles.finished
+                                        className={`${styles.status} ${new Date() < new Date(renta.fechaEntrega)
+                                                ? styles.pending
+                                                : new Date() >= new Date(renta.fechaEntrega) &&
+                                                    new Date() <= new Date(renta.fechaDevolucion)
+                                                    ? styles.active
+                                                    : styles.finished
                                             }`}
                                     >
-                                        {new Date(renta.fechaDevolucion) >= new Date()
-                                            ? "En curso"
-                                            : "Finalizada"}
+                                        {new Date() < new Date(renta.fechaEntrega)
+                                            ? "Pendiente"
+                                            : new Date() >= new Date(renta.fechaEntrega) &&
+                                                new Date() <= new Date(renta.fechaDevolucion)
+                                                ? "En curso"
+                                                : "Finalizada"}
                                     </span>
                                 </td>
                                 {/* <td>
