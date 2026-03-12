@@ -233,7 +233,7 @@
 
 .modalBody {
   flex-grow: 1;
-  overflow-y: auto;  /* 👉 solo el body tendrá scroll si es muy largo */
+  overflow-y: auto;  
   padding: 1rem;
 }
 
@@ -391,9 +391,32 @@
 
 /* Responsive */
 @media (max-width: 768px) {
+  .wrapper {
+    padding: 0 10px;
+  }
+
+  .container {
+    top: 10px;
+    gap: 10px;
+  }
+
+  .divAddVehiculo {
+    left: 0;
+    margin: 0 10px 16px 10px;
+  }
+
+  .buttonContainer {
+    justify-content: center;
+  }
+
+  .verButton {
+    position: static;
+    margin-top: 8px;
+  }
+
   .tableContainer {
-    padding: 15px;
-    margin-top: 20px;
+    padding: 12px;
+    margin: 10px 4%;
   }
 
   .table {
@@ -407,9 +430,6 @@
 
   .heading {
     font-size: 1.5rem;
-  }
-
-  .chartTitle {
-    font-size: 1.2rem;
+    top: 0;
   }
 }
