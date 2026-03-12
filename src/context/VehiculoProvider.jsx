@@ -173,12 +173,21 @@ export const VehiculoProvider = ({ children }) => {
             }
         } catch (error) {
             console.error('Error al eliminar vehículo:', error);
+            
+            if (error.response && error.response.status === 403) {
+                Swal.fire({
+                    title: 'Error',
+                    text: error.response.data.message,
+                    icon: 'error',
+                });
+            } else {
+                Swal.fire({
+                    title: 'Error',
+                    text: 'No se pudo eliminar el vehículo.',
+                    icon: 'error',
+                });
+            }
 
-            Swal.fire({
-                title: 'Error',
-                text: 'No se pudo eliminar el vehículo.',
-                icon: 'error',
-            });
         }
     };
 
