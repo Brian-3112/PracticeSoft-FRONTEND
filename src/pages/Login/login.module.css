@@ -7,20 +7,22 @@
     min-height: 100vh;
     font-family: 'Poppins', sans-serif;
     overflow: hidden;
+    /* Fondo con imagen de Antiocar + oscurecido suave para resaltar la tarjeta */
+    background:
+        linear-gradient(to bottom right, rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.65)),
+        url('/antiocar3.png') center 60%/cover no-repeat fixed;
 }
 
-/* Formas geométricas de fondo */
+/* Capa decorativa sutil (opcional) */
 .loginBody::before {
     content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 30%),
-        radial-gradient(circle at 70% 80%, rgba(255, 255, 255, 0.05) 0%, transparent 40%),
-        radial-gradient(circle at 80% 30%, rgba(0, 0, 0, 0.05) 0%, transparent 25%);
-    animation: float 20s ease-in-out infinite;
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(circle at 10% 10%, rgba(255, 255, 255, 0.18) 0%, transparent 55%);
+    opacity: 0.7;
+    z-index: 0;
+    pointer-events: none;
+    animation: float 22s ease-in-out infinite alternate;
 }
 
 @keyframes float {

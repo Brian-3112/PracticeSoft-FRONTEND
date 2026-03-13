@@ -94,7 +94,7 @@ const Login = () => {
                     </div>
 
                     <button className={styles.btn} type="submit">
-                        Iniciar Sesións 
+                        Iniciar Sesión
                     </button>
 
                     <a href="#" className={styles.btnLink}>
