@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import clienteAxios from '../config/axios';
 import useAuth from '../hooks/useAuth';
 import Swal from 'sweetalert2';
+import { createRenta, downloadContratoDocx } from '../services/rentaService';
 
 
 
@@ -12,6 +13,10 @@ export const RentaProvider = ({ children }) => {
     const { auth, config } = useAuth();
 
     const [rentas, setRentas] = useState([]);
+    const [isCreatingRenta, setIsCreatingRenta] = useState(false);
+    const [isDownloadingContrato, setIsDownloadingContrato] = useState(false);
+    const [downloadingRentaId, setDownloadingRentaId] = useState(null);
+    const [lastCreatedRentaId, setLastCreatedRentaId] = useState(null);
 
 
     const consultarRentas = async () => {
@@ -40,33 +45,20 @@ export const RentaProvider = ({ children }) => {
 
     const agregarRenta = async (nuevaRenta, handleClose) => {
         try {
+            setIsCreatingRenta(true);
             const token = localStorage.getItem('token');
             if (!token) return;
 
-            const { data } = await clienteAxios.post('/rentas', nuevaRenta, config);
+            const data = await createRenta({ rentaPayload: nuevaRenta, config });
             setRentas(prev => [data.renta, ...prev]);
+            setLastCreatedRentaId(data?.renta?.id ?? null);
 
-            Swal.fire({
+            await Swal.fire({
                 title: 'Éxito',
                 text: data.message,
                 icon: 'success',
-            }).then(async () => {
-                // 🔹 Descargar comprobante después de crear la renta
-                const response = await clienteAxios.get(`/rentas/${data.renta.id}/comprobante`, {
-                    ...config,
-                    responseType: 'blob'
-                });
-
-                const url = window.URL.createObjectURL(new Blob([response.data]));
-                const link = document.createElement('a');
-                link.href = url;
-                link.setAttribute('download', `comprobante-renta-${data.renta.id}.pdf`);
-                document.body.appendChild(link);
-                link.click();
-                link.remove();
-
-                handleClose();
             });
+            handleClose();
 
         } catch (error) {
 
@@ -74,20 +66,79 @@ export const RentaProvider = ({ children }) => {
 
                 Swal.fire({
                     title: 'Error',
-                    text: error.response.data.message,
+                    text: error.response.data.message || 'No fue posible crear la renta.',
                     icon: 'error',
                 });
 
+            } else {
+                Swal.fire({
+                    title: 'Error',
+                    text: 'No fue posible crear la renta. Intenta nuevamente.',
+                    icon: 'error',
+                });
             }
+        } finally {
+            setIsCreatingRenta(false);
+        }
+    };
+
+    const descargarContrato = async ({ rentaId, rentaPayload } = {}) => {
+        setIsDownloadingContrato(true);
+        setDownloadingRentaId(rentaId || rentaPayload?.id || null);
+        try {
+            const blobData = await downloadContratoDocx({
+                rentaId,
+                rentaPayload,
+                config,
+            });
+
+            const rentaIdFromPayload = rentaPayload?.id || rentaId || lastCreatedRentaId || 'sin-id';
+            const blob = blobData instanceof Blob
+                ? blobData
+                : new Blob([blobData], {
+                    type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                });
+            const url = window.URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', `contrato-renta-${rentaIdFromPayload}.docx`);
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            window.URL.revokeObjectURL(url);
+
+            return true;
+        } catch (error) {
+            const selectedRentaId = rentaId || rentaPayload?.id || null;
+            Swal.fire({
+                title: 'Advertencia',
+                text: selectedRentaId && selectedRentaId === lastCreatedRentaId
+                    ? 'Renta creada, pero no se pudo descargar el contrato'
+                    : 'No se pudo descargar el contrato',
+                icon: 'warning',
+            });
+            return false;
+        } finally {
+            setIsDownloadingContrato(false);
+            setDownloadingRentaId(null);
         }
     };
 
 
 
 
-
     return (
-        <RentaContext.Provider value={{ rentas, agregarRenta }}>
+        <RentaContext.Provider
+            value={{
+                rentas,
+                agregarRenta,
+                descargarContrato,
+                isCreatingRenta,
+                isDownloadingContrato,
+                downloadingRentaId,
+                lastCreatedRentaId,
+            }}
+        >
             {children}
         </RentaContext.Provider>
     );

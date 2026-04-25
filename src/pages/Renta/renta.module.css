@@ -311,6 +311,27 @@
   border: 1px solid #f1c40f;
 }
 
+.downloadButton {
+  border: 1px solid var(--primary);
+  background-color: transparent;
+  color: var(--primary);
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.downloadButton:hover:not(:disabled) {
+  background-color: var(--primary);
+  color: #fff;
+}
+
+.downloadButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 
 
 

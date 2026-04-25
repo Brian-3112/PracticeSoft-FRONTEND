@@ -13,7 +13,7 @@ const Agregarrenta = () => {
     if (loading) return 'Cargando...';
 
 
-    const { agregarRenta, rentas } = useRenta();
+    const { agregarRenta, isCreatingRenta } = useRenta();
     const { clientes } = useCliente();
     const { vehiculos } = useVehiculo();
 
@@ -55,10 +55,10 @@ const Agregarrenta = () => {
     
 
     // Enviar formulario
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
-        agregarRenta(
+        await agregarRenta(
             {
                 vehiculoId: parseInt(formData.vehiculoId),   // lo convertimos a número
                 clienteId: parseInt(formData.clienteId),
@@ -225,11 +225,11 @@ const Agregarrenta = () => {
 
 
                                     <div className={styles.modalFooter}>
-                                        <button className={`${styles.btn} ${styles.btnSecondary}`} onClick={handleClose}>
+                                        <button type="button" className={`${styles.btn} ${styles.btnSecondary}`} onClick={handleClose}>
                                             Cancelar
                                         </button>
-                                        <button type="submit" className={`${styles.btn} ${styles.btnPrimary}`}>
-                                            Guardar
+                                        <button type="submit" className={`${styles.btn} ${styles.btnPrimary}`} disabled={isCreatingRenta}>
+                                            {isCreatingRenta ? 'Guardando...' : 'Guardar'}
                                         </button>
                                     </div>
                                 </form>
