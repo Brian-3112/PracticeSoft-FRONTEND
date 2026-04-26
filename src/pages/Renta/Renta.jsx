@@ -7,6 +7,19 @@ import Agregarrenta from '../Renta/Agregarrenta.jsx';
 
 
 const Renta = () => {
+    const parseDateOnly = (dateValue) => {
+        if (!dateValue) return null;
+        const dateString = String(dateValue).slice(0, 10);
+        const [year, month, day] = dateString.split('-').map(Number);
+        return new Date(year, month - 1, day);
+    };
+
+    const formatDateOnly = (dateValue) => {
+        if (!dateValue) return '';
+        const dateString = String(dateValue).slice(0, 10);
+        const [year, month, day] = dateString.split('-');
+        return `${day}/${month}/${year}`;
+    };
 
     const { auth, loading } = useAuth();
     if (loading) return 'Cargando...';
@@ -40,6 +53,8 @@ const Renta = () => {
 
     const startIndex = currentSlide * cardsPerPage;
     const visibleRentas = rentas.slice(startIndex, startIndex + cardsPerPage);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
 
     // ⏱ Cambio automático de slide cada 5 segundos
     useEffect(() => {
@@ -84,11 +99,29 @@ const Renta = () => {
                     <tbody>
                         {rentas.map((renta) => (
                             <tr key={renta.id}>
+                                {(() => {
+                                    const fechaEntrega = parseDateOnly(renta.fechaEntrega);
+                                    const fechaDevolucion = parseDateOnly(renta.fechaDevolucion);
+                                    const isPending = fechaEntrega && today < fechaEntrega;
+                                    const isActive = fechaEntrega && fechaDevolucion && today >= fechaEntrega && today <= fechaDevolucion;
+                                    const estadoClase = isPending
+                                        ? styles.pending
+                                        : isActive
+                                            ? styles.active
+                                            : styles.finished;
+                                    const estadoTexto = isPending
+                                        ? "Pendiente"
+                                        : isActive
+                                            ? "En curso"
+                                            : "Finalizada";
+
+                                    return (
+                                        <>
                                 <td>{renta.cliente?.nombre}</td>
                                 <td>{renta.vehiculo?.nombreVehiculo}</td>
                                 <td>{renta.vehiculo?.placa}</td>
-                                <td>{new Date(renta.fechaEntrega).toLocaleDateString()}</td>
-                                <td>{new Date(renta.fechaDevolucion).toLocaleDateString()}</td>
+                                <td>{formatDateOnly(renta.fechaEntrega)}</td>
+                                <td>{formatDateOnly(renta.fechaDevolucion)}</td>
                                 <td>
                                     {renta.valorTotal.toLocaleString("es-CO", {
                                         style: "currency",
@@ -99,20 +132,9 @@ const Renta = () => {
                                 </td>
                                 <td>
                                     <span
-                                        className={`${styles.status} ${new Date() < new Date(renta.fechaEntrega)
-                                                ? styles.pending
-                                                : new Date() >= new Date(renta.fechaEntrega) &&
-                                                    new Date() <= new Date(renta.fechaDevolucion)
-                                                    ? styles.active
-                                                    : styles.finished
-                                            }`}
+                                        className={`${styles.status} ${estadoClase}`}
                                     >
-                                        {new Date() < new Date(renta.fechaEntrega)
-                                            ? "Pendiente"
-                                            : new Date() >= new Date(renta.fechaEntrega) &&
-                                                new Date() <= new Date(renta.fechaDevolucion)
-                                                ? "En curso"
-                                                : "Finalizada"}
+                                        {estadoTexto}
                                     </span>
                                 </td>
                                 <td>
@@ -127,6 +149,9 @@ const Renta = () => {
                                             : 'Descargar contrato'}
                                     </button>
                                 </td>
+                                        </>
+                                    );
+                                })()}
                             </tr>
                         ))}
                     </tbody>

@@ -2,17 +2,6 @@
 
 
 
-.container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
-  justify-content: center;
-  position: relative;
-  top: 25px;
-  /* border: 3px solid rgb(107, 28, 28); */
-}
-
-
 /* TITLE */
 .heading {
   font-family: "Special Gothic Condensed One", sans-serif;
@@ -25,72 +14,6 @@
   /* border: 3px solid rgb(0, 0, 0); */
 }
 
-
-/* CARD PRINCIPAL */
-.card {
-  width: 310px;
-  height: 280px;
-  background-color: rgba(255, 255, 255, 0.612);
-  border-radius: 14px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 15px 25px;
-  position: relative;
-  overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.239);
-  /* border: 3px solid rgb(0, 0, 0); */
-}
-
-.card>p,
-.buttonContainer {
-  z-index: 3;
-}
-
-
-
-.cookieHeading,
-.cookieDescription {
-  margin: 0;
-  position: relative;
-  bottom: 10px;
-}
-
-
-/* TITLE CARD */
-.cookieHeading {
-  font-family: "Special Gothic Condensed One", sans-serif;
-  font-size: 32px;
-  font-weight: 500;
-  position: relative;
-  top: -35px;
-  /* border: 3px solid rgb(213, 17, 17); */
-}
-
-
-/* TEXT OF CARD */
-.cookieDescription {
-  text-align: center;
-  font-size: 0.9em;
-  font-weight: 400;
-  /* border: 3px solid rgb(0, 0, 0); */
-}
-
-.cookieDescription span {
-  color: var(--primary);
-
-}
-
-/* BUTTON */
-.buttonContainer {
-  display: flex;
-  gap: 13px;
-  flex-direction: row;
-  position: relative;
-  top: 35px;
-  /* border: 3px solid rgb(15, 49, 238); */
-}
 
 .iconOnlyButton {
   background: none;
@@ -124,20 +47,17 @@
   stroke: #28A087;
 }
 
-.verButton {
-  position: absolute;
-  top: 40px;
-  left: 160px;
-  border: 3px solid rgb(15, 49, 238); 
+.infoButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.verButton .ver {
-  width: 25px;   /* más pequeño */
+.infoButton .ver {
+  width: 25px;
   height: 25px;
-  stroke: rgb(131, 131, 131) /* color */
+  stroke: rgb(131, 131, 131);
 }
-
-
 
 
 
@@ -359,60 +279,15 @@
   background: #f9f9f9;
 }
 
-/* Estado */
-.status {
-  padding: 5px 10px;
-  border-radius: 12px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  display: inline-block;
-}
-
-.active {
-  background: #28A08720;
-  color: #28A087;
-  border: 1px solid #28A087;
-}
-
-.finished {
-  background: #e74c3c20;
-  color: #e74c3c;
-  border: 1px solid #e74c3c;
-}
-
-.pending {
-  background: #f1c40f20;
-  color: #f1c40f;
-  border: 1px solid #f1c40f;
-}
-
-
-
-
-
 /* Responsive */
 @media (max-width: 768px) {
   .wrapper {
     padding: 0 10px;
   }
 
-  .container {
-    top: 10px;
-    gap: 10px;
-  }
-
   .divAddVehiculo {
     left: 0;
     margin: 0 10px 16px 10px;
-  }
-
-  .buttonContainer {
-    justify-content: center;
-  }
-
-  .verButton {
-    position: static;
-    margin-top: 8px;
   }
 
   .tableContainer {

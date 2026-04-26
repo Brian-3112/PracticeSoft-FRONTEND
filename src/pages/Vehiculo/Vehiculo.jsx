@@ -95,7 +95,7 @@ const Vehiculo = () => {
                 <td>{vehiculo.placa}</td>
                 <td>{new Date(vehiculo.fechaSOAT).toLocaleDateString()}</td>
                 <td>{new Date(vehiculo.fechaTecno).toLocaleDateString()}</td>
-                <td><button onClick={() => setSelectedVehiculo(vehiculo)} className={`${styles.iconOnlyButton} ${styles.verButton}`}>
+                <td><button onClick={() => setSelectedVehiculo(vehiculo)} className={`${styles.iconOnlyButton} ${styles.infoButton}`}>
                   <svg className={`${styles.iconButton} ${styles.ver}`} xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25V19.5a2.25 2.25 0 0 1-2.25 2.25h-10.5A2.25 2.25 0 0 1 4.5 19.5V4.5A2.25 2.25 0 0 1 6.75 2.25h6L19.5 8.25z" />
                     <path strokeLinecap="round" strokeLinejoin="round" d="M15 2.25v6h6" />

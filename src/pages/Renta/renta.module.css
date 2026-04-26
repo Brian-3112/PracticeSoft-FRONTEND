@@ -37,13 +37,6 @@
 
 
 
-
-
-
-
-
-
-
 /* BUTTON */
 .buttonContainer {
   display: flex;
@@ -257,7 +250,6 @@
 }
 
 
-
 .table {
   width: 100%;
   border-collapse: collapse;
@@ -283,6 +275,7 @@
 .table tr:hover {
   background: #f9f9f9;
 }
+
 
 /* Estado */
 .status {
@@ -331,8 +324,6 @@
   opacity: 0.6;
   cursor: not-allowed;
 }
-
-
 
 
 
