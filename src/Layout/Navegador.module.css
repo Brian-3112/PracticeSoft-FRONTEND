@@ -1,3 +1,4 @@
+/* ===== ESTRUCTURA GENERAL DEL MODULO DE NAVEGACION ===== */
 .navbar {
   background: white;
   display: flex;
@@ -12,6 +13,7 @@
   /* border: 1px solid black; */
 }
 
+/* ===== BLOQUE IZQUIERDO (LOGO + TOGGLE) ===== */
 .navbarleft {
   display: flex;
   align-items: center;
@@ -20,7 +22,7 @@
   /* border: 2px solid black; */
 }
 
-/* 3d7c36 */
+/* ===== LOGO / MARCA EN NAVBAR ===== */
 .brandName {
   font-weight: bold;
   font-size: 27px;
@@ -33,6 +35,7 @@
     /* border: 3px solid black; */
 }
 
+/* ===== BOTON PARA ABRIR MENU EN MOVIL ===== */
 .menuToggle {
   display: none;
   margin-left: 12px;
@@ -52,6 +55,7 @@
   transition: transform 0.2s ease;
 }
 
+/* ===== ENLACES DE NAVEGACION ===== */
 .navbarlinkss {
   display: flex;
   align-items: center;
@@ -77,6 +81,7 @@
   color: var(--primary)
 }
 
+/* ===== BOTON DE CERRAR SESION ===== */
 .logoutButton {
   border: none;
   padding: 0;
@@ -101,22 +106,23 @@
   stroke: var(--primary);
 }
 
+/* ===== ESTADO DE MENU DESPLEGADO ===== */
 .navbarlinkssOpen .menuArrow {
   transform: rotate(-135deg);
 }
 
-/* Responsive Design */
+/* ===== AJUSTES RESPONSIVE DEL MODULO DE NAVEGACION ===== */
 @media screen and (max-width: 768px) {
   .navbar {
     padding: 10px 15px;
     margin: 1rem;
     max-width: none;
   }
-  
+
   .navbarleft {
     left: 0;
   }
-  
+
   .brandName {
     font-size: 20px;
   }
@@ -124,7 +130,7 @@
   .menuToggle {
     display: inline-flex;
   }
-  
+
   .navbarlinkss {
     display: none;
     gap: 1rem;
@@ -138,17 +144,17 @@
     width: 100%;
     margin-top: 10px;
   }
-  
+
   .navbarlinkss a {
     font-size: 14px;
   }
-  
+
   .logoutButton {
     left: 0;
     margin-bottom: 0;
     top: 0;
   }
-  
+
   .logautimg {
     width: 28px;
   }
@@ -160,12 +166,12 @@
     gap: 1rem;
     padding: 15px;
   }
-  
+
   .navbarlinkss {
     justify-content: center;
     gap: 1.5rem;
   }
-  
+
   .logoutButton {
     position: static;
     margin: 0;
@@ -178,7 +184,7 @@
     gap: 0.8rem;
     text-align: center;
   }
-  
+
   .navbarlinkss li:last-child {
     margin-top: 0.5rem;
   }

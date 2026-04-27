@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import useAuth from '../../hooks/useAuth.jsx';
 import styles from '../Cliente/cliente.module.css';
 import useCliente from '../../hooks/useCliente.jsx';
+import Swal from 'sweetalert2';
 
 
 
@@ -46,6 +47,7 @@ const Editarcliente = ({ cliente, onClose }) => {
         });
     };
 
+
     // Limpiar formulario
     const limpiarFormulario = () => {
         setFormData({
@@ -60,16 +62,42 @@ const Editarcliente = ({ cliente, onClose }) => {
         onClose();
     };
 
+    const handleIdentificacionBlur = () => {
+        setFormData(prev => ({
+            ...prev,
+            identificacion: prev.identificacion.trim()
+        }));
+    };
+
     // Enviar formulario
     const handleSubmit = (e) => {
         e.preventDefault();
+        const identificacionNormalizada = formData.identificacion.trim();
+
+        if (!formData.nombre.trim() || !identificacionNormalizada || !formData.direccion.trim() || !formData.celular.trim()) {
+            Swal.fire({
+                title: 'Campos obligatorios',
+                text: 'Nombre, identificacion, direccion y celular son obligatorios.',
+                icon: 'warning',
+            });
+            return;
+        }
+
+        if (identificacionNormalizada.length < 5 || identificacionNormalizada.length > 20) {
+            Swal.fire({
+                title: 'Identificacion invalida',
+                text: 'La identificacion debe tener entre 5 y 20 caracteres.',
+                icon: 'warning',
+            });
+            return;
+        }
 
         actualizarCliente(
             cliente.id,
             {
                 id: cliente.id, // importante para actualizar el correcto
                 nombre: formData.nombre.trim(),
-                identificacion: formData.identificacion.trim(),
+                identificacion: identificacionNormalizada,
                 direccion: formData.direccion.trim(),
                 celular: formData.celular.trim(),
                 correo: formData.correo.trim(),
@@ -124,6 +152,9 @@ const Editarcliente = ({ cliente, onClose }) => {
                                             placeholder="Identificacion"
                                             value={formData.identificacion}
                                             onChange={handleChange}
+                                            onBlur={handleIdentificacionBlur}
+                                            minLength={5}
+                                            maxLength={20}
                                             required
                                         />
                                     </label>
@@ -148,6 +179,7 @@ const Editarcliente = ({ cliente, onClose }) => {
                                             placeholder="Celular"
                                             value={formData.celular}
                                             onChange={handleChange}
+                                            required
                                         />
                                     </label>
 

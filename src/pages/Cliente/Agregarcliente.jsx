@@ -3,6 +3,7 @@ import useAuth from '../../hooks/useAuth.jsx';
 import BotonVerde from '../../components/BotonVerde.jsx';
 import styles from '../Cliente/cliente.module.css';
 import useCliente from '../../hooks/useCliente.jsx';
+import Swal from 'sweetalert2';
 
 
 
@@ -25,6 +26,7 @@ const Agregarcliente = () => {
         });
     };
 
+
     // Estado para el formulario Cliente
     const [formData, setFormData] = useState({
         nombre: '', identificacion: '', direccion: '', celular: '', correo: '', nombreFamiliar: '', direccionFamiliar: '', telefonoFamiliar: '',
@@ -43,16 +45,40 @@ const Agregarcliente = () => {
     const handleClose = () => { limpiarFormulario(); setShow(false); };
     const handleShow = () => { setShow(true); };
 
-
+    const handleIdentificacionBlur = () => {
+        setFormData(prev => ({
+            ...prev,
+            identificacion: prev.identificacion.trim()
+        }));
+    };
 
     // Enviar formulario
     const handleSubmit = (e) => {
         e.preventDefault();
+        const identificacionNormalizada = formData.identificacion.trim();
+
+        if (!formData.nombre.trim() || !identificacionNormalizada || !formData.direccion.trim() || !formData.celular.trim()) {
+            Swal.fire({
+                title: 'Campos obligatorios',
+                text: 'Nombre, identificacion, direccion y celular son obligatorios.',
+                icon: 'warning',
+            });
+            return;
+        }
+
+        if (identificacionNormalizada.length < 5 || identificacionNormalizada.length > 20) {
+            Swal.fire({
+                title: 'Identificacion invalida',
+                text: 'La identificacion debe tener entre 5 y 20 caracteres.',
+                icon: 'warning',
+            });
+            return;
+        }
 
         agregarCliente(
             {
                 nombre: formData.nombre.trim(),
-                identificacion: formData.identificacion.trim(),
+                identificacion: identificacionNormalizada,
                 direccion: formData.direccion.trim(),
                 celular: formData.celular.trim(),
                 correo: formData.correo.trim(),
@@ -112,6 +138,9 @@ const Agregarcliente = () => {
                                                         placeholder="Identificacion"
                                                         value={formData.identificacion}
                                                         onChange={handleChange}
+                                                        onBlur={handleIdentificacionBlur}
+                                                        minLength={5}
+                                                        maxLength={20}
                                                         required
                                                     />
                                                 </label>
@@ -140,6 +169,7 @@ const Agregarcliente = () => {
                                                         placeholder="Celular"
                                                         value={formData.celular}
                                                         onChange={handleChange}
+                                                        required
                                                     />
                                                 </label>
                                             </div>

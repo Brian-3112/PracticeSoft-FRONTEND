@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Special+Gothic+Condensed+One&display=swap');
 
-
+/* ===== CONTENEDOR BASE DEL MODULO DASHBOARD ===== */
 .wrapper {
     width: 100%;
     padding: 0 20px;
@@ -10,7 +10,7 @@
     margin: 0 auto;
 }
 
-/* TITLE */
+/* ===== ESTRUCTURA GENERAL DEL MODULO DASHBOARD ===== */
 .heading {
     font-family: "Special Gothic Condensed One", sans-serif;
     width: 100%;
@@ -22,7 +22,7 @@
     margin-bottom: 10px;
 }
 
-/* Container principal del dashboard */
+/* ===== CONTENEDOR PRINCIPAL DEL PANEL ===== */
 .dashboardContainer {
     padding: 14px;
     margin: 0;
@@ -34,7 +34,7 @@
 }
 
 
-/* Container de las tarjetas de estadísticas */
+/* ===== GRID DE TARJETAS DE ESTADISTICAS ===== */
 .statsContainer {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -42,7 +42,7 @@
     margin-bottom: 40px;
 }
 
-/* Tarjetas individuales de estadísticas */
+/* ===== TARJETA INDIVIDUAL DE ESTADISTICA ===== */
 .statCard {
     background: var(--light);
     /* ahora verde */
@@ -78,7 +78,7 @@
     box-shadow: 0 10px 25px rgba(40, 160, 135, 0.4);
 }
 
-/* Icono de la tarjeta */
+/* ===== ICONO DE TARJETA ===== */
 .statIcon {
     font-size: 2.5rem;
     /* más pequeño */
@@ -86,7 +86,7 @@
     min-width: 50px;
 }
 
-/* Contenido de texto */
+/* ===== CONTENIDO DE TARJETA ===== */
 .statContent {
     flex: 1;
 }
@@ -109,7 +109,7 @@
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.15);
 }
 
-/* Cambio adicional para las estadísticas */
+/* ===== ETIQUETA DE CAMBIO EN ESTADISTICAS ===== */
 .statChange {
     font-size: 0.9rem;
     color: #10b981;
@@ -121,6 +121,7 @@
     border: 1px solid rgba(16, 185, 129, 0.2);
 }
 
+/* ===== BLOQUE CON GRAFICA Y TABLA LATERAL ===== */
 .chartTableWrapper {
     display: flex;
     gap: 2rem;
@@ -129,7 +130,7 @@
     /* alineación arriba */
 }
 
-/* Container del gráfico */
+/* ===== CONTENEDOR DE GRAFICA ===== */
 .chartContainer {
     background: white;
     flex: 1;
@@ -144,7 +145,7 @@
     /* centra la gráfica */
 }
 
-/* Título de la gráfica */
+/* ===== TITULO DE GRAFICA ===== */
 .chartTitle {
     font-size: 1.2rem;
     /* reducido */
@@ -156,7 +157,7 @@
     border-bottom: 2px solid #f0f0f0;
 }
 
-/* Wrapper del gráfico con altura más pequeña */
+/* ===== AREA DE RENDER DE GRAFICA ===== */
 .chartWrapper {
     height: 280px;
     /* antes 400px */
@@ -164,7 +165,7 @@
     position: relative;
 }
 
-/* Media queries para responsividad */
+/* ===== AJUSTES RESPONSIVE DEL MODULO DASHBOARD ===== */
 @media (max-width: 768px) {
     .wrapper {
         padding: 0 15px;
@@ -253,6 +254,7 @@
     }
 }
 
+/* ===== TABLA DE RENTAS EN EL DASHBOARD ===== */
 .tableContainer {
     margin-top: 30px;
     background: #fff;
@@ -290,7 +292,7 @@
     background: #f9f9f9;
 }
 
-/* Estado */
+/* ===== ESTADOS DE LA TABLA EN DASHBOARD ===== */
 .status {
     padding: 5px 10px;
     border-radius: 12px;

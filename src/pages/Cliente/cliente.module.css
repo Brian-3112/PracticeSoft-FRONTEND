@@ -1,7 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Special+Gothic+Condensed+One&display=swap');
 
-
-/* TITLE */
+/* ===== ESTRUCTURA GENERAL DEL MODULO CLIENTES ===== */
 .heading {
   font-family: "Special Gothic Condensed One", sans-serif;
   width: 100%;
@@ -19,10 +18,8 @@
   position: relative;
 }
 
-
-/* MODAL agregar cliente */
-
-.divAddVehiculo {
+/* ===== BOTON AGREGAR CLIENTE (ENCIMA DE LA TABLA) ===== */
+.divAddCliente {
   padding: 0;
   position: relative;
   left: 10%;
@@ -30,8 +27,7 @@
   margin-top: -3%;
 }
 
-/* iconos de la tabla cliente editar y eliminar */
-
+/* ===== ACCIONES DE LA TABLA (VER / EDITAR / ELIMINAR) ===== */
 .iconOnlyButton {
   background: none;
   border: none;
@@ -56,8 +52,6 @@
   stroke: rgb(255, 0, 0);
 }
 
-/* icono ver info cliente. */
-
 .ver .colorimgg {
   fill: #28A087;
   stroke: #28A087;
@@ -75,8 +69,7 @@
   stroke: rgb(131, 131, 131);
 }
 
-
-/* info de la tabla cliente */
+/* ===== TABLA DE CLIENTES ===== */
 .tableContainer {
   background: #fff;
   padding: 20px;
@@ -112,8 +105,7 @@
   background: #f9f9f9;
 }
 
-/* modal  agregar cliente */
-
+/* ===== MODALES (AGREGAR / EDITAR / VER CLIENTE) ===== */
 .modalBackdrop {
   position: fixed;
   top: 0;
@@ -265,12 +257,13 @@
   color: #999;
 }
 
+/* ===== AJUSTES RESPONSIVE DEL MODULO CLIENTES ===== */
 @media (max-width: 768px) {
   .wrapper {
     padding: 0 10px;
   }
 
-  .divAddVehiculo {
+  .divAddCliente {
     left: 0;
     margin: 0 10px 16px 10px;
   }

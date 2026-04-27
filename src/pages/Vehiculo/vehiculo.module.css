@@ -1,8 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Special+Gothic+Condensed+One&display=swap');
 
-
-
-/* TITLE */
+/* ===== ESTRUCTURA GENERAL DEL MODULO VEHICULOS ===== */
 .heading {
   font-family: "Special Gothic Condensed One", sans-serif;
   width: 100%;
@@ -14,7 +12,7 @@
   /* border: 3px solid rgb(0, 0, 0); */
 }
 
-
+/* ===== ACCIONES DE LA TABLA (VER / EDITAR / ELIMINAR) ===== */
 .iconOnlyButton {
   background: none;
   border: none;
@@ -59,13 +57,7 @@
   stroke: rgb(131, 131, 131);
 }
 
-
-
-
-
-
-/* MODAL */
-
+/* ===== BOTON AGREGAR VEHICULO (ENCIMA DE LA TABLA) ===== */
 .divAddVehiculo {
   padding: 0%;
   position: relative;
@@ -75,6 +67,7 @@
   /* border:  1px solid black; */
 }
 
+/* ===== MODALES (AGREGAR / EDITAR / VER VEHICULO) ===== */
 .modalBackdrop {
   position: fixed;
   top: 0;
@@ -108,7 +101,7 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  background: #fff; /* aseguro fondo blanco como tenías */
+  background: #fff; /* aseguro fondo blanco como tenias */
   border-radius: 10px;
   padding: 1rem;
 }
@@ -154,7 +147,7 @@
 
 .modalBody {
   flex-grow: 1;
-  overflow-y: auto;  
+  overflow-y: auto;
   padding: 1rem;
 }
 
@@ -199,7 +192,6 @@
   gap: 1rem;
 }
 
-
 .labelFormu {
   display: flex;
   flex-direction: column;
@@ -207,7 +199,6 @@
   font-size: 14px;
   color: #333;
 }
-
 
 .inputFormu {
   margin-top: 5px;
@@ -223,8 +214,7 @@
   border-color: #007bff;
 }
 
-/* Modal ver info */
-
+/* ===== CAMPOS DE MODAL VER INFORMACION ===== */
 .labelFormuu {
   display: flex;
   flex-direction: column;
@@ -238,11 +228,9 @@
   color: #999;
 }
 
-
-
-/* Estilos de la tabla */
+/* ===== TABLA DE VEHICULOS ===== */
 .tableContainer {
-  
+
   background: #fff;
   padding: 20px;
   border-radius: 15px;
@@ -250,8 +238,6 @@
   overflow-x: auto;
   margin: 0px 11% 0px 9%;
 }
-
-
 
 .table {
   width: 100%;
@@ -279,7 +265,7 @@
   background: #f9f9f9;
 }
 
-/* Responsive */
+/* ===== AJUSTES RESPONSIVE DEL MODULO VEHICULOS ===== */
 @media (max-width: 768px) {
   .wrapper {
     padding: 0 10px;

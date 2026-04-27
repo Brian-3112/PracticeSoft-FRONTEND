@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800&display=swap');
 
-
+/* ===== ESTRUCTURA GENERAL DEL MODULO LOGIN ===== */
 .loginBody {
     margin: 0;
     padding: 0;
@@ -13,7 +13,7 @@
         url('/antiocar3.png') center 60%/cover no-repeat fixed;
 }
 
-/* Capa decorativa sutil (opcional) */
+/* ===== CAPA DECORATIVA DEL FONDO ===== */
 .loginBody::before {
     content: '';
     position: fixed;
@@ -51,7 +51,7 @@
     z-index: 1;
 }
 
-/* Eliminar card1 completamente */
+/* ===== CONTENEDOR LEGADO NO UTILIZADO ===== */
 .card1 {
     display: none;
 }
@@ -89,7 +89,7 @@
         0 0 0 1px rgba(255, 255, 255, 0.1);
 }
 
-/* Logo/Brand area */
+/* ===== CABECERA VISUAL (LOGO Y MARCA) ===== */
 .brandSection {
     text-align: center;
     margin-bottom: 2rem;
@@ -148,7 +148,7 @@
     letter-spacing: 1px;
 }
 
-/* Form styles */
+/* ===== FORMULARIO DE INICIO DE SESION ===== */
 .field {
     position: relative;
     margin: 1.5rem 0;
@@ -197,14 +197,14 @@
     fill: var(--primary);
 }
 
-/* Floating label effect */
+/* ===== EFECTO VISUAL DE INPUT ACTIVO ===== */
 .field.hasValue .inputField,
 .field:focus-within .inputField {
     padding-top: 1.5rem;
     padding-bottom: 0.5rem;
 }
 
-/* Button styles */
+/* ===== BOTON PRINCIPAL DE LOGIN ===== */
 .btn {
     width: 100%;
     padding: 1rem;
@@ -248,7 +248,7 @@
     transform: translateY(0);
 }
 
-/* Link styles */
+/* ===== ENLACE SECUNDARIO DEL FORMULARIO ===== */
 .btnLink {
     display: block;
     text-align: center;
@@ -267,7 +267,7 @@
     text-decoration: underline;
 }
 
-/* Responsive design */
+/* ===== AJUSTES RESPONSIVE DEL MODULO LOGIN ===== */
 @media (max-width: 480px) {
     .card {
         padding: 2rem 1.5rem;
@@ -318,3 +318,4 @@
         margin-bottom: 0.5rem;
     }
 }
+

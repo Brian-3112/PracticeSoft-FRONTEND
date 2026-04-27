@@ -23,7 +23,7 @@
 }
 
 
-/* TITLE */
+/* ===== ESTRUCTURA GENERAL DEL MODULO RENTAS ===== */
 .heading {
   font-family: "Special Gothic Condensed One", sans-serif;
   width: 100%;
@@ -37,7 +37,7 @@
 
 
 
-/* BUTTON */
+/* ===== ACCIONES GENERALES (BOTONES E ICONOS) ===== */
 .buttonContainer {
   display: flex;
   gap: 13px;
@@ -75,7 +75,7 @@
 }
 
 
-/* MODAL */
+/* ===== BOTON AGREGAR Y MODAL DE RENTA ===== */
 
 .divAddVehiculo {
   padding: 0%;
@@ -238,7 +238,7 @@
 
 
 
-/* Estilos de la tabla */
+/* ===== TABLA DE RENTAS ===== */
 .tableContainer {
   
   background: #fff;
@@ -277,7 +277,7 @@
 }
 
 
-/* Estado */
+/* ===== ESTADOS DE LA RENTA (PENDIENTE / EN CURSO / FINALIZADA) ===== */
 .status {
   padding: 5px 10px;
   border-radius: 12px;
@@ -327,7 +327,7 @@
 
 
 
-/* Responsive */
+/* ===== AJUSTES RESPONSIVE DEL MODULO RENTAS ===== */
 @media (max-width: 768px) {
   .wrapper {
     padding: 0 10px;
