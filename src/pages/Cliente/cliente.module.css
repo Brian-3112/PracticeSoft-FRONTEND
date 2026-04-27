@@ -1,18 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Special+Gothic+Condensed+One&display=swap');
 
 
-
-.container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
-  justify-content: center;
-  position: relative;
-  top: 25px;
-  /* border: 3px solid rgb(107, 28, 28); */
-}
-
-
 /* TITLE */
 .heading {
   font-family: "Special Gothic Condensed One", sans-serif;
@@ -22,82 +10,32 @@
   color: var(--primary);
   position: relative;
   top: -13px;
-  /* border: 3px solid rgb(0, 0, 0); */
 }
 
-
-/* CARD PRINCIPAL */
-.card {
-  width: 310px;
-  height: 280px;
-  background-color: rgba(255, 255, 255, 0.612);
-  border-radius: 14px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 15px 25px;
+.wrapper {
+  width: 100%;
+  padding: 0 2px;
+  box-sizing: border-box;
   position: relative;
-  overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.239);
-  /* border: 3px solid rgb(0, 0, 0); */
-}
-
-.card>p,
-.buttonContainer {
-  z-index: 3;
 }
 
 
+/* MODAL agregar cliente */
 
-.cookieHeading,
-.cookieDescription {
-  margin: 0;
+.divAddVehiculo {
+  padding: 0;
   position: relative;
-  bottom: 10px;
+  left: 10%;
+  margin-bottom: 2%;
+  margin-top: -3%;
 }
 
-
-/* TITLE CARD */
-.cookieHeading {
-  font-family: "Special Gothic Condensed One", sans-serif;
-  font-size: 32px;
-  font-weight: 500;
-  position: relative;
-  top: -35px;
-  /* border: 3px solid rgb(213, 17, 17); */
-}
-
-
-/* TEXT OF CARD */
-.cookieDescription {
-  text-align: center;
-  font-size: 0.9em;
-  font-weight: 400;
-  /* border: 3px solid rgb(0, 0, 0); */
-}
-
-.cookieDescription span {
-  color: var(--primary);
-
-}
-
-/* BUTTON */
-.buttonContainer {
-  display: flex;
-  gap: 10px;
-  flex-direction: row;
-  position: relative;
-  top: 35px;
-  /* border: 3px solid rgb(15, 49, 238); */
-}
+/* iconos de la tabla cliente editar y eliminar */
 
 .iconOnlyButton {
   background: none;
   border: none;
   padding: 0;
-  /* border: 3px solid rgb(15, 49, 238); */
-
 }
 
 .iconButton {
@@ -106,7 +44,6 @@
   position: relative;
   margin: auto;
   cursor: pointer;
-  /* border: 3px solid red; */
 }
 
 .editar .colorimgg {
@@ -119,148 +56,63 @@
   stroke: rgb(255, 0, 0);
 }
 
+/* icono ver info cliente. */
+
 .ver .colorimgg {
   fill: #28A087;
   stroke: #28A087;
 }
 
-.verButton {
-  position: absolute;
-  top: 40px;
-  left: 160px;
-}
-
-.verButton .ver {
-  width: 25px;   /* más pequeño */
-  height: 25px;
-  stroke: rgb(131, 131, 131) /* color */
-}
-
-
-
-
-/* animacionnnnn */
-
-
-/* Fondo borroso dentro de la tarjeta */
-.bg {
-  position: absolute;
-  width: 300px;
-  height: 270px;
-  z-index: 2;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(24px);
-  border-radius: 10px;
-  overflow: hidden;
-  outline: 2px solid white;
-  /* border: 3px solid rgb(240, 11, 11); */
-}
-
-/* Blob animado */
-.blob {
-  position: absolute;
-  z-index: 1;
-  top: 50%;
-  left: 50%;
-  width: 290px;
-  height: 290px;
-  border-radius: 50%;
-  background-color: var(--primary);
-  opacity: 1;
-  filter: blur(12px);
-  animation: blob-bounce 5s infinite ease;
-  border: 3px solid rgb(0, 0, 0);
-
-}
-
-@keyframes blob-bounce {
-  0% {
-    transform: translate(-100%, -100%) translate3d(0, 0, 0);
-  }
-
-  25% {
-    transform: translate(-100%, -100%) translate3d(100%, 0, 0);
-  }
-
-  50% {
-    transform: translate(-100%, -100%) translate3d(100%, 100%, 0);
-  }
-
-  75% {
-    transform: translate(-100%, -100%) translate3d(0, 100%, 0);
-  }
-
-  100% {
-    transform: translate(-100%, -100%) translate3d(0, 0, 0);
-  }
-}
-
-/* CARUCEELLL */
-
-.wrapper {
-  width: 100%;
-  padding: 0 2px;
-  box-sizing: border-box;
-  position: relative;
-  /* border: 3px solid rgb(0, 0, 0); */
-
-}
-
-.carouselContainer {
-  display: flex;
+.infoButton {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 15px 0px;
-  gap: 10px;
-  overflow: hidden;
-  position: relative;
-  top: -20px;
-  /* border: 3px solid rgb(0, 0, 0); */
 }
 
-.carousel {
-  display: flex;
-  flex-wrap: nowrap;
-  gap: 15px;
-  transition: transform 0.3s ease-in-out;
-  /* border: 3px solid rgb(0, 0, 0); */
-
-}
-
-.navButton {
-  background-color: rgba(173, 173, 173, 0.201);
-  border: none;
-  font-size: 30px;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  cursor: pointer;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: background-color 0.3s;
-  /* border: 3px solid rgb(0, 0, 0); */
-}
-
-.navButton:disabled {
-  opacity: 0.3;
-  cursor: not-allowed;
-}
-
-.navButton:hover:not(:disabled) {
-  background-color: rgba(173, 173, 173, 0.623);
+.infoButton .ver {
+  width: 25px;
+  height: 25px;
+  stroke: rgb(131, 131, 131);
 }
 
 
-
-/* MODAL */
-
-.divAddVehiculo {
-  padding: 0%;
-  position: relative;
-  left: 10%;
-  margin-bottom: 2%;
-  margin-top: -3%;
-  /* border:  1px solid black; */
+/* info de la tabla cliente */
+.tableContainer {
+  background: #fff;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  overflow-x: auto;
+  margin: 0 11% 0 9%;
 }
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.table th,
+.table td {
+  padding: 12px 10px;
+  border-bottom: 1px solid #eaeaea;
+  text-align: left;
+}
+
+.table th {
+  background: #f8f9fa;
+  font-weight: 600;
+  color: #333;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.table tr:hover {
+  background: #f9f9f9;
+}
+
+/* modal  agregar cliente */
 
 .modalBackdrop {
   position: fixed;
@@ -270,7 +122,6 @@
   width: 100vw;
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.5);
-  /* border:  1px solid black; */
 }
 
 .modal {
@@ -281,7 +132,6 @@
   transform: translate(-50%, -50%);
   display: block;
   outline: 0;
-  /* border:  1px solid black; */
 }
 
 .modalDialog {
@@ -296,7 +146,6 @@
   display: flex;
   flex-direction: column;
   background: #fff;
-  /* aseguro fondo blanco como tenías */
   border-radius: 10px;
   padding: 1rem;
 }
@@ -308,7 +157,6 @@
   padding: 1rem;
   border-bottom: 1px solid #dee2e6;
   height: 45px;
-  /* border:  1px solid black; */
 }
 
 .modalTitle {
@@ -319,7 +167,6 @@
   color: var(--primary);
   position: relative;
   bottom: 15px;
-  /* border:  1px solid black; */
 }
 
 .modalTitle2 {
@@ -337,13 +184,11 @@
   font-size: 1.5rem;
   line-height: 1;
   cursor: pointer;
-  /* border:  1px solid black; */
 }
 
 .modalBody {
   flex-grow: 1;
   overflow-y: auto;
-  /* 👉 solo el body tendrá scroll si es muy largo */
   padding: 1rem;
 }
 
@@ -354,7 +199,6 @@
   padding: 0.75rem;
   border-top: 1px solid #dee2e6;
   gap: 0.5rem;
-  /* border:  1px solid black; */
 }
 
 .btn {
@@ -369,7 +213,6 @@
   font-size: 1rem;
   border-radius: 0.25rem;
   transition: all 0.15s ease-in-out;
-  /* border:  1px solid black; */
 }
 
 .btnPrimary {
@@ -388,7 +231,6 @@
   gap: 1rem;
 }
 
-
 .labelFormu {
   display: flex;
   flex-direction: column;
@@ -396,8 +238,6 @@
   font-size: 14px;
   color: #999;
 }
-
-
 
 .inputFormu {
   margin-top: 5px;
@@ -413,14 +253,9 @@
   border-color: #007bff;
 }
 
-
-
-/* Modal ver info */
-
 .labelFormuu {
   display: flex;
   flex-direction: column;
-  /* border: 1px solid black; */
 }
 
 .labelFormuu p {
@@ -428,4 +263,34 @@
   font-size: 14px;
   margin-bottom: -5px;
   color: #999;
+}
+
+@media (max-width: 768px) {
+  .wrapper {
+    padding: 0 10px;
+  }
+
+  .divAddVehiculo {
+    left: 0;
+    margin: 0 10px 16px 10px;
+  }
+
+  .tableContainer {
+    padding: 12px;
+    margin: 10px 4%;
+  }
+
+  .table {
+    font-size: 0.85rem;
+  }
+
+  .table th,
+  .table td {
+    padding: 8px 6px;
+  }
+
+  .heading {
+    font-size: 1.5rem;
+    top: 0;
+  }
 }
