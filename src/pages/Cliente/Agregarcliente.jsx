@@ -49,7 +49,7 @@ const Agregarcliente = () => {
     const [formData, setFormData] = useState(initialFormData);
     const [errors, setErrors] = useState(initialErrors);
 
-    // Revalida los campos obligatorios antes de enviar.
+    // Revalida los campos obligatorios antes de enviar. 
     const validateRequiredFields = (dataToValidate) => {
         return {
             nombre: validateField('nombre', dataToValidate.nombre),
@@ -112,11 +112,13 @@ const Agregarcliente = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
+        // Normaliza identificacion (trim) cuando el usuario sale del input,
         const normalizedData = {
             ...formData,
             identificacion: formData.identificacion.trim()
         };
 
+        // Revalida los campos obligatorios antes de enviar. le pasa el formulario normalizado. 
         const nextErrors = validateRequiredFields(normalizedData);
         setErrors(nextErrors);
 
