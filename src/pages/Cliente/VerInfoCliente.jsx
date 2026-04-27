@@ -8,7 +8,7 @@ const VerInfoCliente = ({ cliente, onClose }) => {
     const { auth, loading } = useAuth();
     if (loading) return 'Cargando...';
 
-
+    // Evita renderizar el modal si no hay cliente seleccionado.
     if (!cliente) return null;
 
 

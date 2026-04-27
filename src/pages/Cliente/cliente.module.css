@@ -245,6 +245,23 @@
   border-color: #007bff;
 }
 
+/* input error validaciones */
+
+.inputError {
+  border-color: #d93025;
+}
+
+.inputError:focus {
+  border-color: #d93025;
+}
+
+.fieldError {
+  margin-top: 4px;
+  color: #d93025;
+  font-size: 12px;
+  line-height: 1.2;
+}
+
 .labelFormuu {
   display: flex;
   flex-direction: column;

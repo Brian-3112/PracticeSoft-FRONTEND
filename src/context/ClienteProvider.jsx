@@ -34,6 +34,7 @@ export const ClienteProvider = ({ children }) => {
         }
     };
     useEffect(() => {
+        // Carga inicial cuando el usuario ya esta autenticado.
         if (auth) {
             consultarClientes();
         }
@@ -46,6 +47,7 @@ export const ClienteProvider = ({ children }) => {
             if (!token) return;
 
             const { data } = await clienteAxios.post('/clientes', nuevoCliente, config);
+            // Inserta el nuevo cliente al inicio para verlo de inmediato en la tabla.
             setClientes(prev => [data.cliente, ...prev]);
 
             Swal.fire({
@@ -83,11 +85,10 @@ export const ClienteProvider = ({ children }) => {
             if (!token) return;
 
             const { data } = await clienteAxios.patch(`/clientes/${id}`, datosActualizados, config);
-            // 
+            // Actualiza localmente el cliente editado para mantener la UI sincronizada.
             setClientes(prevClientes =>
-                prevClientes.map(cliente => //recorre cada cliente en el array prevCliente
-                    cliente.id === id ? { ...cliente, ...data } : cliente //si el id del cliente coincide con el id ques se paso, actualiza los datos del cliente y 
-                    // añades los datos recibidos del servidor (data)
+                prevClientes.map(cliente =>
+                    cliente.id === id ? { ...cliente, ...data } : cliente
                 )
             );
 

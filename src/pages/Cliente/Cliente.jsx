@@ -11,6 +11,7 @@ const Cliente = () => {
   if (loading) return 'Cargando...';
 
   const { clientes, eliminarCliente } = useCliente();
+  // Controlan la apertura de modales de ver informacion y editar.
   const [selectedCliente, setSelectedCliente] = useState(null);
   const [editingCliente, setEditingCliente] = useState(null);
 

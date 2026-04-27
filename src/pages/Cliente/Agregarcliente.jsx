@@ -3,82 +3,131 @@ import useAuth from '../../hooks/useAuth.jsx';
 import BotonVerde from '../../components/BotonVerde.jsx';
 import styles from '../Cliente/cliente.module.css';
 import useCliente from '../../hooks/useCliente.jsx';
-import Swal from 'sweetalert2';
 
 
+// Estado inicial del formulario.
+const initialFormData = {
+    nombre: '', identificacion: '', direccion: '', celular: '', correo: '', nombreFamiliar: '', direccionFamiliar: '', telefonoFamiliar: '',
+    nombrePersonal: '', direccionPersonal: '', telefonoPersonal: ''
+};
+
+// Estado inicial de errores.
+const initialErrors = {
+    nombre: '',
+    identificacion: '',
+    direccion: '',
+    celular: ''
+};
+
+// Valida en un solo punto los campos requeridos del formulario.
+const validateField = (name, value) => {
+    const trimmedValue = value.trim();
+
+    if (name === 'nombre' || name === 'direccion' || name === 'celular') {
+        if (!trimmedValue) return 'Campo obligatorio';
+        return '';
+    }
+
+    if (name === 'identificacion') {
+        if (!trimmedValue) return 'Campo obligatorio';
+        if (trimmedValue.length < 5 || trimmedValue.length > 20) {
+            return 'La identificacion debe tener entre 5 y 20 caracteres';
+        }
+        return '';
+    }
+
+    return '';
+};
 
 const Agregarcliente = () => {
-
-
+    // Verifica si el usuario esta autenticado.
     const { auth, loading } = useAuth();
     if (loading) return 'Cargando...';
-    const { agregarCliente } = useCliente();
-    /// Funcionalidad para cerra el modal
-    const [show, setShow] = useState(false);
-    
 
-    // Manejar cambios en los inputs, optiene lo que uno va escribienod en los imput, ...formData trae los valores acutales y solo actualice el input que este modificando
+    const { agregarCliente } = useCliente();
+    const [show, setShow] = useState(false);
+    const [formData, setFormData] = useState(initialFormData);
+    const [errors, setErrors] = useState(initialErrors);
+
+    // Revalida los campos obligatorios antes de enviar.
+    const validateRequiredFields = (dataToValidate) => {
+        return {
+            nombre: validateField('nombre', dataToValidate.nombre),
+            identificacion: validateField('identificacion', dataToValidate.identificacion),
+            direccion: validateField('direccion', dataToValidate.direccion),
+            celular: validateField('celular', dataToValidate.celular)
+        };
+    };
+
+    // Validacion en tiempo real mientras el usuario escribe.
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData({
-            ...formData,
-            [name]: value
-        });
-    };
-
-
-    // Estado para el formulario Cliente
-    const [formData, setFormData] = useState({
-        nombre: '', identificacion: '', direccion: '', celular: '', correo: '', nombreFamiliar: '', direccionFamiliar: '', telefonoFamiliar: '',
-        nombrePersonal: '', direccionPersonal: '', telefonoPersonal: ''
-    });
-
-    // Limpiar formulario
-    const limpiarFormulario = () => {
-        setFormData({
-            nombre: '', identificacion: '', direccion: '', celular: '', correo: '', nombreFamiliar: '', direccionFamiliar: '', telefonoFamiliar: '',
-            nombrePersonal: '', direccionPersonal: '', telefonoPersonal: ''
-        });
-    };
-
-    // Logica cierre modal
-    const handleClose = () => { limpiarFormulario(); setShow(false); };
-    const handleShow = () => { setShow(true); };
-
-    const handleIdentificacionBlur = () => {
-        setFormData(prev => ({
+        setFormData((prev) => ({
             ...prev,
-            identificacion: prev.identificacion.trim()
+            [name]: value
         }));
+
+        if (Object.prototype.hasOwnProperty.call(initialErrors, name)) {
+            setErrors((prev) => ({
+                ...prev,
+                [name]: validateField(name, value)
+            }));
+        }
     };
 
-    // Enviar formulario
+    // Normaliza identificacion (trim) cuando el usuario sale del input.
+    const handleBlur = (e) => {
+        const { name, value } = e.target;
+        const normalizedValue = name === 'identificacion' ? value.trim() : value;
+
+        if (name === 'identificacion' && normalizedValue !== value) {
+            setFormData((prev) => ({
+                ...prev,
+                identificacion: normalizedValue
+            }));
+        }
+
+        if (Object.prototype.hasOwnProperty.call(initialErrors, name)) {
+            setErrors((prev) => ({
+                ...prev,
+                [name]: validateField(name, normalizedValue)
+            }));
+        }
+    };
+
+    const limpiarFormulario = () => {
+        setFormData(initialFormData);
+        setErrors(initialErrors);
+    };
+
+    const handleClose = () => {
+        limpiarFormulario();
+        setShow(false);
+    };
+
+    const handleShow = () => {
+        setShow(true);
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        const identificacionNormalizada = formData.identificacion.trim();
 
-        if (!formData.nombre.trim() || !identificacionNormalizada || !formData.direccion.trim() || !formData.celular.trim()) {
-            Swal.fire({
-                title: 'Campos obligatorios',
-                text: 'Nombre, identificacion, direccion y celular son obligatorios.',
-                icon: 'warning',
-            });
-            return;
-        }
+        const normalizedData = {
+            ...formData,
+            identificacion: formData.identificacion.trim()
+        };
 
-        if (identificacionNormalizada.length < 5 || identificacionNormalizada.length > 20) {
-            Swal.fire({
-                title: 'Identificacion invalida',
-                text: 'La identificacion debe tener entre 5 y 20 caracteres.',
-                icon: 'warning',
-            });
-            return;
-        }
+        const nextErrors = validateRequiredFields(normalizedData);
+        setErrors(nextErrors);
+
+        // Si hay errores de validacion, no se envia al backend.
+        const hasErrors = Object.values(nextErrors).some((error) => error !== '');
+        if (hasErrors) return;
 
         agregarCliente(
             {
                 nombre: formData.nombre.trim(),
-                identificacion: identificacionNormalizada,
+                identificacion: normalizedData.identificacion,
                 direccion: formData.direccion.trim(),
                 celular: formData.celular.trim(),
                 correo: formData.correo.trim(),
@@ -108,69 +157,70 @@ const Agregarcliente = () => {
 
                                 <div className={styles.modalHeader}>
                                     <h5 className={styles.modalTitle}>Agregar <span className={styles.modalTitle2}>Cliente</span></h5>
-                                    <button type="button" className={styles.btnClose} onClick={handleClose}>×</button>
+                                    <button type="button" className={styles.btnClose} onClick={handleClose}>x</button>
                                 </div>
 
-                                <form onSubmit={handleSubmit} >
+                                <form onSubmit={handleSubmit} noValidate>
 
                                     <div className={styles.modalBody}>
                                         <div className={styles.formGrid}>
                                             <div>
                                                 <label className={styles.labelFormu}>
                                                     <input
-                                                        className={styles.inputFormu}
+                                                        className={`${styles.inputFormu} ${errors.nombre ? styles.inputError : ''}`}
                                                         name="nombre"
                                                         type="text"
                                                         placeholder="Nombre"
                                                         value={formData.nombre}
                                                         onChange={handleChange}
-                                                        required
+                                                        onBlur={handleBlur}
                                                     />
+                                                    {errors.nombre && <span className={styles.fieldError}>{errors.nombre}</span>}
                                                 </label>
                                             </div>
 
                                             <div>
                                                 <label className={styles.labelFormu}>
                                                     <input
-                                                        className={styles.inputFormu}
+                                                        className={`${styles.inputFormu} ${errors.identificacion ? styles.inputError : ''}`}
                                                         name="identificacion"
                                                         type="text"
                                                         placeholder="Identificacion"
                                                         value={formData.identificacion}
                                                         onChange={handleChange}
-                                                        onBlur={handleIdentificacionBlur}
-                                                        minLength={5}
-                                                        maxLength={20}
-                                                        required
+                                                        onBlur={handleBlur}
                                                     />
+                                                    {errors.identificacion && <span className={styles.fieldError}>{errors.identificacion}</span>}
                                                 </label>
                                             </div>
 
                                             <div>
                                                 <label className={styles.labelFormu}>
                                                     <input
-                                                        className={styles.inputFormu}
+                                                        className={`${styles.inputFormu} ${errors.direccion ? styles.inputError : ''}`}
                                                         name="direccion"
                                                         type="text"
                                                         placeholder="Direccion"
                                                         value={formData.direccion}
                                                         onChange={handleChange}
-                                                        required
+                                                        onBlur={handleBlur}
                                                     />
+                                                    {errors.direccion && <span className={styles.fieldError}>{errors.direccion}</span>}
                                                 </label>
                                             </div>
 
                                             <div>
                                                 <label className={styles.labelFormu}>
                                                     <input
-                                                        className={styles.inputFormu}
+                                                        className={`${styles.inputFormu} ${errors.celular ? styles.inputError : ''}`}
                                                         name="celular"
                                                         type="text"
                                                         placeholder="Celular"
                                                         value={formData.celular}
                                                         onChange={handleChange}
-                                                        required
+                                                        onBlur={handleBlur}
                                                     />
+                                                    {errors.celular && <span className={styles.fieldError}>{errors.celular}</span>}
                                                 </label>
                                             </div>
 
