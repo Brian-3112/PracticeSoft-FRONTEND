@@ -311,3 +311,24 @@
     top: 0;
   }
 }
+
+
+.estadoBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.estadoDisponible {
+  background: rgba(16, 185, 129, 0.16);
+  color: #059669;
+}
+
+.estadoRentado {
+  background: rgba(239, 68, 68, 0.16);
+  color: #dc2626;
+}
