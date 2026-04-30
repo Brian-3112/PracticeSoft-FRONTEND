@@ -90,3 +90,40 @@
 .logoutIcon { width: 18px; height: 18px; fill: currentColor; }
 
 .menuIcon { width: 17px; height: 17px; color: currentColor; flex-shrink: 0; }
+
+@media (max-width: 640px) {
+  .topbar {
+    padding: 12px 14px;
+    flex-wrap: wrap;
+    align-items: flex-start;
+  }
+
+  .topbarTitle {
+    font-size: 1.35rem;
+    line-height: 1.1;
+  }
+
+  .topbarSubtitle {
+    font-size: 0.82rem;
+  }
+
+  .topbarActions {
+    width: 100%;
+    gap: 8px;
+  }
+
+  .searchInput {
+    width: 100%;
+    max-width: none;
+    min-width: 0;
+    padding: 10px 12px;
+  }
+
+  .menuToggle {
+    flex-shrink: 0;
+  }
+
+  .pageContent {
+    padding: 12px;
+  }
+}
