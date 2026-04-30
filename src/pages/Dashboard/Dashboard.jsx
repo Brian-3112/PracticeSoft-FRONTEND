@@ -24,7 +24,9 @@ const Dashboard = () => {
         backgroundColor: 'rgba(23, 54, 128, 0.14)',
         tension: 0.35,
         fill: true,
-        pointRadius: 0,
+        pointRadius: 3,
+        pointHoverRadius: 6,
+        pointHitRadius: 20,
       },
     ],
   };
@@ -100,7 +102,18 @@ const Dashboard = () => {
                 data={dataIngresos}
                 options={{
                   responsive: true,
-                  plugins: { legend: { display: false } },
+                  interaction: { mode: 'index', intersect: false },
+                  plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                      callbacks: {
+                        label: (context) => {
+                          const valor = context.parsed.y || 0;
+                          return `Ingresos: ${valor.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}`;
+                        },
+                      },
+                    },
+                  },
                   scales: {
                     y: { beginAtZero: true, ticks: { display: false }, grid: { display: false } },
                     x: { grid: { display: false } },
