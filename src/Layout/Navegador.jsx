@@ -37,8 +37,19 @@ const getPageSubtitle = (pathname) => {
   return 'Resumen general de operaciones';
 };
 
+
+const getUserDisplayName = (auth = {}) => {
+  return auth.nombreCompleto || auth.nombre || auth.nombres || auth.usuario || auth.email || 'Usuario';
+};
+
+const getInitials = (name = '') => {
+  const words = String(name).trim().split(/\s+/).filter(Boolean);
+  if (!words.length) return 'US';
+  return words.slice(0, 2).map((word) => word[0].toUpperCase()).join('');
+};
+
 const Navegador = () => {
-  const { loading, cerrarSesion } = useAuth();
+  const { auth, loading, cerrarSesion } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
@@ -49,6 +60,9 @@ const Navegador = () => {
   const toggleMenu = () => setIsMenuOpen((prev) => !prev);
   const handleLinkClick = () => setIsMenuOpen(false);
   const query = searchParams.get('q') ?? '';
+
+  const userDisplayName = getUserDisplayName(auth);
+  const userInitials = getInitials(userDisplayName);
 
   const handleSearchChange = (e) => {
     const value = e.target.value;
@@ -101,9 +115,9 @@ const Navegador = () => {
             <span>Cerrar sesión</span>
           </button>
           <div className={styles.userCard}>
-            <div className={styles.userBadge}>BP</div>
+            <div className={styles.userBadge}>{userInitials}</div>
             <div>
-              <p className={styles.userName}>Brian Pareja</p>
+              <p className={styles.userName}>{userDisplayName}</p>
               <p className={styles.userRole}>Administrador</p>
             </div>
           </div>
