@@ -1,7 +1,7 @@
 import { Navigate } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
 import useDashboard from '../../hooks/useDashboard';
-import { Line } from 'react-chartjs-2';
+import { Line, Doughnut } from 'react-chartjs-2';
 import styles from '../Dashboard/Dashboard.module.css';
 import 'chart.js/auto';
 
@@ -12,58 +12,76 @@ const Dashboard = () => {
   if (loading) return 'Cargando...';
   if (!auth) return <Navigate to="/login" />;
 
-  const data = {
-    labels: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
+  const labelsMeses = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+
+  const dataIngresos = {
+    labels: labelsMeses,
     datasets: [
       {
-        label: "Ingresos",
+        label: 'Ingresos',
         data: ingresosPorMes,
-        borderColor: "rgb(75, 192, 192)",
-        backgroundColor: "rgba(75,192,192,0.2)",
-        tension: 0.3,
+        borderColor: '#173680',
+        backgroundColor: 'rgba(23, 54, 128, 0.14)',
+        tension: 0.35,
         fill: true,
+        pointRadius: 0,
+      },
+    ],
+  };
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const estadoRentas = rentas.reduce(
+    (acc, renta) => {
+      const fechaEntrega = new Date(String(renta.fechaEntrega).slice(0, 10));
+      const fechaDevolucion = new Date(String(renta.fechaDevolucion).slice(0, 10));
+
+      if (today < fechaEntrega) acc.pendiente += 1;
+      else if (today <= fechaDevolucion) acc.enCurso += 1;
+      else acc.finalizada += 1;
+
+      return acc;
+    },
+    { pendiente: 0, enCurso: 0, finalizada: 0 }
+  );
+
+  const dataEstadoRentas = {
+    labels: ['En curso', 'Pendiente', 'Finalizada'],
+    datasets: [
+      {
+        data: [estadoRentas.enCurso, estadoRentas.pendiente, estadoRentas.finalizada],
+        backgroundColor: ['#1ea76a', '#f59e0b', '#173680'],
+        borderColor: '#ffffff',
+        borderWidth: 3,
       },
     ],
   };
 
   return (
     <div className={styles.wrapper}>
-
-      {/* Contenedor principal */}
       <div className={styles.dashboardContainer}>
-
-        {/* Tarjetas de estadísticas */}
         <div className={styles.statsContainer}>
-
-          {/* Ingresos del mes */}
           <div className={styles.statCard}>
             <div className={styles.statIcon}>💰</div>
             <div className={styles.statContent}>
               <p className={styles.statTitle}>Ingresos del mes</p>
               <p className={styles.statValue}>
-                {ingresosMes.toLocaleString("es-CO", {
-                  style: "currency",
-                  currency: "COP",
-                })}
+                {ingresosMes.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}
               </p>
             </div>
           </div>
 
-          {/* Ingresos anuales */}
           <div className={styles.statCard}>
             <div className={styles.statIcon}>📅</div>
             <div className={styles.statContent}>
               <p className={styles.statTitle}>Ingresos anuales</p>
               <p className={styles.statValue}>
-                {ingresosAnual.toLocaleString("es-CO", {
-                  style: "currency",
-                  currency: "COP",
-                })}
+                {ingresosAnual.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}
               </p>
             </div>
           </div>
 
-          {/* Clientes registrados */}
           <div className={styles.statCard}>
             <div className={styles.statIcon}>👥</div>
             <div className={styles.statContent}>
@@ -73,59 +91,46 @@ const Dashboard = () => {
           </div>
         </div>
 
-
         <div className={styles.chartTableWrapper}>
-
           <div className={styles.chartContainer}>
-            <h3 className={styles.chartTitle}>Ingresos por mes</h3>
+            <h3 className={styles.chartTitle}>Ingresos mensuales</h3>
+            <p className={styles.chartSubtitle}>Últimos 12 meses</p>
             <div className={styles.chartWrapper}>
-              <Line data={data} />
+              <Line
+                data={dataIngresos}
+                options={{
+                  responsive: true,
+                  plugins: { legend: { display: false } },
+                  scales: {
+                    y: { beginAtZero: true, ticks: { display: false }, grid: { display: false } },
+                    x: { grid: { display: false } },
+                  },
+                }}
+              />
             </div>
           </div>
 
-          {/* Tabla de historial */}
-          {/* <div className={styles.tableContainer}>
-            <h3 className={styles.chartTitle}>Historial de Renta</h3>
-            <table className={styles.table}>
-              <thead>
-                <tr>
-                  <th>Vehículo</th>
-                  <th>Cliente</th>
-                  <th>Entrega</th>
-                  <th>Devolución</th>
-                  <th>Estado</th>
-                </tr>
-              </thead>
-              <tbody>
-                {rentas.map((r) => (
-                  <tr key={r.id}>
-                    <td>{r.vehiculo?.nombreVehiculo}</td>
-                    <td>{r.cliente?.nombre}</td>
-                    <td>{new Date(r.fechaEntrega).toLocaleDateString()}</td>
-                    <td>{new Date(r.fechaDevolucion).toLocaleDateString()}</td>
-                    <td>
-                      <span
-                        className={`${styles.status} ${new Date(r.fechaDevolucion) >= new Date()
-                          ? styles.active
-                          : styles.finished
-                          }`}
-                      >
-                        {new Date(r.fechaDevolucion) >= new Date()
-                          ? "En curso"
-                          : "Finalizada"}
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div> */}
+          <div className={styles.donutContainer}>
+            <h3 className={styles.chartTitle}>Estado de rentas</h3>
+            <p className={styles.chartSubtitle}>{rentas.length} rentas totales</p>
+            <div className={styles.donutWrapper}>
+              <Doughnut
+                data={dataEstadoRentas}
+                options={{
+                  cutout: '63%',
+                  plugins: { legend: { display: false } },
+                }}
+              />
+            </div>
+
+            <ul className={styles.legendList}>
+              <li><span className={`${styles.legendDot} ${styles.dotEnCurso}`} />En curso <strong>{estadoRentas.enCurso}</strong></li>
+              <li><span className={`${styles.legendDot} ${styles.dotPendiente}`} />Pendiente <strong>{estadoRentas.pendiente}</strong></li>
+              <li><span className={`${styles.legendDot} ${styles.dotFinalizada}`} />Finalizada <strong>{estadoRentas.finalizada}</strong></li>
+            </ul>
+          </div>
         </div>
-
-
       </div>
-
-
     </div>
   );
 };
