@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, Outlet, useLocation } from 'react-router-dom';
+import { Link, Outlet, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
 import styles from '../Layout/Navegador.module.css';
 
@@ -34,11 +34,24 @@ const Navegador = () => {
   const { loading, cerrarSesion } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
 
   if (loading) return 'Cargando...';
 
   const toggleMenu = () => setIsMenuOpen((prev) => !prev);
   const handleLinkClick = () => setIsMenuOpen(false);
+  const query = searchParams.get('q') ?? '';
+
+  const handleSearchChange = (e) => {
+    const value = e.target.value;
+    const nextParams = new URLSearchParams(location.search);
+
+    if (value.trim()) nextParams.set('q', value);
+    else nextParams.delete('q');
+
+    navigate(`${location.pathname}${nextParams.toString() ? `?${nextParams.toString()}` : ''}`, { replace: true });
+  };
 
   return (
     <div className={styles.appLayout}>
@@ -97,7 +110,7 @@ const Navegador = () => {
             <p className={styles.topbarSubtitle}>Resumen general de operaciones</p>
           </div>
           <div className={styles.topbarActions}>
-            <input className={styles.searchInput} placeholder="Buscar..." />
+            <input className={styles.searchInput} placeholder="Buscar..." value={query} onChange={handleSearchChange} />
             <button type="button" className={styles.menuToggle} onClick={toggleMenu} aria-label="Abrir menú">
               ☰
             </button>

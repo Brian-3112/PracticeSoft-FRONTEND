@@ -5,14 +5,25 @@ import styles from '../Vehiculo/vehiculo.module.css';
 import Agregarvehiculo from '../Vehiculo/Agregarvehiculo.jsx';
 import VerInfoVehiculo from '../Vehiculo/VerInfoVehiculo.jsx';
 import Editarvehiculo from '../Vehiculo/Editarvehiculo.jsx';
+import { useSearchParams } from 'react-router-dom';
 
 const Vehiculo = () => {
   const { auth, loading } = useAuth();
   if (loading) return 'Cargando...';
 
   const { vehiculos, eliminarVehiculo, rentas } = useVehiculo();
+  const [searchParams] = useSearchParams();
   const [selectedVehiculo, setSelectedVehiculo] = useState(null);
   const [editingVehiculo, setEditingVehiculo] = useState(null);
+  const query = (searchParams.get('q') ?? '').trim().toLowerCase();
+
+  const vehiculosFiltrados = !query
+    ? vehiculos
+    : vehiculos.filter((vehiculo) => {
+      const nombre = String(vehiculo.nombreVehiculo ?? '').toLowerCase();
+      const placa = String(vehiculo.placa ?? '').toLowerCase();
+      return nombre.includes(query) || placa.includes(query);
+    });
 
   const parseDateOnly = (dateValue) => {
     if (!dateValue) return null;
@@ -85,7 +96,7 @@ const Vehiculo = () => {
             </tr>
           </thead>
           <tbody>
-            {vehiculos.map((vehiculo) => {
+            {vehiculosFiltrados.map((vehiculo) => {
               const estado = getEstadoVehiculo(vehiculo.id);
               return (
                 <tr key={vehiculo.id}>

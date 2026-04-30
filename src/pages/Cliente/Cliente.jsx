@@ -5,15 +5,26 @@ import useAuth from '../../hooks/useAuth.jsx';
 import Agregarcliente from '../Cliente/Agregarcliente.jsx';
 import VerInfoCliente from '../Cliente/VerInfoCliente.jsx';
 import Editarcliente from '../Cliente/Editarcliente.jsx';
+import { useSearchParams } from 'react-router-dom';
 
 const Cliente = () => {
   const { auth, loading } = useAuth();
   if (loading) return 'Cargando...';
 
   const { clientes, eliminarCliente } = useCliente();
+  const [searchParams] = useSearchParams();
   // Controlan la apertura de modales de ver informacion y editar.
   const [selectedCliente, setSelectedCliente] = useState(null);
   const [editingCliente, setEditingCliente] = useState(null);
+  const query = (searchParams.get('q') ?? '').trim().toLowerCase();
+
+  const clientesFiltrados = !query
+    ? clientes
+    : clientes.filter((cliente) => {
+      const nombre = String(cliente.nombre ?? '').toLowerCase();
+      const identificacion = String(cliente.identificacion ?? '').toLowerCase();
+      return nombre.includes(query) || identificacion.includes(query);
+    });
 
   return (
     <div className={styles.wrapper}>
@@ -35,7 +46,7 @@ const Cliente = () => {
             </tr>
           </thead>
           <tbody>
-            {clientes.map((cliente) => (
+            {clientesFiltrados.map((cliente) => (
               <tr key={cliente.id}>
                 <td>{cliente.nombre}</td>
                 <td>{cliente.identificacion}</td>

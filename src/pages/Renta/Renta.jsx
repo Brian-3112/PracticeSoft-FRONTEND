@@ -3,6 +3,7 @@ import useRenta from '../../hooks/useRenta.jsx';
 import styles from '../Renta/renta.module.css';
 import useAuth from '../../hooks/useAuth.jsx';
 import Agregarrenta from '../Renta/Agregarrenta.jsx';
+import { useSearchParams } from 'react-router-dom';
 
 
 
@@ -26,6 +27,17 @@ const Renta = () => {
 
 
     const { rentas, descargarContrato, isDownloadingContrato, downloadingRentaId } = useRenta();
+    const [searchParams] = useSearchParams();
+    const query = (searchParams.get('q') ?? '').trim().toLowerCase();
+
+    const rentasFiltradas = !query
+        ? rentas
+        : rentas.filter((renta) => {
+            const nombreCliente = String(renta.cliente?.nombre ?? '').toLowerCase();
+            const nombreVehiculo = String(renta.vehiculo?.nombreVehiculo ?? '').toLowerCase();
+            const placaVehiculo = String(renta.vehiculo?.placa ?? '').toLowerCase();
+            return nombreCliente.includes(query) || nombreVehiculo.includes(query) || placaVehiculo.includes(query);
+        });
     const handleDownloadContrato = async (rentaId) => {
         await descargarContrato({ rentaId });
     };
@@ -96,7 +108,7 @@ const Renta = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {rentas.map((renta) => (
+                        {rentasFiltradas.map((renta) => (
                             <tr key={renta.id}>
                                 {(() => {
                                     const fechaEntrega = parseDateOnly(renta.fechaEntrega);
