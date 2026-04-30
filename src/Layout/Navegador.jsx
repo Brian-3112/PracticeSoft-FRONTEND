@@ -3,11 +3,24 @@ import { Link, Outlet, useLocation } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
 import styles from '../Layout/Navegador.module.css';
 
+const IconDashboard = () => (
+  <svg className={styles.menuIcon} viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 13h8V3H3v10Zm0 8h8v-6H3v6Zm10 0h8V11h-8v10Zm0-18v6h8V3h-8Z" fill="currentColor"/></svg>
+);
+const IconClientes = () => (
+  <svg className={styles.menuIcon} viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M16 11a4 4 0 1 0-4-4 4 4 0 0 0 4 4ZM8 12a3 3 0 1 0-3-3 3 3 0 0 0 3 3Zm8 2c-2.67 0-8 1.33-8 4v2h16v-2c0-2.67-5.33-4-8-4Zm-8 1c-2.33 0-7 1.17-7 3.5V20h5v-2c0-1.14.59-2.15 1.57-3Z" fill="currentColor"/></svg>
+);
+const IconVehiculos = () => (
+  <svg className={styles.menuIcon} viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 11l1.5-4.5A2 2 0 0 1 8.4 5h7.2a2 2 0 0 1 1.9 1.5L19 11v7h-2v-2H7v2H5v-7Zm2.1-1h9.8l-.9-2.6a.5.5 0 0 0-.47-.34H8.47a.5.5 0 0 0-.47.34L7.1 10ZM7.5 14A1.5 1.5 0 1 0 9 15.5 1.5 1.5 0 0 0 7.5 14Zm9 0a1.5 1.5 0 1 0 1.5 1.5 1.5 1.5 0 0 0-1.5-1.5Z" fill="currentColor"/></svg>
+);
+const IconRentas = () => (
+  <svg className={styles.menuIcon} viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 2h9l5 5v15a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Zm8 1.5V8h4.5" stroke="currentColor" strokeWidth="1.6"/><path d="M8 12h8M8 16h8" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/></svg>
+);
+
 const menuItems = [
-  { to: '/admin', label: 'Dashboard' },
-  { to: '/admin/clientes', label: 'Clientes' },
-  { to: '/admin/vehiculos', label: 'Vehículos' },
-  { to: '/admin/rentas', label: 'Rentas' },
+  { to: '/admin', label: 'Dashboard', icon: IconDashboard },
+  { to: '/admin/clientes', label: 'Clientes', icon: IconClientes },
+  { to: '/admin/vehiculos', label: 'Vehículos', icon: IconVehiculos },
+  { to: '/admin/rentas', label: 'Rentas', icon: IconRentas },
 ];
 
 const getPageTitle = (pathname) => {
@@ -18,7 +31,7 @@ const getPageTitle = (pathname) => {
 };
 
 const Navegador = () => {
-  const { auth, loading, cerrarSesion } = useAuth();
+  const { loading, cerrarSesion } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
 
@@ -31,6 +44,11 @@ const Navegador = () => {
     <div className={styles.appLayout}>
       <aside className={`${styles.sidebar} ${isMenuOpen ? styles.sidebarOpen : ''}`}>
         <div className={styles.logoSection}>
+          <svg className={styles.brandCarIcon} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M5 11l1.5-4.5A2 2 0 0 1 8.4 5h7.2a2 2 0 0 1 1.9 1.5L19 11v7h-2v-2H7v2H5v-7Z" stroke="currentColor" strokeWidth="1.7"/>
+            <circle cx="8" cy="15.5" r="1.3" fill="currentColor" />
+            <circle cx="16" cy="15.5" r="1.3" fill="currentColor" />
+          </svg>
           <div>
             <h1 className={styles.brandTitle}>ANTIOCAR</h1>
             <p className={styles.brandSubtitle}>Panel interno</p>
@@ -39,16 +57,20 @@ const Navegador = () => {
 
         <nav className={styles.menuNav}>
           <p className={styles.menuLabel}>Módulos</p>
-          {menuItems.map((item) => (
-            <Link
-              key={item.to}
-              to={item.to}
-              onClick={handleLinkClick}
-              className={`${styles.menuLink} ${location.pathname === item.to ? styles.menuLinkActive : ''}`}
-            >
-              {item.label}
-            </Link>
-          ))}
+          {menuItems.map((item) => {
+            const Icon = item.icon;
+            return (
+              <Link
+                key={item.to}
+                to={item.to}
+                onClick={handleLinkClick}
+                className={`${styles.menuLink} ${location.pathname === item.to ? styles.menuLinkActive : ''}`}
+              >
+                <Icon />
+                <span>{item.label}</span>
+              </Link>
+            );
+          })}
         </nav>
 
         <div className={styles.sidebarBottom}>
@@ -59,9 +81,9 @@ const Navegador = () => {
             <span>Cerrar sesión</span>
           </button>
           <div className={styles.userCard}>
-            <div className={styles.userBadge}>AR</div>
+            <div className={styles.userBadge}>BP</div>
             <div>
-              <p className={styles.userName}>Alicia Ramírez</p>
+              <p className={styles.userName}>Brian Pareja</p>
               <p className={styles.userRole}>Administrador</p>
             </div>
           </div>

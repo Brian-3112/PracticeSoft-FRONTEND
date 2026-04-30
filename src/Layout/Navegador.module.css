@@ -27,12 +27,15 @@
 
 
 .brandTitle { color: #fff; font-size: 1.7rem; }
+.brandCarIcon { width: 24px; height: 24px; color: #fff; flex-shrink: 0; }
 .brandSubtitle { font-size: 0.82rem; opacity: 0.72; }
 
 .menuNav { padding: 18px 12px; }
 .menuLabel { font-size: 0.70rem; text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.55; margin: 0 10px 10px; }
 .menuLink {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 10px;
   color: #dbe7ff;
   text-decoration: none;
   padding: 11px 12px;
@@ -85,3 +88,5 @@
 }
 
 .logoutIcon { width: 18px; height: 18px; fill: currentColor; }
+
+.menuIcon { width: 17px; height: 17px; color: currentColor; flex-shrink: 0; }
