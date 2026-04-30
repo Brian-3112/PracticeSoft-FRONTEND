@@ -30,6 +30,13 @@ const getPageTitle = (pathname) => {
   return 'Dashboard';
 };
 
+const getPageSubtitle = (pathname) => {
+  if (pathname.includes('/clientes')) return 'Gestión de clientes';
+  if (pathname.includes('/vehiculos')) return 'Gestión de vehículos';
+  if (pathname.includes('/rentas')) return 'Alquiler - Reservas';
+  return 'Resumen general de operaciones';
+};
+
 const Navegador = () => {
   const { loading, cerrarSesion } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -107,7 +114,7 @@ const Navegador = () => {
         <header className={styles.topbar}>
           <div>
             <h2 className={styles.topbarTitle}>{getPageTitle(location.pathname)}</h2>
-            <p className={styles.topbarSubtitle}>Resumen general de operaciones</p>
+            <p className={styles.topbarSubtitle}>{getPageSubtitle(location.pathname)}</p>
           </div>
           <div className={styles.topbarActions}>
             <input className={styles.searchInput} placeholder="Buscar..." value={query} onChange={handleSearchChange} />
