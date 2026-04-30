@@ -11,10 +11,10 @@ const menuItems = [
 ];
 
 const getPageTitle = (pathname) => {
-  if (pathname.includes('/clientes')) return 'Clientes';
-  if (pathname.includes('/vehiculos')) return 'Vehículos';
-  if (pathname.includes('/rentas')) return 'Rentas';
-  return 'Dashboard';
+  if (pathname.includes('/clientes')) return 'CLIENTES';
+  if (pathname.includes('/vehiculos')) return 'VEHICULOS';
+  if (pathname.includes('/rentas')) return 'RENTAS';
+  return 'DASHBOARD';
 };
 
 const Navegador = () => {
@@ -61,7 +61,7 @@ const Navegador = () => {
           <div className={styles.userCard}>
             <div className={styles.userBadge}>AR</div>
             <div>
-              <p className={styles.userName}>Alicia Ramírez</p>
+              <p className={styles.userName}>Brian Pareja</p>
               <p className={styles.userRole}>Administrador</p>
             </div>
           </div>
