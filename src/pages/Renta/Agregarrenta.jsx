@@ -147,7 +147,7 @@ const Agregarrenta = () => {
         }
 
         if (!nextErrors.vehiculoId && hasRentaOverlap(formData)) {
-            nextErrors.vehiculoId = 'El vehículo ya está rentado en ese rango de fecha y hora';
+            nextErrors.vehiculoId = 'Horario no disponible para este vehículo';
         }
 
         setErrors(nextErrors);
