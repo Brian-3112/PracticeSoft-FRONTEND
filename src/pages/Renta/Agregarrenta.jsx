@@ -44,7 +44,7 @@ const Agregarrenta = () => {
     if (loading) return 'Cargando...';
 
 
-    const { agregarRenta, isCreatingRenta } = useRenta();
+    const { agregarRenta, isCreatingRenta, rentas } = useRenta();
     const { clientes } = useCliente();
     const { vehiculos } = useVehiculo();
 
@@ -65,6 +65,30 @@ const Agregarrenta = () => {
             horaDevolucion: validateField('horaDevolucion', dataToValidate.horaDevolucion),
             valorDia: validateField('valorDia', dataToValidate.valorDia)
         };
+    };
+
+    const combineDateAndTime = (date, time) => {
+        if (!date || !time) return null;
+        return new Date(`${date}T${time}`);
+    };
+
+    const hasRentaOverlap = (dataToValidate) => {
+        const newStart = combineDateAndTime(dataToValidate.fechaEntrega, dataToValidate.horaEntrega);
+        const newEnd = combineDateAndTime(dataToValidate.fechaDevolucion, dataToValidate.horaDevolucion);
+
+        if (!newStart || !newEnd) return false;
+
+        return rentas.some((renta) => {
+            const rentaVehiculoId = renta.vehiculoId ?? renta.vehiculo?.id;
+            if (String(rentaVehiculoId) !== String(dataToValidate.vehiculoId)) return false;
+
+            const existingStart = combineDateAndTime(renta.fechaEntrega, renta.horaEntrega);
+            const existingEnd = combineDateAndTime(renta.fechaDevolucion, renta.horaDevolucion);
+            if (!existingStart || !existingEnd) return false;
+
+            // Permite que termine exactamente cuando inicia otra renta (sin solape).
+            return newStart < existingEnd && newEnd > existingStart;
+        });
     };
 
     // Valida en tiempo real mientras el usuario escribe.
@@ -113,6 +137,19 @@ const Agregarrenta = () => {
         e.preventDefault();
 
         const nextErrors = validateRequiredFields(formData);
+        setErrors(nextErrors);
+
+        const fechaEntregaDateTime = combineDateAndTime(formData.fechaEntrega, formData.horaEntrega);
+        const fechaDevolucionDateTime = combineDateAndTime(formData.fechaDevolucion, formData.horaDevolucion);
+
+        if (fechaEntregaDateTime && fechaDevolucionDateTime && fechaDevolucionDateTime <= fechaEntregaDateTime) {
+            nextErrors.horaDevolucion = 'La devolución debe ser posterior a la entrega';
+        }
+
+        if (!nextErrors.vehiculoId && hasRentaOverlap(formData)) {
+            nextErrors.vehiculoId = 'El vehículo ya está rentado en ese rango de fecha y hora';
+        }
+
         setErrors(nextErrors);
 
         // Si hay errores, no se envia al backend.
