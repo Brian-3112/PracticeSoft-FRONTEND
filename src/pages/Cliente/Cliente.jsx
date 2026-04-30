@@ -17,7 +17,6 @@ const Cliente = () => {
 
   return (
     <div className={styles.wrapper}>
-      <h2 className={styles.heading}>CLIENTES</h2>
 
       <div className={styles.divAddCliente}>
         <Agregarcliente />
