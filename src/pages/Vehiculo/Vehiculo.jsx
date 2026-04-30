@@ -68,7 +68,6 @@ const Vehiculo = () => {
 
   return (
     <div className={styles.wrapper}>
-      <h2 className={styles.heading}>VEHICULOS</h2>
 
       <div className={styles.divAddVehiculo}>
         <Agregarvehiculo />

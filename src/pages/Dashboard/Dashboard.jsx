@@ -28,7 +28,6 @@ const Dashboard = () => {
 
   return (
     <div className={styles.wrapper}>
-      <h2 className={styles.heading}>DASHBOARD</h2>
 
       {/* Contenedor principal */}
       <div className={styles.dashboardContainer}>

@@ -62,7 +62,7 @@ const Navegador = () => {
             <div className={styles.userBadge}>AR</div>
             <div>
               <p className={styles.userName}>Alicia Ramírez</p>
-              <p className={styles.userRole}>Administradora</p>
+              <p className={styles.userRole}>Administrador</p>
             </div>
           </div>
         </div>

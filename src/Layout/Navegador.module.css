@@ -66,7 +66,7 @@
   padding: 16px 24px;
   display: flex; align-items: center; justify-content: space-between; gap: 20px;
 }
-.topbarTitle { font-size: 2rem; color: #20273a; }
+.topbarTitle { font-size: 2rem; color: var(--primary); }
 .topbarSubtitle { color: #657089; font-size: .95rem; }
 .topbarActions { display: flex; align-items: center; gap: 10px; }
 .searchInput {
