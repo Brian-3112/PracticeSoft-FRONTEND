@@ -38,6 +38,7 @@ const Navegador = () => {
         </div>
 
         <nav className={styles.menuNav}>
+          <p className={styles.menuLabel}>Módulos</p>
           {menuItems.map((item) => (
             <Link
               key={item.to}
