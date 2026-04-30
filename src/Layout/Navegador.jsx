@@ -31,15 +31,13 @@ const Navegador = () => {
     <div className={styles.appLayout}>
       <aside className={`${styles.sidebar} ${isMenuOpen ? styles.sidebarOpen : ''}`}>
         <div className={styles.logoSection}>
-          <div className={styles.logoIcon}>🚗</div>
           <div>
-            <h1 className={styles.brandTitle}>RentaCar</h1>
+            <h1 className={styles.brandTitle}>ANTIOCAR</h1>
             <p className={styles.brandSubtitle}>Panel interno</p>
           </div>
         </div>
 
         <nav className={styles.menuNav}>
-          <p className={styles.menuLabel}>Módulos</p>
           {menuItems.map((item) => (
             <Link
               key={item.to}
@@ -54,7 +52,10 @@ const Navegador = () => {
 
         <div className={styles.sidebarBottom}>
           <button type="button" onClick={cerrarSesion} className={styles.logoutButton}>
-            Cerrar sesión
+            <svg className={styles.logoutIcon} xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" aria-hidden="true">
+              <path d="M232-172q-26 0-43-17t-17-43v-114h28v114q0 12 10 22t22 10h496q12 0 22-10t10-22v-496q0-12-10-22t-22-10H232q-12 0-22 10t-10 22v114h-28v-114q0-26 17-43t43-17h496q26 0 43 17t17 43v496q0 26-17 43t-43 17H232Zm206-164-20-20 110-110H172v-28h356L418-604l20-20 144 144-144 144Z"/>
+            </svg>
+            <span>Cerrar sesión</span>
           </button>
           <div className={styles.userCard}>
             <div className={styles.userBadge}>AR</div>
