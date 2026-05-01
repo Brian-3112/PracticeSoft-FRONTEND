@@ -198,7 +198,7 @@
 }
 
 /* ===== EFECTO VISUAL DE INPUT ACTIVO ===== */
-.field.hasValue .inputField,
+.hasValue .inputField,
 .field:focus-within .inputField {
     padding-top: 1.5rem;
     padding-bottom: 0.5rem;

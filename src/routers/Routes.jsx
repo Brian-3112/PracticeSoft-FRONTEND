@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 import ProtectedRoute from './ProtectedRoute';
 
 import Login from '../pages/Login/Login';
+import RestablecerContrasena from '../pages/Login/RestablecerContrasena';
 import Navegador from '../Layout/Navegador';
 import Dashboard from '../pages/Dashboard/Dashboard';
 import Vehiculo from '../pages/Vehiculo/Vehiculo';
@@ -27,6 +28,7 @@ const MyRoutes = () => {
                                 <Routes>
                                     <Route path="/" element={<Navigate to="/login" />} />
                                     <Route path="/login" element={<Login />} />
+                                    <Route path="/restablecer-password" element={<RestablecerContrasena />} />
 
 
                                     <Route

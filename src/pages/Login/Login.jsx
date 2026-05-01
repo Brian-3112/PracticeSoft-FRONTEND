@@ -1,5 +1,5 @@
 import { useState, useContext, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useAuth from '../../hooks/useAuth';
 import clienteAxios from "../../config/axios.jsx";
 import Swal from "sweetalert2";
@@ -120,9 +120,9 @@ const Login = () => {
                         Iniciar Sesión
                     </button>
 
-                    <a href="#" className={styles.btnLink}>
+                    <Link to="/restablecer-password" className={styles.btnLink}>
                         ¿Olvidaste tu contraseña?
-                    </a>
+                    </Link>
                 </form>
             </div>
 
