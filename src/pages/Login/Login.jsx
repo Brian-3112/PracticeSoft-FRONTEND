@@ -5,6 +5,13 @@ import clienteAxios from "../../config/axios.jsx";
 import Swal from "sweetalert2";
 import styles from '../Login/login.module.css';
 
+const getUserFromPayload = (payload = {}) => {
+    if (payload?.usuario && typeof payload.usuario === 'object') return payload.usuario;
+    if (payload?.user && typeof payload.user === 'object') return payload.user;
+    if (payload?.data?.usuario && typeof payload.data.usuario === 'object') return payload.data.usuario;
+    if (payload?.data && typeof payload.data === 'object') return payload.data;
+    return payload;
+};
 
 
 const Login = () => {
@@ -37,10 +44,17 @@ const Login = () => {
                     Authorization: `Bearer ${data.token}`,
                 },
             };
-            const { data: perfilUsuario } = await clienteAxios.get('/usuarios', config);
+            let authPayload = data;
+            try {
+                const { data: perfilUsuario } = await clienteAxios.get('/usuarios', config);
+                authPayload = perfilUsuario;
+            } catch (_error) {
+                // Si el backend actual no expone /usuarios con este token, usamos lo que venga del login.
+                authPayload = data;
+            }
 
             // Guarda la info del usuario con setAuth.
-            setAuth(perfilUsuario);
+            setAuth(authPayload);
             // Redirige al panel privado (/admin).
             navigate("/admin");
         } catch (error) {
