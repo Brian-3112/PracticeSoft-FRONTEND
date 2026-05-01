@@ -39,7 +39,11 @@ const getPageSubtitle = (pathname) => {
 
 
 const getUserDisplayName = (auth = {}) => {
-  return auth.nombreCompleto || auth.nombre || auth.nombres || auth.usuario || auth.email || 'Usuario';
+  const nombre = String(auth.nombre ?? '').trim();
+  const apellido = String(auth.apellido ?? '').trim();
+  const fullName = `${nombre} ${apellido}`.trim();
+
+  return fullName || nombre || apellido || 'Usuario';
 };
 
 const getInitials = (name = '') => {
