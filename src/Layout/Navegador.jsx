@@ -49,20 +49,11 @@ const getUserFromAuth = (auth = {}) => {
 const getUserDisplayName = (auth = {}) => {
   const user = getUserFromAuth(auth);
 
-  const nombre = String(user?.nombre ?? user?.name ?? user?.firstName ?? user?.nombres ?? '').trim();
-  const apellido = String(user?.apellido ?? user?.lastName ?? user?.lastname ?? user?.surname ?? '').trim();
+  const nombre = String(user?.nombre ?? '').trim();
+  const apellido = String(user?.apellido ?? '').trim();
   const fullName = `${nombre} ${apellido}`.trim();
 
   if (fullName) return fullName;
-
-  const nombreCompleto = String(user?.nombreCompleto ?? user?.fullName ?? '').trim();
-  if (nombreCompleto) return nombreCompleto;
-
-  const email = String(user?.email ?? '').trim();
-  if (email.includes('@')) {
-    const base = email.split('@')[0].replace(/[._-]+/g, ' ').trim();
-    if (base) return base.replace(/\b\w/g, (letter) => letter.toUpperCase());
-  }
 
   return 'Usuario';
 };

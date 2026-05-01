@@ -53,8 +53,8 @@ const Login = () => {
                 authPayload = data;
             }
 
-            // Guarda la info del usuario con setAuth.
-            setAuth(authPayload);
+            // Guarda la info del usuario con setAuth (normalizada al objeto usuario).
+            setAuth(getUserFromPayload(authPayload));
             // Redirige al panel privado (/admin).
             navigate("/admin");
         } catch (error) {
