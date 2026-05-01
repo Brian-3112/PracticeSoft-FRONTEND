@@ -30,8 +30,17 @@ const Login = () => {
             const { data } = await clienteAxios.post("/usuarios/login", { email, password });
             // Guarda el token en localStorage.
             localStorage.setItem("token", data.token);
+            // Obtiene el perfil del usuario autenticado para tener nombre y apellido disponibles en UI.
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${data.token}`,
+                },
+            };
+            const { data: perfilUsuario } = await clienteAxios.get('/usuarios', config);
+
             // Guarda la info del usuario con setAuth.
-            setAuth(data);
+            setAuth(perfilUsuario);
             // Redirige al panel privado (/admin).
             navigate("/admin");
         } catch (error) {
