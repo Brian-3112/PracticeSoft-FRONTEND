@@ -38,12 +38,21 @@ const getPageSubtitle = (pathname) => {
 };
 
 
+const getUserFromAuth = (auth = {}) => {
+  if (auth?.usuario && typeof auth.usuario === 'object') return auth.usuario;
+  if (auth?.user && typeof auth.user === 'object') return auth.user;
+  if (auth?.data?.usuario && typeof auth.data.usuario === 'object') return auth.data.usuario;
+  if (auth?.data && typeof auth.data === 'object') return auth.data;
+  return auth;
+};
+
 const getUserDisplayName = (auth = {}) => {
-  const nombre = String(auth.nombre ?? '').trim();
-  const apellido = String(auth.apellido ?? '').trim();
+  const user = getUserFromAuth(auth);
+  const nombre = String(user?.nombre ?? '').trim();
+  const apellido = String(user?.apellido ?? '').trim();
   const fullName = `${nombre} ${apellido}`.trim();
 
-  return fullName || nombre || apellido || 'Usuario';
+  return fullName || 'Usuario';
 };
 
 const getInitials = (name = '') => {
