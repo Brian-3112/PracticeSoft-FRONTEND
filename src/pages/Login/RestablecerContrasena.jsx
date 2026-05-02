@@ -16,7 +16,7 @@ const RestablecerContrasena = () => {
     e.preventDefault();
 
     try {
-      await clienteAxios.post("/forgot-password", { email });
+      await clienteAxios.post("/api/usuarios/forgot-password", { email });
       Swal.fire({
         title: "Revisa tu correo",
         text: "Si el correo existe, te enviamos instrucciones para restablecer tu contraseña.",
