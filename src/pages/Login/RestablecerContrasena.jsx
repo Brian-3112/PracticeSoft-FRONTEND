@@ -16,7 +16,7 @@ const RestablecerContrasena = () => {
     e.preventDefault();
 
     try {
-      await clienteAxios.post("/usuarios/olvide-password", { email });
+      await clienteAxios.post("/forgot-password", { email });
       Swal.fire({
         title: "Revisa tu correo",
         text: "Si el correo existe, te enviamos instrucciones para restablecer tu contraseña.",
@@ -62,6 +62,8 @@ const RestablecerContrasena = () => {
           <button className={styles.btn} type="submit">
             Enviar enlace
           </button>
+
+          <p className={styles.resetHelp}>Revisa también Spam o Promociones si no ves el correo.</p>
 
           <Link to="/login" className={styles.btnLink}>
             Volver a iniciar sesión

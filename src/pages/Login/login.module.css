@@ -248,6 +248,13 @@
     transform: translateY(0);
 }
 
+
+.resetHelp {
+    margin: 0.5rem 0 0;
+    text-align: center;
+    color: #666;
+    font-size: 0.85rem;
+}
 /* ===== ENLACE SECUNDARIO DEL FORMULARIO ===== */
 .btnLink {
     display: block;
