@@ -100,7 +100,12 @@ const Login = () => {
                         showConfirmButton: false,
                         timer: 15000,
                         timerProgressBar: true,
-                        width: 300,
+                        width: 260,
+                        customClass: {
+                            popup: styles.alertaCompacta,
+                            title: styles.alertaCompactaTitulo,
+                            htmlContainer: styles.alertaCompactaTexto,
+                        },
                     });
                 }
             } catch (_error) {
