@@ -96,11 +96,11 @@ const Login = () => {
                         title: 'Documentos por vencer',
                         html: porVencer.slice(0, 5).join('<br/>'),
                         toast: true,
-                        position: 'top-start',
+                        position: 'top-end',
                         showConfirmButton: false,
                         timer: 15000,
                         timerProgressBar: true,
-                        width: 360,
+                        width: 300,
                     });
                 }
             } catch (_error) {
