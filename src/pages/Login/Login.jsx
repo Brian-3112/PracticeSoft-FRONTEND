@@ -14,6 +14,23 @@ const getUserFromPayload = (payload = {}) => {
 };
 
 
+
+const normalizarFecha = (valor) => {
+    if (!valor) return null;
+    const base = String(valor).slice(0, 10);
+    const [year, month, day] = base.split('-').map(Number);
+    if (!year || !month || !day) return null;
+    return new Date(year, month - 1, day);
+};
+
+const diasParaVencer = (fecha) => {
+    if (!fecha) return null;
+    const hoy = new Date();
+    hoy.setHours(0, 0, 0, 0);
+    const diff = fecha.getTime() - hoy.getTime();
+    return Math.ceil(diff / (1000 * 60 * 60 * 24));
+};
+
 const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -55,6 +72,41 @@ const Login = () => {
 
             // Guarda la info del usuario con setAuth (normalizada al objeto usuario).
             setAuth(getUserFromPayload(authPayload));
+
+            try {
+                const { data: vehiculos } = await clienteAxios.get('/vehiculos', config);
+                const porVencer = (Array.isArray(vehiculos) ? vehiculos : []).flatMap((vehiculo) => {
+                    const alertas = [];
+                    const diasSOAT = diasParaVencer(normalizarFecha(vehiculo.fechaSOAT));
+                    const diasTecno = diasParaVencer(normalizarFecha(vehiculo.fechaTecno));
+
+                    if (diasSOAT !== null && diasSOAT >= 0 && diasSOAT <= 15) {
+                        alertas.push(`SOAT de ${vehiculo.placa} vence en ${diasSOAT} día(s)`);
+                    }
+                    if (diasTecno !== null && diasTecno >= 0 && diasTecno <= 15) {
+                        alertas.push(`Tecnomecánica de ${vehiculo.placa} vence en ${diasTecno} día(s)`);
+                    }
+
+                    return alertas;
+                });
+
+                if (porVencer.length > 0) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Documentos por vencer',
+                        html: porVencer.slice(0, 5).join('<br/>'),
+                        toast: true,
+                        position: 'top-start',
+                        showConfirmButton: false,
+                        timer: 15000,
+                        timerProgressBar: true,
+                        width: 360,
+                    });
+                }
+            } catch (_error) {
+                // Si falla esta consulta, no bloqueamos el ingreso al sistema.
+            }
+
             // Redirige al panel privado (/admin).
             navigate("/admin");
         } catch (error) {
