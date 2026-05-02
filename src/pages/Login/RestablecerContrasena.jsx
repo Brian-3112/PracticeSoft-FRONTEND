@@ -23,12 +23,14 @@ const RestablecerContrasena = () => {
         icon: "success",
       });
       setEmail("");
-    } catch (_error) {
+    } catch (error) {
+      const backendMessage = error?.response?.data?.message;
       Swal.fire({
-        title: "Solicitud enviada",
-        text: "Si el correo existe, te enviamos instrucciones para restablecer tu contraseña.",
-        icon: "info",
+        title: "No se pudo enviar el enlace",
+        text: backendMessage || "El servidor respondió con error. Revisa configuración de correo en backend.",
+        icon: "error",
       });
+      console.error("Error forgot-password:", error?.response?.status, error?.response?.data || error.message);
     }
   };
 
