@@ -4,6 +4,7 @@ import ProtectedRoute from './ProtectedRoute';
 
 import Login from '../pages/Login/Login';
 import RestablecerContrasena from '../pages/Login/RestablecerContrasena';
+import ResetPassword from '../pages/Login/ResetPassword';
 import Navegador from '../Layout/Navegador';
 import Dashboard from '../pages/Dashboard/Dashboard';
 import Vehiculo from '../pages/Vehiculo/Vehiculo';
@@ -29,6 +30,8 @@ const MyRoutes = () => {
                                     <Route path="/" element={<Navigate to="/login" />} />
                                     <Route path="/login" element={<Login />} />
                                     <Route path="/restablecer-password" element={<RestablecerContrasena />} />
+                                    <Route path="/reset-password" element={<ResetPassword />} />
+                                    <Route path="/reset-password/:token" element={<ResetPassword />} />
 
 
                                     <Route
