@@ -329,15 +329,15 @@
 
 
 .alertaCompacta {
-    padding: 0.45rem 0.6rem !important;
+    padding: 0.5rem 0.7rem !important;
 }
 
 .alertaCompactaTitulo {
-    font-size: 0.85rem !important;
+    font-size: 0.82rem !important;
     margin: 0 0 0.2rem 0 !important;
 }
 
 .alertaCompactaTexto {
-    font-size: 0.75rem !important;
+    font-size: 0.7rem !important;
     line-height: 1.2 !important;
 }

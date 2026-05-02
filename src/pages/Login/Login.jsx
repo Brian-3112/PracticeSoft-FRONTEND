@@ -91,16 +91,20 @@ const Login = () => {
                 });
 
                 if (porVencer.length > 0) {
+                    const vistaPrevia = porVencer.slice(0, 2).join(' · ');
+                    const restantes = porVencer.length - 2;
+                    const mensaje = restantes > 0 ? `${vistaPrevia} · +${restantes} más` : vistaPrevia;
+
                     Swal.fire({
                         icon: 'warning',
                         title: 'Documentos por vencer',
-                        html: porVencer.slice(0, 5).join('<br/>'),
+                        text: mensaje,
                         toast: true,
                         position: 'top-end',
                         showConfirmButton: false,
                         timer: 15000,
                         timerProgressBar: true,
-                        width: 260,
+                        width: 340,
                         customClass: {
                             popup: styles.alertaCompacta,
                             title: styles.alertaCompactaTitulo,
