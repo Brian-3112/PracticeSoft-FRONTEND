@@ -91,7 +91,7 @@ const Navegador = () => {
       <aside className={styles.sidebar}>
         <div className={styles.logoSection}>
           <svg className={styles.brandCarIcon} viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M5 11l1.5-4.5A2 2 0 0 1 8.4 5h7.2a2 2 0 0 1 1.9 1.5L19 11v7h-2v-2H7v2H5v-7Z" stroke="currentColor" strokeWidth="1.7"/>
+            <path d="/antiocar6s.svg" stroke="currentColor" strokeWidth="1.7"/>
             <circle cx="8" cy="15.5" r="1.3" fill="currentColor" />
             <circle cx="16" cy="15.5" r="1.3" fill="currentColor" />
           </svg>
