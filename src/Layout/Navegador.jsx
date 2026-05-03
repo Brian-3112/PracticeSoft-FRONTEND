@@ -1,4 +1,4 @@
-import { useState } from 'react';
+
 import { Link, Outlet, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
 import styles from '../Layout/Navegador.module.css';
@@ -66,15 +66,11 @@ const getInitials = (name = '') => {
 
 const Navegador = () => {
   const { auth, loading, cerrarSesion } = useAuth();
-  const [isMenuOpen, setIsMenuOpen] = useState(true);
   const location = useLocation();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
   if (loading) return 'Cargando...';
-
-  const toggleMenu = () => setIsMenuOpen((prev) => !prev);
-  const closeMenu = () => setIsMenuOpen(false);
   const query = searchParams.get('q') ?? '';
 
   const userDisplayName = getUserDisplayName(auth);
@@ -92,8 +88,7 @@ const Navegador = () => {
 
   return (
     <div className={styles.appLayout}>
-      {isMenuOpen && <button type="button" className={styles.menuOverlay} onClick={closeMenu} aria-label="Cerrar menú" />}
-      <aside id="sidebar-menu" className={`${styles.sidebar} ${isMenuOpen ? styles.sidebarOpen : ""} ${!isMenuOpen ? styles.sidebarCollapsed : ""}`}>
+      <aside className={styles.sidebar}>
         <div className={styles.logoSection}>
           <svg className={styles.brandCarIcon} viewBox="0 0 24 24" fill="none" aria-hidden="true">
             <path d="M5 11l1.5-4.5A2 2 0 0 1 8.4 5h7.2a2 2 0 0 1 1.9 1.5L19 11v7h-2v-2H7v2H5v-7Z" stroke="currentColor" strokeWidth="1.7"/>
@@ -104,18 +99,6 @@ const Navegador = () => {
             <h1 className={styles.brandTitle}>ANTIOCAR</h1>
             <p className={styles.brandSubtitle}>Panel interno</p>
           </div>
-          <button
-            type="button"
-            className={`${styles.menuToggle} ${styles.menuToggleInSidebar} ${isMenuOpen ? styles.menuToggleOpen : ""}`}
-            onClick={toggleMenu}
-            aria-label={isMenuOpen ? "Cerrar menú" : "Abrir menú"}
-            aria-expanded={isMenuOpen}
-            aria-controls="sidebar-menu"
-          >
-            <span className={`${styles.toggleBar} ${styles.top}`}></span>
-            <span className={`${styles.toggleBar} ${styles.middle}`}></span>
-            <span className={`${styles.toggleBar} ${styles.bottom}`}></span>
-          </button>
         </div>
 
         <nav className={styles.menuNav}>
@@ -155,21 +138,7 @@ const Navegador = () => {
 
       <main className={styles.contentArea}>
         <header className={styles.topbar}>
-          <div className={styles.topbarTitleRow}>
-            {!isMenuOpen && (
-              <button
-                type="button"
-                className={`${styles.menuToggle} ${styles.menuToggleInTopbar}`}
-                onClick={toggleMenu}
-                aria-label="Abrir menú"
-                aria-expanded={isMenuOpen}
-                aria-controls="sidebar-menu"
-              >
-                <span className={`${styles.toggleBar} ${styles.top}`}></span>
-                <span className={`${styles.toggleBar} ${styles.middle}`}></span>
-                <span className={`${styles.toggleBar} ${styles.bottom}`}></span>
-              </button>
-            )}
+          <div>
             <div>
               <h2 className={styles.topbarTitle}>{getPageTitle(location.pathname)}</h2>
             <p className={styles.topbarSubtitle}>{getPageSubtitle(location.pathname)}</p>
