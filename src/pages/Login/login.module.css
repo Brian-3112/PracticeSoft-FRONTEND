@@ -96,35 +96,13 @@
     position: relative;
 }
 
-.logoIcon {
-    width: 80px;
-    height: 80px;
-    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-    border-radius: 20px;
+
+.brandLogo {
+    width: min(100%, 340px);
+    height: auto;
+    display: block;
     margin: 0 auto 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 10px 30px var(--shadow);
-    animation: pulse 2s ease-in-out infinite;
-}
-
-@keyframes pulse {
-
-    0%,
-    100% {
-        transform: scale(1);
-    }
-
-    50% {
-        transform: scale(1.05);
-    }
-}
-
-.logoIcon::before {
-    content: '🚗';
-    font-size: 2rem;
-    filter: brightness(0) invert(1);
+    object-fit: contain;
 }
 
 .title {
