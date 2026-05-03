@@ -98,10 +98,11 @@
 
 
 .brandLogo {
-    width: min(100%, 340px);
+    width: min(100%, 170px);
     height: auto;
     display: block;
     margin: 0 auto 1rem;
+    transform: translateX(-18px);
     object-fit: contain;
 }
 
