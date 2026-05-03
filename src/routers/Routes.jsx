@@ -24,8 +24,8 @@ const MyRoutes = () => {
             <AuthProvider>
                 <VehiculoProvider>
                     <ClienteProvider>
-                        <RentaProvider>
-                            <DashboardProvider>
+                        <DashboardProvider>
+                            <RentaProvider>
                                 <Routes>
                                     <Route path="/" element={<Navigate to="/login" />} />
                                     <Route path="/login" element={<Login />} />
@@ -66,8 +66,8 @@ const MyRoutes = () => {
 
 
                                 </Routes>
-                            </DashboardProvider>
-                        </RentaProvider>
+                            </RentaProvider>
+                        </DashboardProvider>
                     </ClienteProvider>
                 </VehiculoProvider>
             </AuthProvider>
