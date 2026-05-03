@@ -137,7 +137,7 @@ const Login = () => {
             <div className={styles.card}>
                 {/* Brand Section */}
                 <div className={styles.brandSection}>
-                    <img src="/antiocar3.png" alt="Antiocar Rentadora de Autos" className={styles.brandLogo} />
+                    <img src="/antiocar5.png" alt="Antiocar Rentadora de Autos" className={styles.brandLogo} />
                     <h3 className={styles.title}>ANTIOCAR</h3>
                     <p className={styles.subtitle}>Alquiler de Vehículos</p>
                 </div>
