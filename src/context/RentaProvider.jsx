@@ -1,9 +1,11 @@
-import { createContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import clienteAxios from '../config/axios';
 import useAuth from '../hooks/useAuth';
 import Swal from 'sweetalert2';
 import { createRenta, downloadContratoDocx } from '../services/rentaService';
+import { VehiculoContext } from './VehiculoProvider';
+import { DashboardContext } from './DashboardProvider';
 
 
 
@@ -11,6 +13,8 @@ export const RentaContext = createContext();
 
 export const RentaProvider = ({ children }) => {
     const { auth, config } = useAuth();
+    const vehiculoContext = useContext(VehiculoContext);
+    const dashboardContext = useContext(DashboardContext);
 
     const [rentas, setRentas] = useState([]);
     const [isCreatingRenta, setIsCreatingRenta] = useState(false);
@@ -52,6 +56,11 @@ export const RentaProvider = ({ children }) => {
             const data = await createRenta({ rentaPayload: nuevaRenta, config });
             setRentas(prev => [data.renta, ...prev]);
             setLastCreatedRentaId(data?.renta?.id ?? null);
+
+            await Promise.all([
+                vehiculoContext?.consultarVehiculos?.(),
+                dashboardContext?.calcularDashboard?.(),
+            ]);
 
             await Swal.fire({
                 title: 'Éxito',

@@ -199,7 +199,7 @@ export const VehiculoProvider = ({ children }) => {
 
 
     return (
-        <VehiculoContext.Provider value={{ vehiculos, agregarVehiculo, actualizarVehiculo, eliminarVehiculo, rentas }}>
+        <VehiculoContext.Provider value={{ vehiculos, agregarVehiculo, actualizarVehiculo, eliminarVehiculo, rentas, consultarVehiculos }}>
             {children}
         </VehiculoContext.Provider>
     );

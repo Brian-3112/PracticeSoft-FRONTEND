@@ -78,7 +78,7 @@ export const DashboardProvider = ({ children }) => {
 
 
     return (
-        <DashboardContext.Provider value={{ ingresosMes, clientesTotal, ingresosPorMes, rentas, ingresosAnual }}>
+        <DashboardContext.Provider value={{ ingresosMes, clientesTotal, ingresosPorMes, rentas, ingresosAnual, calcularDashboard }}>
             {children}
         </DashboardContext.Provider>
     );
