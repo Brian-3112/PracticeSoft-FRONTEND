@@ -93,7 +93,17 @@ const Navegador = () => {
   return (
     <div className={styles.appLayout}>
       {isMenuOpen && <button type="button" className={styles.menuOverlay} onClick={handleLinkClick} aria-label="Cerrar menú" />}
-      <aside id="sidebar-menu" className={`${styles.sidebar} ${isMenuOpen ? styles.sidebarOpen : ""} ${!isMenuOpen ? styles.sidebarCollapsed : ""}`}>
+      <aside id="sidebar-menu" className={`${styles.sidebar} ${isMenuOpen ? styles.sidebarOpen : ""} ${!isMenuOpen ? styles.sidebarCollapsed : ""}`}><button
+          type="button"
+          className={styles.menuToggle}
+          onClick={toggleMenu}
+          aria-label={isMenuOpen ? "Cerrar menú" : "Abrir menú"}
+          aria-expanded={isMenuOpen}
+          aria-controls="sidebar-menu"
+        >
+          <span className={styles.toggleLine}></span>
+          <span className={styles.toggleLine}></span>
+        </button>
         <div className={styles.logoSection}>
           <svg className={styles.brandCarIcon} viewBox="0 0 24 24" fill="none" aria-hidden="true">
             <path d="M5 11l1.5-4.5A2 2 0 0 1 8.4 5h7.2a2 2 0 0 1 1.9 1.5L19 11v7h-2v-2H7v2H5v-7Z" stroke="currentColor" strokeWidth="1.7"/>
@@ -149,16 +159,6 @@ const Navegador = () => {
           </div>
           <div className={styles.topbarActions}>
             <input className={styles.searchInput} placeholder="Buscar..." value={query} onChange={handleSearchChange} />
-            <button
-              type="button"
-              className={styles.menuToggle}
-              onClick={toggleMenu}
-              aria-label={isMenuOpen ? "Cerrar menú" : "Abrir menú"}
-              aria-expanded={isMenuOpen}
-              aria-controls="sidebar-menu"
-            >
-              {isMenuOpen ? "✕ Cerrar menú" : "☰ Abrir menú"}
-            </button>
           </div>
         </header>
         <div className={styles.pageContent}>
