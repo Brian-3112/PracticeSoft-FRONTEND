@@ -110,13 +110,16 @@
 }
 
 .menuToggleInTopbar {
-  margin-right: 8px;
+  margin-right: 4px;
+  margin-left: -6px;
+  width: 20px;
+  height: 16px;
 }
 
 .topbarTitleRow {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 4px;
 }
 
 .toggleBar {
@@ -134,6 +137,15 @@
 .bottom { top: 16px; }
 
 
+
+.menuToggleInTopbar .toggleBar {
+  width: 14px;
+  height: 2px;
+  left: 3px;
+}
+
+.menuToggleInTopbar .middle { top: 7px; }
+.menuToggleInTopbar .bottom { top: 14px; }
 .menuToggleInTopbar .toggleBar {
   background: #111;
   box-shadow: none;
