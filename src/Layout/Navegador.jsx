@@ -74,7 +74,7 @@ const Navegador = () => {
   if (loading) return 'Cargando...';
 
   const toggleMenu = () => setIsMenuOpen((prev) => !prev);
-  const handleLinkClick = () => setIsMenuOpen(false);
+  const closeMenu = () => setIsMenuOpen(false);
   const query = searchParams.get('q') ?? '';
 
   const userDisplayName = getUserDisplayName(auth);
@@ -92,7 +92,7 @@ const Navegador = () => {
 
   return (
     <div className={styles.appLayout}>
-      {isMenuOpen && <button type="button" className={styles.menuOverlay} onClick={handleLinkClick} aria-label="Cerrar menú" />}
+      {isMenuOpen && <button type="button" className={styles.menuOverlay} onClick={closeMenu} aria-label="Cerrar menú" />}
       <aside id="sidebar-menu" className={`${styles.sidebar} ${isMenuOpen ? styles.sidebarOpen : ""} ${!isMenuOpen ? styles.sidebarCollapsed : ""}`}>
         <div className={styles.logoSection}>
           <svg className={styles.brandCarIcon} viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -126,7 +126,7 @@ const Navegador = () => {
               <Link
                 key={item.to}
                 to={item.to}
-                onClick={handleLinkClick}
+                
                 className={`${styles.menuLink} ${location.pathname === item.to ? styles.menuLinkActive : ''}`}
               >
                 <Icon />
