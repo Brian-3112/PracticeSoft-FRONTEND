@@ -325,15 +325,14 @@ const Agregarrenta = () => {
                                             </div>
 
                                             <div className={styles.totalPreviewContainer}>
-                                                <span className={styles.totalPreviewLabel}>Valor Total</span>
-                                                <div className={styles.totalPreviewBox}>
+                                                <span className={styles.totalPreviewInline}>
                                                     {totalEstimado.toLocaleString('es-CO', {
                                                         style: 'currency',
                                                         currency: 'COP',
                                                         minimumFractionDigits: 0,
                                                         maximumFractionDigits: 0
                                                     })}
-                                                </div>
+                                                </span>
                                             </div>
 
                                         </div>
