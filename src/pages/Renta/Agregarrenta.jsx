@@ -91,6 +91,22 @@ const Agregarrenta = () => {
         });
     };
 
+    const calcularTotalEstimado = () => {
+        const valorDia = Number(formData.valorDia);
+        const fechaEntrega = combineDateAndTime(formData.fechaEntrega, formData.horaEntrega);
+        const fechaDevolucion = combineDateAndTime(formData.fechaDevolucion, formData.horaDevolucion);
+
+        if (!valorDia || !fechaEntrega || !fechaDevolucion || fechaDevolucion <= fechaEntrega) {
+            return 0;
+        }
+
+        const diffMs = fechaDevolucion.getTime() - fechaEntrega.getTime();
+        const dias = Math.max(1, Math.ceil(diffMs / (1000 * 60 * 60 * 24)));
+        return dias * valorDia;
+    };
+
+    const totalEstimado = calcularTotalEstimado();
+
     // Valida en tiempo real mientras el usuario escribe.
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -306,6 +322,18 @@ const Agregarrenta = () => {
                                                     />
                                                     {errors.valorDia && <span className={styles.fieldError}>{errors.valorDia}</span>}
                                                 </label>
+                                            </div>
+
+                                            <div className={styles.totalPreviewContainer}>
+                                                <span className={styles.totalPreviewLabel}>Valor Total</span>
+                                                <div className={styles.totalPreviewBox}>
+                                                    {totalEstimado.toLocaleString('es-CO', {
+                                                        style: 'currency',
+                                                        currency: 'COP',
+                                                        minimumFractionDigits: 0,
+                                                        maximumFractionDigits: 0
+                                                    })}
+                                                </div>
                                             </div>
 
                                         </div>
