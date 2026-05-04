@@ -78,14 +78,6 @@ const createParagraphXml = (text, options = {}) => {
   return `<w:p><w:pPr>${justification}${spacing}</w:pPr><w:r><w:rPr>${bold}${fontSize}${color}</w:rPr><w:t xml:space="preserve">${escapeXml(text)}</w:t></w:r></w:p>`;
 };
 
-const createEmptyParagraphXml = () => '<w:p/>';
-
-const createSectionHeadingXml = (text) => createParagraphXml(text, {
-  bold: true,
-  color: '173680',
-  fontSize: 24,
-  spacing: true,
-});
 
 const findEndOfCentralDirectory = (zipBytes) => {
   for (let index = zipBytes.length - 22; index >= 0; index -= 1) {
@@ -242,19 +234,24 @@ const createZipFromEntries = (entries) => {
   return concatUint8Arrays([...localParts, centralDirectory, endRecord]);
 };
 
-const insertReportIntoTemplate = (documentXml, reportXml) => {
+const insertReportBeforeOwnerSignature = (documentXml, reportXml) => {
+  const signatureTextIndex = documentXml.search(/CORDIALMENTE\.?/i);
+
+  if (signatureTextIndex !== -1) {
+    const signatureParagraphIndex = documentXml.lastIndexOf('<w:p', signatureTextIndex);
+
+    if (signatureParagraphIndex !== -1) {
+      return `${documentXml.slice(0, signatureParagraphIndex)}${reportXml}${documentXml.slice(signatureParagraphIndex)}`;
+    }
+  }
+
   const sectionIndex = documentXml.lastIndexOf('<w:sectPr');
 
   if (sectionIndex !== -1) {
     return `${documentXml.slice(0, sectionIndex)}${reportXml}${documentXml.slice(sectionIndex)}`;
   }
 
-  const bodyEndIndex = documentXml.lastIndexOf('</w:body>');
-  if (bodyEndIndex !== -1) {
-    return `${documentXml.slice(0, bodyEndIndex)}${reportXml}${documentXml.slice(bodyEndIndex)}`;
-  }
-
-  throw new Error('No se encontró el cuerpo del documento en la plantilla.');
+  throw new Error('No se encontró el espacio de la firma en la plantilla.');
 };
 
 const createStoredEntry = (name, content) => {
@@ -271,7 +268,7 @@ const createStoredEntry = (name, content) => {
   };
 };
 
-const createExecutiveReportDocxFromTemplate = async (lines) => {
+const createExecutiveReportDocxFromTemplate = async (paragraphs) => {
   const response = await fetch(DASHBOARD_TEMPLATE_PATH);
 
   if (!response.ok) {
@@ -287,12 +284,17 @@ const createExecutiveReportDocxFromTemplate = async (lines) => {
   }
 
   const documentXml = await decodeZipEntryContent(entries[documentEntryIndex]);
-  const reportXml = [
-    '<w:p><w:r><w:br w:type="page"/></w:r></w:p>',
-    createParagraphXml('REPORTE DEL DASHBOARD', { bold: true, center: true, color: '173680', fontSize: 30, spacing: true }),
-    ...lines,
-  ].join('');
-  const updatedDocumentXml = insertReportIntoTemplate(documentXml, reportXml);
+  const reportXml = paragraphs.map((paragraph, index) => (
+    paragraph
+      ? createParagraphXml(paragraph, {
+        bold: index === 0,
+        center: index === 0,
+        fontSize: index === 0 ? 28 : 22,
+        spacing: Boolean(paragraph),
+      })
+      : '<w:p/>'
+  )).join('');
+  const updatedDocumentXml = insertReportBeforeOwnerSignature(documentXml, reportXml);
   const updatedEntries = entries.map((entry, index) => (
     index === documentEntryIndex ? createStoredEntry(entry.name, updatedDocumentXml) : entry
   ));
@@ -411,36 +413,18 @@ const Dashboard = () => {
       currency: 'COP',
       minimumFractionDigits: 2,
     });
-    const ingresosPorMesXml = labelsMeses.map((mes, index) => (
-      createParagraphXml(`${mes}: ${Number(ingresosPorMes[index] || 0).toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}`)
-    ));
-    const vehiculosXml = vehiculosOrdenados.length > 0
-      ? vehiculosOrdenados.map(([nombre, valores]) => (
-        createParagraphXml(`${nombre}: ${valores.salidas} salidas · ${valores.ingresos.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}`)
-      ))
-      : [createParagraphXml('No hay rentas registradas este mes.')];
 
     const reporteLineas = [
-      createParagraphXml(`Fecha de generación: ${fechaGeneracion}`),
-      createEmptyParagraphXml(),
-      createSectionHeadingXml('Resumen financiero'),
-      createParagraphXml(`Ingresos del mes (${nombreMes}): ${ingresoMensualTexto}`),
-      createParagraphXml(`Ingresos anuales acumulados: ${ingresoAnualTexto}`),
-      createParagraphXml(`Clientes registrados: ${clientesTotal}`),
-      createEmptyParagraphXml(),
-      createSectionHeadingXml('Estado de rentas'),
-      createParagraphXml(`En curso: ${estadoRentas.enCurso}`),
-      createParagraphXml(`Pendientes: ${estadoRentas.pendiente}`),
-      createParagraphXml(`Finalizadas: ${estadoRentas.finalizada}`),
-      createParagraphXml(`Total de rentas: ${rentas.length}`),
-      createEmptyParagraphXml(),
-      createSectionHeadingXml('Ingresos por mes'),
-      ...ingresosPorMesXml,
-      createEmptyParagraphXml(),
-      createSectionHeadingXml('Carros que salieron en el mes'),
-      ...vehiculosXml,
-      createEmptyParagraphXml(),
-      createParagraphXml('Reporte generado con la información actual del dashboard de ANTIOCAR.'),
+      'REPORTE EJECUTIVO DE INGRESOS – ANTIOCAR',
+      `Fecha de generación: ${fechaGeneracion}`,
+      '',
+      'Estimados directivos,',
+      '',
+      `A continuación, se presenta el resumen financiero correspondiente al periodo actual. El ingreso mensual del mes de ${nombreMes} asciende a ${ingresoMensualTexto}, mientras que el ingreso anual acumulado registra un total de ${ingresoAnualTexto}. Estos resultados reflejan el comportamiento financiero del periodo y proporcionan una base clara para el análisis y la toma de decisiones estratégicas.`,
+      '',
+      'Cordialmente,',
+      'Sistema de Gestión ANTIOCAR',
+      '',
     ];
 
     try {
@@ -448,7 +432,7 @@ const Dashboard = () => {
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.download = `reporte-dashboard-antioCar-${fechaActual.toISOString().slice(0, 10)}.docx`;
+      link.download = `reporte-ejecutivo-antioCar-${fechaActual.toISOString().slice(0, 10)}.docx`;
       document.body.appendChild(link);
       link.click();
       link.remove();
