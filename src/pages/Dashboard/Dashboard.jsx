@@ -5,6 +5,166 @@ import { Line, Doughnut, Bar } from 'react-chartjs-2';
 import styles from '../Dashboard/Dashboard.module.css';
 import 'chart.js/auto';
 
+const textEncoder = new TextEncoder();
+
+const escapeXml = (value) => String(value)
+  .replace(/&/g, '&amp;')
+  .replace(/</g, '&lt;')
+  .replace(/>/g, '&gt;')
+  .replace(/"/g, '&quot;')
+  .replace(/'/g, '&apos;');
+
+const createCrcTable = () => {
+  const table = new Uint32Array(256);
+
+  for (let i = 0; i < 256; i += 1) {
+    let crc = i;
+    for (let j = 0; j < 8; j += 1) {
+      crc = (crc & 1) ? (0xedb88320 ^ (crc >>> 1)) : (crc >>> 1);
+    }
+    table[i] = crc >>> 0;
+  }
+
+  return table;
+};
+
+const crcTable = createCrcTable();
+
+const calculateCrc32 = (data) => {
+  let crc = 0xffffffff;
+
+  data.forEach((byte) => {
+    crc = crcTable[(crc ^ byte) & 0xff] ^ (crc >>> 8);
+  });
+
+  return (crc ^ 0xffffffff) >>> 0;
+};
+
+const writeUint16 = (buffer, offset, value) => {
+  buffer[offset] = value & 0xff;
+  buffer[offset + 1] = (value >>> 8) & 0xff;
+};
+
+const writeUint32 = (buffer, offset, value) => {
+  buffer[offset] = value & 0xff;
+  buffer[offset + 1] = (value >>> 8) & 0xff;
+  buffer[offset + 2] = (value >>> 16) & 0xff;
+  buffer[offset + 3] = (value >>> 24) & 0xff;
+};
+
+const concatUint8Arrays = (arrays) => {
+  const totalLength = arrays.reduce((acc, array) => acc + array.length, 0);
+  const result = new Uint8Array(totalLength);
+  let offset = 0;
+
+  arrays.forEach((array) => {
+    result.set(array, offset);
+    offset += array.length;
+  });
+
+  return result;
+};
+
+const createStoredZip = (files) => {
+  const localParts = [];
+  const centralParts = [];
+  let offset = 0;
+
+  files.forEach(({ name, content }) => {
+    const nameBytes = textEncoder.encode(name);
+    const contentBytes = textEncoder.encode(content);
+    const crc = calculateCrc32(contentBytes);
+
+    const localHeader = new Uint8Array(30 + nameBytes.length);
+    writeUint32(localHeader, 0, 0x04034b50);
+    writeUint16(localHeader, 4, 20);
+    writeUint16(localHeader, 6, 0);
+    writeUint16(localHeader, 8, 0);
+    writeUint16(localHeader, 10, 0);
+    writeUint16(localHeader, 12, 0);
+    writeUint32(localHeader, 14, crc);
+    writeUint32(localHeader, 18, contentBytes.length);
+    writeUint32(localHeader, 22, contentBytes.length);
+    writeUint16(localHeader, 26, nameBytes.length);
+    writeUint16(localHeader, 28, 0);
+    localHeader.set(nameBytes, 30);
+
+    localParts.push(localHeader, contentBytes);
+
+    const centralHeader = new Uint8Array(46 + nameBytes.length);
+    writeUint32(centralHeader, 0, 0x02014b50);
+    writeUint16(centralHeader, 4, 20);
+    writeUint16(centralHeader, 6, 20);
+    writeUint16(centralHeader, 8, 0);
+    writeUint16(centralHeader, 10, 0);
+    writeUint16(centralHeader, 12, 0);
+    writeUint16(centralHeader, 14, 0);
+    writeUint32(centralHeader, 16, crc);
+    writeUint32(centralHeader, 20, contentBytes.length);
+    writeUint32(centralHeader, 24, contentBytes.length);
+    writeUint16(centralHeader, 28, nameBytes.length);
+    writeUint16(centralHeader, 30, 0);
+    writeUint16(centralHeader, 32, 0);
+    writeUint16(centralHeader, 34, 0);
+    writeUint16(centralHeader, 36, 0);
+    writeUint32(centralHeader, 38, 0);
+    writeUint32(centralHeader, 42, offset);
+    centralHeader.set(nameBytes, 46);
+
+    centralParts.push(centralHeader);
+    offset += localHeader.length + contentBytes.length;
+  });
+
+  const centralDirectory = concatUint8Arrays(centralParts);
+  const endRecord = new Uint8Array(22);
+  writeUint32(endRecord, 0, 0x06054b50);
+  writeUint16(endRecord, 4, 0);
+  writeUint16(endRecord, 6, 0);
+  writeUint16(endRecord, 8, files.length);
+  writeUint16(endRecord, 10, files.length);
+  writeUint32(endRecord, 12, centralDirectory.length);
+  writeUint32(endRecord, 16, offset);
+  writeUint16(endRecord, 20, 0);
+
+  return concatUint8Arrays([...localParts, centralDirectory, endRecord]);
+};
+
+const createParagraphXml = (text, options = {}) => {
+  const bold = options.bold ? '<w:b/>' : '';
+  const fontSize = options.fontSize ? `<w:sz w:val="${options.fontSize}"/>` : '';
+  const justification = options.center ? '<w:jc w:val="center"/>' : '';
+
+  return `<w:p><w:pPr>${justification}</w:pPr><w:r><w:rPr>${bold}${fontSize}</w:rPr><w:t xml:space="preserve">${escapeXml(text)}</w:t></w:r></w:p>`;
+};
+
+const createExecutiveReportDocx = (lines) => {
+  const documentBody = lines.map((line, index) => createParagraphXml(line, {
+    bold: index === 0,
+    center: index === 0,
+    fontSize: index === 0 ? 28 : 22,
+  })).join('');
+
+  const documentXml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body>${documentBody}<w:sectPr><w:pgSz w:w="12240" w:h="15840"/><w:pgMar w:top="1440" w:right="1440" w:bottom="1440" w:left="1440"/></w:sectPr></w:body></w:document>`;
+
+  const zipContent = createStoredZip([
+    {
+      name: '[Content_Types].xml',
+      content: '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/></Types>',
+    },
+    {
+      name: '_rels/.rels',
+      content: '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>',
+    },
+    {
+      name: 'word/document.xml',
+      content: documentXml,
+    },
+  ]);
+
+  return new Blob([zipContent], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
+};
+
 const Dashboard = () => {
   const { auth, loading } = useAuth();
   const { ingresosMes, clientesTotal, ingresosPorMes, rentas, ingresosAnual } = useDashboard();
@@ -98,12 +258,45 @@ const Dashboard = () => {
   };
 
   const handleDescargarReporte = () => {
+    const fechaActual = new Date();
+    const fechaGeneracion = fechaActual.toLocaleDateString('es-CO', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    });
+    const nombreMes = fechaActual.toLocaleDateString('es-CO', { month: 'long' });
+    const ingresoMensualTexto = ingresosMes.toLocaleString('es-CO', {
+      style: 'currency',
+      currency: 'COP',
+      minimumFractionDigits: 2,
+    });
+    const ingresoAnualTexto = ingresosAnual.toLocaleString('es-CO', {
+      style: 'currency',
+      currency: 'COP',
+      minimumFractionDigits: 2,
+    });
+
+    const reporteLineas = [
+      'REPORTE EJECUTIVO DE INGRESOS – ANTIOCAR',
+      `Fecha de generación: ${fechaGeneracion}`,
+      '',
+      'Estimados directivos,',
+      '',
+      `A continuación, se presenta el resumen financiero correspondiente al periodo actual. El ingreso mensual del mes de ${nombreMes} asciende a ${ingresoMensualTexto}, mientras que el ingreso anual acumulado registra un total de ${ingresoAnualTexto}. Estos resultados reflejan el comportamiento financiero del periodo y proporcionan una base clara para el análisis y la toma de decisiones estratégicas.`,
+      '',
+      'Cordialmente,',
+      'Sistema de Gestión ANTIOCAR',
+    ];
+
+    const blob = createExecutiveReportDocx(reporteLineas);
+    const url = window.URL.createObjectURL(blob);
     const link = document.createElement('a');
-    link.href = '/Reportes/Certificado.docx';
-    link.download = 'Certificado.docx';
+    link.href = url;
+    link.download = `reporte-ejecutivo-antioCar-${fechaActual.toISOString().slice(0, 10)}.docx`;
     document.body.appendChild(link);
     link.click();
     link.remove();
+    window.URL.revokeObjectURL(url);
   };
 
   return (
