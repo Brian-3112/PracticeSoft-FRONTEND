@@ -17,17 +17,20 @@ export const VehiculoProvider = ({ children }) => {
 
 
     //funcion para ver que vehiculos estas disponibles
+    const consultarRentas = async () => {
+        try {
+            const { data } = await clienteAxios.get('/rentas', config);
+            setRentas(data);
+        } catch (error) {
+            console.error('Error cargando rentas', error);
+        }
+    };
+
     useEffect(() => {
-        const obtenerRentas = async () => {
-            try {
-                const { data } = await clienteAxios.get("/rentas", config);
-                setRentas(data);
-            } catch (error) {
-                console.error("Error cargando rentas", error);
-            }
-        };
-        obtenerRentas();
-    }, []);
+        if (auth) {
+            consultarRentas();
+        }
+    }, [auth]);
 
 
 
@@ -199,7 +202,7 @@ export const VehiculoProvider = ({ children }) => {
 
 
     return (
-        <VehiculoContext.Provider value={{ vehiculos, agregarVehiculo, actualizarVehiculo, eliminarVehiculo, rentas, consultarVehiculos }}>
+        <VehiculoContext.Provider value={{ vehiculos, agregarVehiculo, actualizarVehiculo, eliminarVehiculo, rentas, consultarVehiculos, consultarRentas }}>
             {children}
         </VehiculoContext.Provider>
     );

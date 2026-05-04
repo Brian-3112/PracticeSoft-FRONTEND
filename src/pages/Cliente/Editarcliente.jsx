@@ -10,6 +10,9 @@ const initialErrors = {
     celular: ''
 };
 
+const toTitleCaseByWords = (value) =>
+    String(value).replace(/\b([a-záéíóúñü])/gi, (letter) => letter.toUpperCase());
+
 // Reglas de validacion compartidas para los campos obligatorios.
 const validateField = (name, value) => {
     const trimmedValue = value.trim();
@@ -76,15 +79,16 @@ const Editarcliente = ({ cliente, onClose }) => {
     // Validacion en tiempo real.
     const handleChange = (e) => {
         const { name, value } = e.target;
+        const nextValue = name === 'nombre' ? toTitleCaseByWords(value) : value;
         setFormData((prev) => ({
             ...prev,
-            [name]: value
+            [name]: nextValue
         }));
 
         if (Object.prototype.hasOwnProperty.call(initialErrors, name)) {
             setErrors((prev) => ({
                 ...prev,
-                [name]: validateField(name, value)
+                [name]: validateField(name, nextValue)
             }));
         }
     };

@@ -59,6 +59,7 @@ export const RentaProvider = ({ children }) => {
 
             await Promise.all([
                 vehiculoContext?.consultarVehiculos?.(),
+                vehiculoContext?.consultarRentas?.(),
                 dashboardContext?.calcularDashboard?.(),
             ]);
 
