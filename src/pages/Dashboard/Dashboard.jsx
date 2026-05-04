@@ -170,6 +170,15 @@ const inflateRaw = async (data) => {
   return new Uint8Array(await new Response(stream).arrayBuffer());
 };
 
+const deflateRaw = async (data) => {
+  if (!('CompressionStream' in window)) {
+    throw new Error('El navegador no permite comprimir plantillas DOCX.');
+  }
+
+  const stream = new Blob([data]).stream().pipeThrough(new CompressionStream('deflate-raw'));
+  return new Uint8Array(await new Response(stream).arrayBuffer());
+};
+
 const decodeZipEntryContent = async (entry) => {
   if (entry.compressionMethod === 0) {
     return textDecoder.decode(entry.compressedData);
@@ -264,18 +273,19 @@ const insertReportBeforeOwnerSignature = (documentXml, reportXml) => {
   throw new Error('No se encontró el espacio de la firma en la plantilla.');
 };
 
-const createStoredEntry = (entry, content) => {
+const createDeflatedEntry = async (entry, content) => {
   const contentBytes = textEncoder.encode(content);
+  const compressedData = await deflateRaw(contentBytes);
 
   return {
     ...entry,
-    versionNeeded: 10,
-    flags: 0,
-    compressionMethod: 0,
+    versionNeeded: Math.max(entry.versionNeeded, 20),
+    flags: entry.flags & 0x800,
+    compressionMethod: 8,
     crc: calculateCrc32(contentBytes),
-    compressedSize: contentBytes.length,
+    compressedSize: compressedData.length,
     uncompressedSize: contentBytes.length,
-    compressedData: contentBytes,
+    compressedData,
   };
 };
 
@@ -306,8 +316,9 @@ const createExecutiveReportDocxFromTemplate = async (paragraphs) => {
       : '<w:p/>'
   )).join('');
   const updatedDocumentXml = insertReportBeforeOwnerSignature(documentXml, reportXml);
+  const updatedDocumentEntry = await createDeflatedEntry(entries[documentEntryIndex], updatedDocumentXml);
   const updatedEntries = entries.map((entry, index) => (
-    index === documentEntryIndex ? createStoredEntry(entry, updatedDocumentXml) : entry
+    index === documentEntryIndex ? updatedDocumentEntry : entry
   ));
 
   const zipContent = createZipFromEntries(updatedEntries);
