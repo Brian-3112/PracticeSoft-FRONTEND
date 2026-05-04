@@ -31,8 +31,7 @@ const validateField = (name, value) => {
 
 const Editarvehiculo = ({ vehiculo, onClose }) => {
 
-    const { auth, loading } = useAuth();
-    if (loading) return 'Cargando...';
+    const { loading } = useAuth();
 
     const { actualizarVehiculo } = useVehiculo();
 
@@ -40,6 +39,7 @@ const Editarvehiculo = ({ vehiculo, onClose }) => {
         nombreVehiculo: '', placa: '', transito: '', fechaSOAT: '', fechaTecno: '', description: ''
     });
     const [errors, setErrors] = useState(initialErrors);
+    if (loading) return 'Cargando...';
 
     // Carga los datos del vehiculo seleccionado en el formulario.
     useEffect(() => {

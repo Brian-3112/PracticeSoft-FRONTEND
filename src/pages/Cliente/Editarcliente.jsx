@@ -35,8 +35,7 @@ const validateField = (name, value) => {
 
 const Editarcliente = ({ cliente, onClose }) => {
 
-    const { auth, loading } = useAuth();
-    if (loading) return 'Cargando...';
+    const { loading } = useAuth();
 
     const { actualizarCliente } = useCliente();
 
@@ -45,6 +44,7 @@ const Editarcliente = ({ cliente, onClose }) => {
         direccionPersonal: '', telefonoPersonal: ''
     });
     const [errors, setErrors] = useState(initialErrors);
+    if (loading) return 'Cargando...';
 
     // Precarga los datos del cliente seleccionado en el formulario.
     useEffect(() => {

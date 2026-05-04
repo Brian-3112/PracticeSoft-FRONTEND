@@ -118,7 +118,7 @@ export const RentaProvider = ({ children }) => {
             window.URL.revokeObjectURL(url);
 
             return true;
-        } catch (error) {
+        } catch {
             const selectedRentaId = rentaId || rentaPayload?.id || null;
             Swal.fire({
                 title: 'Advertencia',

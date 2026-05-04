@@ -35,13 +35,13 @@ const validateField = (name, value) => {
 };
 
 const Agregarvehiculo = () => {
-  const { auth, loading } = useAuth();
-  if (loading) return 'Cargando...';
+  const { loading } = useAuth();
 
   const { agregarVehiculo } = useVehiculo();
   const [show, setShow] = useState(false);
   const [formData, setFormData] = useState(initialFormData);
   const [errors, setErrors] = useState(initialErrors);
+  if (loading) return 'Cargando...';
 
   const validateRequiredFields = (dataToValidate) => {
     return {

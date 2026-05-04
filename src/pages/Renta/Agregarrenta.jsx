@@ -40,13 +40,13 @@ const validateField = (name, value) => {
 
 const Agregarrenta = () => {
 
-    const { auth, loading } = useAuth();
-    if (loading) return 'Cargando...';
+    const { loading } = useAuth();
 
 
     const { agregarRenta, isCreatingRenta, rentas } = useRenta();
     const { clientes } = useCliente();
     const { vehiculos } = useVehiculo();
+    if (loading) return 'Cargando...';
 
     /// Funcionalidad para cerrar el modal
     const [show, setShow] = useState(false);

@@ -44,13 +44,13 @@ const validateField = (name, value) => {
 
 const Agregarcliente = () => {
     // Verifica si el usuario esta autenticado.
-    const { auth, loading } = useAuth();
-    if (loading) return 'Cargando...';
+    const { loading } = useAuth();
 
     const { agregarCliente } = useCliente();
     const [show, setShow] = useState(false);
     const [formData, setFormData] = useState(initialFormData);
     const [errors, setErrors] = useState(initialErrors);
+    if (loading) return 'Cargando...';
 
     // Revalida los campos obligatorios antes de enviar. 
     const validateRequiredFields = (dataToValidate) => {
