@@ -17,6 +17,26 @@
   margin: 0 30px;
 }
 
+.reportActions {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 14px;
+}
+
+.reportButton {
+  border: 0;
+  border-radius: 10px;
+  padding: 10px 14px;
+  background: var(--primary);
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.reportButton:hover {
+  opacity: 0.92;
+}
+
 .statsContainer {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));

@@ -97,9 +97,70 @@ const Dashboard = () => {
     ],
   };
 
+  const handleDescargarReporte = () => {
+    const fechaActual = new Date();
+    const fechaGeneracion = fechaActual.toLocaleDateString('es-CO', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    });
+
+    const nombreMes = fechaActual.toLocaleDateString('es-CO', { month: 'long' });
+    const topVehiculosTexto = vehiculosOrdenados.length
+      ? vehiculosOrdenados
+        .map(([nombre, valores], index) =>
+          `${index + 1}. ${nombre}: ${valores.salidas} salidas, ${valores.ingresos.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}`
+        )
+        .join('\n')
+      : 'No se registraron rentas para el mes actual.';
+
+    const reporte = `REPORTE EJECUTIVO DE INGRESOS - ANTIOCAR
+Fecha de generación: ${fechaGeneracion}
+
+Estimados directivos,
+
+Por medio del presente informe se comparte el resumen financiero del periodo actual:
+
+1. Ingreso mensual (${nombreMes}):
+   ${ingresosMes.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}
+
+2. Ingreso anual acumulado:
+   ${ingresosAnual.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}
+
+3. Estado de rentas:
+   - En curso: ${estadoRentas.enCurso}
+   - Pendiente: ${estadoRentas.pendiente}
+   - Finalizada: ${estadoRentas.finalizada}
+
+4. Vehículos con mayor generación de ingresos del mes:
+${topVehiculosTexto}
+
+Conclusión:
+Los resultados evidencian el desempeño operativo y comercial del periodo, permitiendo identificar la participación de cada vehículo en la generación de ingresos y facilitando la toma de decisiones estratégicas.
+
+Cordialmente,
+Sistema de Gestión ANTIOCAR
+`;
+
+    const blob = new Blob([reporte], { type: 'text/plain;charset=utf-8' });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `reporte-dashboard-${fechaActual.toISOString().slice(0, 10)}.txt`;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    window.URL.revokeObjectURL(url);
+  };
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.dashboardContainer}>
+        <div className={styles.reportActions}>
+          <button type="button" className={styles.reportButton} onClick={handleDescargarReporte}>
+            Descargar reporte formal
+          </button>
+        </div>
         <div className={styles.statsContainer}>
           <div className={styles.statCard}>
             <div className={styles.statIcon}>💰</div>
