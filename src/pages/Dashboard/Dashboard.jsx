@@ -106,37 +106,15 @@ const Dashboard = () => {
     });
 
     const nombreMes = fechaActual.toLocaleDateString('es-CO', { month: 'long' });
-    const topVehiculosTexto = vehiculosOrdenados.length
-      ? vehiculosOrdenados
-        .map(([nombre, valores], index) =>
-          `${index + 1}. ${nombre}: ${valores.salidas} salidas, ${valores.ingresos.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}`
-        )
-        .join('\n')
-      : 'No se registraron rentas para el mes actual.';
+    const ingresoMensualTexto = ingresosMes.toLocaleString('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 2 });
+    const ingresoAnualTexto = ingresosAnual.toLocaleString('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 2 });
 
-    const reporte = `REPORTE EJECUTIVO DE INGRESOS - ANTIOCAR
+    const reporte = `REPORTE EJECUTIVO DE INGRESOS – ANTIOCAR
 Fecha de generación: ${fechaGeneracion}
 
 Estimados directivos,
 
-Por medio del presente informe se comparte el resumen financiero del periodo actual:
-
-1. Ingreso mensual (${nombreMes}):
-   ${ingresosMes.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}
-
-2. Ingreso anual acumulado:
-   ${ingresosAnual.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}
-
-3. Estado de rentas:
-   - En curso: ${estadoRentas.enCurso}
-   - Pendiente: ${estadoRentas.pendiente}
-   - Finalizada: ${estadoRentas.finalizada}
-
-4. Vehículos con mayor generación de ingresos del mes:
-${topVehiculosTexto}
-
-Conclusión:
-Los resultados evidencian el desempeño operativo y comercial del periodo, permitiendo identificar la participación de cada vehículo en la generación de ingresos y facilitando la toma de decisiones estratégicas.
+A continuación, se presenta el resumen financiero correspondiente al periodo actual. El ingreso mensual del mes de ${nombreMes} asciende a ${ingresoMensualTexto}, mientras que el ingreso anual acumulado registra un total de ${ingresoAnualTexto}. Estos resultados reflejan el comportamiento financiero del periodo y proporcionan una base clara para el análisis y la toma de decisiones estratégicas.
 
 Cordialmente,
 Sistema de Gestión ANTIOCAR
