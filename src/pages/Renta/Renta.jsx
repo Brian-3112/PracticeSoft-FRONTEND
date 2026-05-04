@@ -35,6 +35,69 @@ const getMonthFromQuery = (query) => {
     ))?.month;
 };
 
+const getMonthByTerm = (termToSearch) => MONTH_SEARCH_TERMS.find(({ terms }) => (
+    terms.includes(termToSearch)
+))?.month;
+
+const normalizeYear = (yearValue) => {
+    if (!yearValue) return undefined;
+    const year = Number(yearValue);
+    if (yearValue.length === 2) return 2000 + year;
+    return year;
+};
+
+const isValidDateParts = ({ day, month, year }) => {
+    if (!Number.isInteger(day) || !Number.isInteger(month)) return false;
+    if (day < 1 || month < 0 || month > 11) return false;
+
+    const validationYear = year ?? 2024;
+    const date = new Date(validationYear, month, day);
+    return date.getFullYear() === validationYear
+        && date.getMonth() === month
+        && date.getDate() === day;
+};
+
+const getDateFromQuery = (query) => {
+    const isoDateMatch = query.match(/\b(\d{4})[-/](\d{1,2})[-/](\d{1,2})\b/);
+    if (isoDateMatch) {
+        const [, yearValue, monthValue, dayValue] = isoDateMatch;
+        const dateParts = {
+            day: Number(dayValue),
+            month: Number(monthValue) - 1,
+            year: normalizeYear(yearValue),
+        };
+
+        return isValidDateParts(dateParts) ? dateParts : undefined;
+    }
+
+    const numericDateMatch = query.match(/\b(\d{1,2})[/-](\d{1,2})(?:[/-](\d{2,4}))?\b/);
+    if (numericDateMatch) {
+        const [, dayValue, monthValue, yearValue] = numericDateMatch;
+        const dateParts = {
+            day: Number(dayValue),
+            month: Number(monthValue) - 1,
+            year: normalizeYear(yearValue),
+        };
+
+        return isValidDateParts(dateParts) ? dateParts : undefined;
+    }
+
+    const textDateMatch = query.match(/\b(\d{1,2})(?:\s+de)?\s+([a-z]+)(?:\s+(?:de\s+)?(\d{2,4}))?\b/);
+    if (textDateMatch) {
+        const [, dayValue, monthTerm, yearValue] = textDateMatch;
+        const month = getMonthByTerm(monthTerm);
+        const dateParts = {
+            day: Number(dayValue),
+            month,
+            year: normalizeYear(yearValue),
+        };
+
+        return isValidDateParts(dateParts) ? dateParts : undefined;
+    }
+
+    return undefined;
+};
+
 const isMonthBetweenDates = (month, startDate, endDate) => {
     if (!startDate && !endDate) return false;
     if (!startDate) return endDate.getMonth() === month;
@@ -46,6 +109,31 @@ const isMonthBetweenDates = (month, startDate, endDate) => {
     while (cursor <= lastMonth) {
         if (cursor.getMonth() === month) return true;
         cursor.setMonth(cursor.getMonth() + 1);
+    }
+
+    return false;
+};
+
+const isSpecificDateBetweenDates = ({ day, month, year }, startDate, endDate) => {
+    if (!startDate && !endDate) return false;
+
+    if (!startDate || !endDate) {
+        const dateToCompare = startDate ?? endDate;
+        return dateToCompare.getDate() === day
+            && dateToCompare.getMonth() === month
+            && (year === undefined || dateToCompare.getFullYear() === year);
+    }
+
+    if (year !== undefined) {
+        const searchedDate = new Date(year, month, day);
+        return searchedDate >= startDate && searchedDate <= endDate;
+    }
+
+    for (let currentYear = startDate.getFullYear(); currentYear <= endDate.getFullYear(); currentYear += 1) {
+        const searchedDate = new Date(currentYear, month, day);
+        if (searchedDate.getMonth() === month && searchedDate >= startDate && searchedDate <= endDate) {
+            return true;
+        }
     }
 
     return false;
@@ -73,6 +161,7 @@ const Renta = () => {
     const [searchParams] = useSearchParams();
     const query = normalizeSearchText(searchParams.get('q') ?? '');
     const selectedMonth = getMonthFromQuery(query);
+    const searchedDate = getDateFromQuery(query);
 
     const rentasFiltradas = !query
         ? rentas
@@ -85,10 +174,13 @@ const Renta = () => {
             const coincideTexto = nombreCliente.includes(query)
                 || nombreVehiculo.includes(query)
                 || placaVehiculo.includes(query);
-            const coincideMes = selectedMonth !== undefined
+            const coincideFecha = searchedDate !== undefined
+                && isSpecificDateBetweenDates(searchedDate, fechaEntrega, fechaDevolucion);
+            const coincideMes = searchedDate === undefined
+                && selectedMonth !== undefined
                 && isMonthBetweenDates(selectedMonth, fechaEntrega, fechaDevolucion);
 
-            return coincideTexto || coincideMes;
+            return coincideTexto || coincideFecha || coincideMes;
         });
     const handleDownloadContrato = async (rentaId) => {
         await descargarContrato({ rentaId });
