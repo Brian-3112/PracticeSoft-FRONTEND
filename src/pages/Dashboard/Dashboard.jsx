@@ -5,7 +5,10 @@ import { Line, Doughnut, Bar } from 'react-chartjs-2';
 import styles from '../Dashboard/Dashboard.module.css';
 import 'chart.js/auto';
 
+const DASHBOARD_TEMPLATE_PATH = '/templates/Certificado.docx';
+
 const textEncoder = new TextEncoder();
+const textDecoder = new TextDecoder();
 
 const escapeXml = (value) => String(value)
   .replace(/&/g, '&amp;')
@@ -65,43 +68,153 @@ const concatUint8Arrays = (arrays) => {
   return result;
 };
 
-const createStoredZip = (files) => {
+const createParagraphXml = (text, options = {}) => {
+  const bold = options.bold ? '<w:b/>' : '';
+  const fontSize = options.fontSize ? `<w:sz w:val="${options.fontSize}"/>` : '';
+  const color = options.color ? `<w:color w:val="${options.color}"/>` : '';
+  const justification = options.center ? '<w:jc w:val="center"/>' : '';
+  const spacing = options.spacing ? '<w:spacing w:after="160"/>' : '';
+
+  return `<w:p><w:pPr>${justification}${spacing}</w:pPr><w:r><w:rPr>${bold}${fontSize}${color}</w:rPr><w:t xml:space="preserve">${escapeXml(text)}</w:t></w:r></w:p>`;
+};
+
+const createEmptyParagraphXml = () => '<w:p/>';
+
+const createSectionHeadingXml = (text) => createParagraphXml(text, {
+  bold: true,
+  color: '173680',
+  fontSize: 24,
+  spacing: true,
+});
+
+const findEndOfCentralDirectory = (zipBytes) => {
+  for (let index = zipBytes.length - 22; index >= 0; index -= 1) {
+    if (
+      zipBytes[index] === 0x50
+      && zipBytes[index + 1] === 0x4b
+      && zipBytes[index + 2] === 0x05
+      && zipBytes[index + 3] === 0x06
+    ) {
+      return index;
+    }
+  }
+
+  throw new Error('No se encontró el directorio central del documento DOCX.');
+};
+
+const readUint16 = (buffer, offset) => buffer[offset] | (buffer[offset + 1] << 8);
+
+const readUint32 = (buffer, offset) => (
+  buffer[offset]
+  | (buffer[offset + 1] << 8)
+  | (buffer[offset + 2] << 16)
+  | (buffer[offset + 3] << 24)
+) >>> 0;
+
+const parseZipEntries = (zipBytes) => {
+  const endDirectoryOffset = findEndOfCentralDirectory(zipBytes);
+  const entriesCount = readUint16(zipBytes, endDirectoryOffset + 10);
+  let centralOffset = readUint32(zipBytes, endDirectoryOffset + 16);
+  const entries = [];
+
+  for (let index = 0; index < entriesCount; index += 1) {
+    if (readUint32(zipBytes, centralOffset) !== 0x02014b50) {
+      throw new Error('El documento DOCX tiene una estructura ZIP inválida.');
+    }
+
+    const flags = readUint16(zipBytes, centralOffset + 8);
+    const compressionMethod = readUint16(zipBytes, centralOffset + 10);
+    const crc = readUint32(zipBytes, centralOffset + 16);
+    const compressedSize = readUint32(zipBytes, centralOffset + 20);
+    const uncompressedSize = readUint32(zipBytes, centralOffset + 24);
+    const fileNameLength = readUint16(zipBytes, centralOffset + 28);
+    const extraLength = readUint16(zipBytes, centralOffset + 30);
+    const commentLength = readUint16(zipBytes, centralOffset + 32);
+    const localHeaderOffset = readUint32(zipBytes, centralOffset + 42);
+    const nameBytes = zipBytes.slice(centralOffset + 46, centralOffset + 46 + fileNameLength);
+    const name = textDecoder.decode(nameBytes);
+
+    if (readUint32(zipBytes, localHeaderOffset) !== 0x04034b50) {
+      throw new Error(`No se pudo leer la entrada ${name} del documento DOCX.`);
+    }
+
+    const localNameLength = readUint16(zipBytes, localHeaderOffset + 26);
+    const localExtraLength = readUint16(zipBytes, localHeaderOffset + 28);
+    const compressedDataOffset = localHeaderOffset + 30 + localNameLength + localExtraLength;
+    const compressedData = zipBytes.slice(compressedDataOffset, compressedDataOffset + compressedSize);
+
+    entries.push({
+      name,
+      flags,
+      compressionMethod,
+      crc,
+      compressedSize,
+      uncompressedSize,
+      compressedData,
+    });
+
+    centralOffset += 46 + fileNameLength + extraLength + commentLength;
+  }
+
+  return entries;
+};
+
+const inflateRaw = async (data) => {
+  if (!('DecompressionStream' in window)) {
+    throw new Error('El navegador no permite descomprimir plantillas DOCX.');
+  }
+
+  const stream = new Blob([data]).stream().pipeThrough(new DecompressionStream('deflate-raw'));
+  return new Uint8Array(await new Response(stream).arrayBuffer());
+};
+
+const decodeZipEntryContent = async (entry) => {
+  if (entry.compressionMethod === 0) {
+    return textDecoder.decode(entry.compressedData);
+  }
+
+  if (entry.compressionMethod === 8) {
+    const decompressed = await inflateRaw(entry.compressedData);
+    return textDecoder.decode(decompressed);
+  }
+
+  throw new Error(`La plantilla usa un método de compresión no soportado (${entry.compressionMethod}).`);
+};
+
+const createZipFromEntries = (entries) => {
   const localParts = [];
   const centralParts = [];
   let offset = 0;
 
-  files.forEach(({ name, content }) => {
-    const nameBytes = textEncoder.encode(name);
-    const contentBytes = textEncoder.encode(content);
-    const crc = calculateCrc32(contentBytes);
-
+  entries.forEach((entry) => {
+    const nameBytes = textEncoder.encode(entry.name);
     const localHeader = new Uint8Array(30 + nameBytes.length);
     writeUint32(localHeader, 0, 0x04034b50);
     writeUint16(localHeader, 4, 20);
-    writeUint16(localHeader, 6, 0);
-    writeUint16(localHeader, 8, 0);
+    writeUint16(localHeader, 6, entry.flags & 0x800);
+    writeUint16(localHeader, 8, entry.compressionMethod);
     writeUint16(localHeader, 10, 0);
     writeUint16(localHeader, 12, 0);
-    writeUint32(localHeader, 14, crc);
-    writeUint32(localHeader, 18, contentBytes.length);
-    writeUint32(localHeader, 22, contentBytes.length);
+    writeUint32(localHeader, 14, entry.crc);
+    writeUint32(localHeader, 18, entry.compressedSize);
+    writeUint32(localHeader, 22, entry.uncompressedSize);
     writeUint16(localHeader, 26, nameBytes.length);
     writeUint16(localHeader, 28, 0);
     localHeader.set(nameBytes, 30);
 
-    localParts.push(localHeader, contentBytes);
+    localParts.push(localHeader, entry.compressedData);
 
     const centralHeader = new Uint8Array(46 + nameBytes.length);
     writeUint32(centralHeader, 0, 0x02014b50);
     writeUint16(centralHeader, 4, 20);
     writeUint16(centralHeader, 6, 20);
-    writeUint16(centralHeader, 8, 0);
-    writeUint16(centralHeader, 10, 0);
+    writeUint16(centralHeader, 8, entry.flags & 0x800);
+    writeUint16(centralHeader, 10, entry.compressionMethod);
     writeUint16(centralHeader, 12, 0);
     writeUint16(centralHeader, 14, 0);
-    writeUint32(centralHeader, 16, crc);
-    writeUint32(centralHeader, 20, contentBytes.length);
-    writeUint32(centralHeader, 24, contentBytes.length);
+    writeUint32(centralHeader, 16, entry.crc);
+    writeUint32(centralHeader, 20, entry.compressedSize);
+    writeUint32(centralHeader, 24, entry.uncompressedSize);
     writeUint16(centralHeader, 28, nameBytes.length);
     writeUint16(centralHeader, 30, 0);
     writeUint16(centralHeader, 32, 0);
@@ -112,7 +225,7 @@ const createStoredZip = (files) => {
     centralHeader.set(nameBytes, 46);
 
     centralParts.push(centralHeader);
-    offset += localHeader.length + contentBytes.length;
+    offset += localHeader.length + entry.compressedData.length;
   });
 
   const centralDirectory = concatUint8Arrays(centralParts);
@@ -120,8 +233,8 @@ const createStoredZip = (files) => {
   writeUint32(endRecord, 0, 0x06054b50);
   writeUint16(endRecord, 4, 0);
   writeUint16(endRecord, 6, 0);
-  writeUint16(endRecord, 8, files.length);
-  writeUint16(endRecord, 10, files.length);
+  writeUint16(endRecord, 8, entries.length);
+  writeUint16(endRecord, 10, entries.length);
   writeUint32(endRecord, 12, centralDirectory.length);
   writeUint32(endRecord, 16, offset);
   writeUint16(endRecord, 20, 0);
@@ -129,39 +242,62 @@ const createStoredZip = (files) => {
   return concatUint8Arrays([...localParts, centralDirectory, endRecord]);
 };
 
-const createParagraphXml = (text, options = {}) => {
-  const bold = options.bold ? '<w:b/>' : '';
-  const fontSize = options.fontSize ? `<w:sz w:val="${options.fontSize}"/>` : '';
-  const justification = options.center ? '<w:jc w:val="center"/>' : '';
+const insertReportIntoTemplate = (documentXml, reportXml) => {
+  const sectionIndex = documentXml.lastIndexOf('<w:sectPr');
 
-  return `<w:p><w:pPr>${justification}</w:pPr><w:r><w:rPr>${bold}${fontSize}</w:rPr><w:t xml:space="preserve">${escapeXml(text)}</w:t></w:r></w:p>`;
+  if (sectionIndex !== -1) {
+    return `${documentXml.slice(0, sectionIndex)}${reportXml}${documentXml.slice(sectionIndex)}`;
+  }
+
+  const bodyEndIndex = documentXml.lastIndexOf('</w:body>');
+  if (bodyEndIndex !== -1) {
+    return `${documentXml.slice(0, bodyEndIndex)}${reportXml}${documentXml.slice(bodyEndIndex)}`;
+  }
+
+  throw new Error('No se encontró el cuerpo del documento en la plantilla.');
 };
 
-const createExecutiveReportDocx = (lines) => {
-  const documentBody = lines.map((line, index) => createParagraphXml(line, {
-    bold: index === 0,
-    center: index === 0,
-    fontSize: index === 0 ? 28 : 22,
-  })).join('');
+const createStoredEntry = (name, content) => {
+  const contentBytes = textEncoder.encode(content);
 
-  const documentXml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body>${documentBody}<w:sectPr><w:pgSz w:w="12240" w:h="15840"/><w:pgMar w:top="1440" w:right="1440" w:bottom="1440" w:left="1440"/></w:sectPr></w:body></w:document>`;
+  return {
+    name,
+    flags: 0x800,
+    compressionMethod: 0,
+    crc: calculateCrc32(contentBytes),
+    compressedSize: contentBytes.length,
+    uncompressedSize: contentBytes.length,
+    compressedData: contentBytes,
+  };
+};
 
-  const zipContent = createStoredZip([
-    {
-      name: '[Content_Types].xml',
-      content: '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/></Types>',
-    },
-    {
-      name: '_rels/.rels',
-      content: '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>',
-    },
-    {
-      name: 'word/document.xml',
-      content: documentXml,
-    },
-  ]);
+const createExecutiveReportDocxFromTemplate = async (lines) => {
+  const response = await fetch(DASHBOARD_TEMPLATE_PATH);
 
+  if (!response.ok) {
+    throw new Error('No se pudo cargar la plantilla public/templates/Certificado.docx.');
+  }
+
+  const templateBytes = new Uint8Array(await response.arrayBuffer());
+  const entries = parseZipEntries(templateBytes);
+  const documentEntryIndex = entries.findIndex((entry) => entry.name === 'word/document.xml');
+
+  if (documentEntryIndex === -1) {
+    throw new Error('La plantilla no contiene word/document.xml.');
+  }
+
+  const documentXml = await decodeZipEntryContent(entries[documentEntryIndex]);
+  const reportXml = [
+    '<w:p><w:r><w:br w:type="page"/></w:r></w:p>',
+    createParagraphXml('REPORTE DEL DASHBOARD', { bold: true, center: true, color: '173680', fontSize: 30, spacing: true }),
+    ...lines,
+  ].join('');
+  const updatedDocumentXml = insertReportIntoTemplate(documentXml, reportXml);
+  const updatedEntries = entries.map((entry, index) => (
+    index === documentEntryIndex ? createStoredEntry(entry.name, updatedDocumentXml) : entry
+  ));
+
+  const zipContent = createZipFromEntries(updatedEntries);
   return new Blob([zipContent], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
 };
 
@@ -257,7 +393,7 @@ const Dashboard = () => {
     ],
   };
 
-  const handleDescargarReporte = () => {
+  const handleDescargarReporte = async () => {
     const fechaActual = new Date();
     const fechaGeneracion = fechaActual.toLocaleDateString('es-CO', {
       year: 'numeric',
@@ -275,28 +411,52 @@ const Dashboard = () => {
       currency: 'COP',
       minimumFractionDigits: 2,
     });
+    const ingresosPorMesXml = labelsMeses.map((mes, index) => (
+      createParagraphXml(`${mes}: ${Number(ingresosPorMes[index] || 0).toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}`)
+    ));
+    const vehiculosXml = vehiculosOrdenados.length > 0
+      ? vehiculosOrdenados.map(([nombre, valores]) => (
+        createParagraphXml(`${nombre}: ${valores.salidas} salidas · ${valores.ingresos.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}`)
+      ))
+      : [createParagraphXml('No hay rentas registradas este mes.')];
 
     const reporteLineas = [
-      'REPORTE EJECUTIVO DE INGRESOS – ANTIOCAR',
-      `Fecha de generación: ${fechaGeneracion}`,
-      '',
-      'Estimados directivos,',
-      '',
-      `A continuación, se presenta el resumen financiero correspondiente al periodo actual. El ingreso mensual del mes de ${nombreMes} asciende a ${ingresoMensualTexto}, mientras que el ingreso anual acumulado registra un total de ${ingresoAnualTexto}. Estos resultados reflejan el comportamiento financiero del periodo y proporcionan una base clara para el análisis y la toma de decisiones estratégicas.`,
-      '',
-      'Cordialmente,',
-      'Sistema de Gestión ANTIOCAR',
+      createParagraphXml(`Fecha de generación: ${fechaGeneracion}`),
+      createEmptyParagraphXml(),
+      createSectionHeadingXml('Resumen financiero'),
+      createParagraphXml(`Ingresos del mes (${nombreMes}): ${ingresoMensualTexto}`),
+      createParagraphXml(`Ingresos anuales acumulados: ${ingresoAnualTexto}`),
+      createParagraphXml(`Clientes registrados: ${clientesTotal}`),
+      createEmptyParagraphXml(),
+      createSectionHeadingXml('Estado de rentas'),
+      createParagraphXml(`En curso: ${estadoRentas.enCurso}`),
+      createParagraphXml(`Pendientes: ${estadoRentas.pendiente}`),
+      createParagraphXml(`Finalizadas: ${estadoRentas.finalizada}`),
+      createParagraphXml(`Total de rentas: ${rentas.length}`),
+      createEmptyParagraphXml(),
+      createSectionHeadingXml('Ingresos por mes'),
+      ...ingresosPorMesXml,
+      createEmptyParagraphXml(),
+      createSectionHeadingXml('Carros que salieron en el mes'),
+      ...vehiculosXml,
+      createEmptyParagraphXml(),
+      createParagraphXml('Reporte generado con la información actual del dashboard de ANTIOCAR.'),
     ];
 
-    const blob = createExecutiveReportDocx(reporteLineas);
-    const url = window.URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `reporte-ejecutivo-antioCar-${fechaActual.toISOString().slice(0, 10)}.docx`;
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-    window.URL.revokeObjectURL(url);
+    try {
+      const blob = await createExecutiveReportDocxFromTemplate(reporteLineas);
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `reporte-dashboard-antioCar-${fechaActual.toISOString().slice(0, 10)}.docx`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Error al generar reporte con plantilla:', error);
+      window.alert(error.message || 'No se pudo generar el reporte con la plantilla.');
+    }
   };
 
   return (
