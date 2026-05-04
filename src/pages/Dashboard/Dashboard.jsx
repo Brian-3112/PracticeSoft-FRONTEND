@@ -189,11 +189,12 @@ const Dashboard = () => {
             <p className={styles.emptyMessage}>No hay rentas registradas este mes.</p>
           ) : (
             <>
-              <div className={styles.chartWrapper}>
+              <div className={styles.vehicleChartWrapper}>
                 <Bar
                   data={dataIngresosVehiculoMes}
                   options={{
                     responsive: true,
+                    maintainAspectRatio: false,
                     plugins: {
                       legend: { display: false },
                       tooltip: {
@@ -209,8 +210,9 @@ const Dashboard = () => {
                       y: {
                         beginAtZero: true,
                         ticks: { callback: (value) => `$ ${Number(value).toLocaleString('es-CO')}` },
+                        grid: { color: 'rgba(79, 99, 141, 0.12)' },
                       },
-                      x: { ticks: { maxRotation: 45, minRotation: 25 } },
+                      x: { ticks: { maxRotation: 18, minRotation: 0 } },
                     },
                   }}
                 />

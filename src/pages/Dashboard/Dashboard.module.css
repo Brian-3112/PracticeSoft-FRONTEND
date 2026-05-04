@@ -69,6 +69,11 @@
   padding: 20px;
 }
 
+.vehicleChartWrapper {
+  height: 250px;
+  width: 100%;
+}
+
 .emptyMessage {
   color: #5f6d86;
   margin-top: 12px;
@@ -90,6 +95,7 @@
   color: #4e5a71;
   border-bottom: 1px dashed #e5e9f2;
   padding-bottom: 6px;
+  font-size: 0.92rem;
 }
 
 .chartTitle {
