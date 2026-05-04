@@ -114,14 +114,19 @@ const parseZipEntries = (zipBytes) => {
       throw new Error('El documento DOCX tiene una estructura ZIP inválida.');
     }
 
+    const versionMadeBy = readUint16(zipBytes, centralOffset + 4);
+    const versionNeeded = readUint16(zipBytes, centralOffset + 6);
     const flags = readUint16(zipBytes, centralOffset + 8);
     const compressionMethod = readUint16(zipBytes, centralOffset + 10);
+    const modTime = readUint16(zipBytes, centralOffset + 12);
+    const modDate = readUint16(zipBytes, centralOffset + 14);
     const crc = readUint32(zipBytes, centralOffset + 16);
     const compressedSize = readUint32(zipBytes, centralOffset + 20);
     const uncompressedSize = readUint32(zipBytes, centralOffset + 24);
     const fileNameLength = readUint16(zipBytes, centralOffset + 28);
     const extraLength = readUint16(zipBytes, centralOffset + 30);
     const commentLength = readUint16(zipBytes, centralOffset + 32);
+    const externalAttributes = readUint32(zipBytes, centralOffset + 38);
     const localHeaderOffset = readUint32(zipBytes, centralOffset + 42);
     const nameBytes = zipBytes.slice(centralOffset + 46, centralOffset + 46 + fileNameLength);
     const name = textDecoder.decode(nameBytes);
@@ -137,11 +142,16 @@ const parseZipEntries = (zipBytes) => {
 
     entries.push({
       name,
+      versionMadeBy,
+      versionNeeded,
       flags,
       compressionMethod,
+      modTime,
+      modDate,
       crc,
       compressedSize,
       uncompressedSize,
+      externalAttributes,
       compressedData,
     });
 
@@ -182,11 +192,11 @@ const createZipFromEntries = (entries) => {
     const nameBytes = textEncoder.encode(entry.name);
     const localHeader = new Uint8Array(30 + nameBytes.length);
     writeUint32(localHeader, 0, 0x04034b50);
-    writeUint16(localHeader, 4, 20);
-    writeUint16(localHeader, 6, entry.flags & 0x800);
+    writeUint16(localHeader, 4, entry.versionNeeded);
+    writeUint16(localHeader, 6, entry.flags);
     writeUint16(localHeader, 8, entry.compressionMethod);
-    writeUint16(localHeader, 10, 0);
-    writeUint16(localHeader, 12, 0);
+    writeUint16(localHeader, 10, entry.modTime);
+    writeUint16(localHeader, 12, entry.modDate);
     writeUint32(localHeader, 14, entry.crc);
     writeUint32(localHeader, 18, entry.compressedSize);
     writeUint32(localHeader, 22, entry.uncompressedSize);
@@ -198,12 +208,12 @@ const createZipFromEntries = (entries) => {
 
     const centralHeader = new Uint8Array(46 + nameBytes.length);
     writeUint32(centralHeader, 0, 0x02014b50);
-    writeUint16(centralHeader, 4, 20);
-    writeUint16(centralHeader, 6, 20);
-    writeUint16(centralHeader, 8, entry.flags & 0x800);
+    writeUint16(centralHeader, 4, entry.versionMadeBy);
+    writeUint16(centralHeader, 6, entry.versionNeeded);
+    writeUint16(centralHeader, 8, entry.flags);
     writeUint16(centralHeader, 10, entry.compressionMethod);
-    writeUint16(centralHeader, 12, 0);
-    writeUint16(centralHeader, 14, 0);
+    writeUint16(centralHeader, 12, entry.modTime);
+    writeUint16(centralHeader, 14, entry.modDate);
     writeUint32(centralHeader, 16, entry.crc);
     writeUint32(centralHeader, 20, entry.compressedSize);
     writeUint32(centralHeader, 24, entry.uncompressedSize);
@@ -212,7 +222,7 @@ const createZipFromEntries = (entries) => {
     writeUint16(centralHeader, 32, 0);
     writeUint16(centralHeader, 34, 0);
     writeUint16(centralHeader, 36, 0);
-    writeUint32(centralHeader, 38, 0);
+    writeUint32(centralHeader, 38, entry.externalAttributes);
     writeUint32(centralHeader, 42, offset);
     centralHeader.set(nameBytes, 46);
 
@@ -254,12 +264,13 @@ const insertReportBeforeOwnerSignature = (documentXml, reportXml) => {
   throw new Error('No se encontró el espacio de la firma en la plantilla.');
 };
 
-const createStoredEntry = (name, content) => {
+const createStoredEntry = (entry, content) => {
   const contentBytes = textEncoder.encode(content);
 
   return {
-    name,
-    flags: 0x800,
+    ...entry,
+    versionNeeded: 10,
+    flags: 0,
     compressionMethod: 0,
     crc: calculateCrc32(contentBytes),
     compressedSize: contentBytes.length,
@@ -296,7 +307,7 @@ const createExecutiveReportDocxFromTemplate = async (paragraphs) => {
   )).join('');
   const updatedDocumentXml = insertReportBeforeOwnerSignature(documentXml, reportXml);
   const updatedEntries = entries.map((entry, index) => (
-    index === documentEntryIndex ? createStoredEntry(entry.name, updatedDocumentXml) : entry
+    index === documentEntryIndex ? createStoredEntry(entry, updatedDocumentXml) : entry
   ));
 
   const zipContent = createZipFromEntries(updatedEntries);
