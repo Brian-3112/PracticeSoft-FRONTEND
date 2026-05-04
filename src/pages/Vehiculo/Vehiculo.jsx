@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import useAuth from '../../hooks/useAuth.jsx';
 import useVehiculo from '../../hooks/useVehiculo.jsx';
 import styles from '../Vehiculo/vehiculo.module.css';
@@ -8,9 +8,7 @@ import Editarvehiculo from '../Vehiculo/Editarvehiculo.jsx';
 import { useSearchParams } from 'react-router-dom';
 
 const Vehiculo = () => {
-  const { auth, loading } = useAuth();
-  if (loading) return 'Cargando...';
-
+  const { loading } = useAuth();
   const { vehiculos, eliminarVehiculo, rentas } = useVehiculo();
   const [searchParams] = useSearchParams();
   const [selectedVehiculo, setSelectedVehiculo] = useState(null);
@@ -53,28 +51,7 @@ const Vehiculo = () => {
     return rentaActiva ? 'Rentado' : 'Disponible';
   };
 
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const cardsPerPage = 4;
-  const totalSlides = Math.ceil(vehiculos.length / cardsPerPage);
-
-  const nextSlide = () => {
-    if (currentSlide < totalSlides - 1) setCurrentSlide(currentSlide + 1);
-  };
-
-  const prevSlide = () => {
-    if (currentSlide > 0) setCurrentSlide(currentSlide - 1);
-  };
-
-  const startIndex = currentSlide * cardsPerPage;
-  const visibleVehiculos = vehiculos.slice(startIndex, startIndex + cardsPerPage);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev < totalSlides - 1 ? prev + 1 : 0));
-    }, 5000);
-
-    return () => clearInterval(interval);
-  }, [totalSlides]);
+  if (loading) return 'Cargando...';
 
   return (
     <div className={styles.wrapper}>

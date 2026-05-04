@@ -59,6 +59,7 @@ export const RentaProvider = ({ children }) => {
 
             await Promise.all([
                 vehiculoContext?.consultarVehiculos?.(),
+                vehiculoContext?.consultarRentas?.(),
                 dashboardContext?.calcularDashboard?.(),
             ]);
 
@@ -117,7 +118,7 @@ export const RentaProvider = ({ children }) => {
             window.URL.revokeObjectURL(url);
 
             return true;
-        } catch (error) {
+        } catch {
             const selectedRentaId = rentaId || rentaPayload?.id || null;
             Swal.fire({
                 title: 'Advertencia',

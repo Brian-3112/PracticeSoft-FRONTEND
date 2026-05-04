@@ -15,6 +15,8 @@ const initialErrors = {
   fechaTecno: ''
 };
 
+const toUpperWithoutSpaces = (value) => String(value).replace(/\s+/g, '').toUpperCase();
+
 // Reglas de validacion para campos obligatorios del vehiculo.
 const validateField = (name, value) => {
   const trimmedValue = String(value).trim();
@@ -33,13 +35,13 @@ const validateField = (name, value) => {
 };
 
 const Agregarvehiculo = () => {
-  const { auth, loading } = useAuth();
-  if (loading) return 'Cargando...';
+  const { loading } = useAuth();
 
   const { agregarVehiculo } = useVehiculo();
   const [show, setShow] = useState(false);
   const [formData, setFormData] = useState(initialFormData);
   const [errors, setErrors] = useState(initialErrors);
+  if (loading) return 'Cargando...';
 
   const validateRequiredFields = (dataToValidate) => {
     return {
@@ -103,8 +105,8 @@ const Agregarvehiculo = () => {
 
     agregarVehiculo(
       {
-        nombreVehiculo: formData.nombreVehiculo.trim(),
-        placa: formData.placa.trim(),
+        nombreVehiculo: formData.nombreVehiculo.trim().toUpperCase(),
+        placa: toUpperWithoutSpaces(formData.placa),
         transito: formData.transito.trim(),
         fechaSOAT: formData.fechaSOAT,
         fechaTecno: formData.fechaTecno,

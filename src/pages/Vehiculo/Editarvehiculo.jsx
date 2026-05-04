@@ -10,6 +10,8 @@ const initialErrors = {
     fechaTecno: ''
 };
 
+const toUpperWithoutSpaces = (value) => String(value).replace(/\s+/g, '').toUpperCase();
+
 // Reglas de validacion para campos obligatorios del vehiculo.
 const validateField = (name, value) => {
     const trimmedValue = String(value).trim();
@@ -29,8 +31,7 @@ const validateField = (name, value) => {
 
 const Editarvehiculo = ({ vehiculo, onClose }) => {
 
-    const { auth, loading } = useAuth();
-    if (loading) return 'Cargando...';
+    const { loading } = useAuth();
 
     const { actualizarVehiculo } = useVehiculo();
 
@@ -38,6 +39,7 @@ const Editarvehiculo = ({ vehiculo, onClose }) => {
         nombreVehiculo: '', placa: '', transito: '', fechaSOAT: '', fechaTecno: '', description: ''
     });
     const [errors, setErrors] = useState(initialErrors);
+    if (loading) return 'Cargando...';
 
     // Carga los datos del vehiculo seleccionado en el formulario.
     useEffect(() => {
@@ -117,8 +119,8 @@ const Editarvehiculo = ({ vehiculo, onClose }) => {
             vehiculo.id,
             {
                 id: vehiculo.id,
-                nombreVehiculo: formData.nombreVehiculo.trim(),
-                placa: formData.placa.trim(),
+                nombreVehiculo: formData.nombreVehiculo.trim().toUpperCase(),
+                placa: toUpperWithoutSpaces(formData.placa),
                 transito: formData.transito.trim(),
                 fechaSOAT: formData.fechaSOAT,
                 fechaTecno: formData.fechaTecno,

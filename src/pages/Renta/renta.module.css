@@ -253,6 +253,28 @@
   line-height: 1.2;
 }
 
+.totalPreviewContainer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 100%;
+  padding-top: 12px;
+}
+
+.totalPreviewInline {
+  font-size: 16px;
+  font-weight: 700;
+  color: #d62828;
+  line-height: 1;
+}
+
+@media (max-width: 768px) {
+  .totalPreviewContainer {
+    justify-content: flex-start;
+    padding-top: 0;
+  }
+}
+
 
 
 /* ===== TABLA DE RENTAS ===== */

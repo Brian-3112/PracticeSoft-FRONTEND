@@ -1,7 +1,7 @@
 import { Navigate } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
 import useDashboard from '../../hooks/useDashboard';
-import { Line, Doughnut } from 'react-chartjs-2';
+import { Line, Doughnut, Bar } from 'react-chartjs-2';
 import styles from '../Dashboard/Dashboard.module.css';
 import 'chart.js/auto';
 
@@ -60,9 +60,60 @@ const Dashboard = () => {
     ],
   };
 
+  const mesActual = today.getMonth();
+  const anioActual = today.getFullYear();
+  const rentasMesActual = rentas.filter((renta) => {
+    const fechaEntrega = new Date(renta.fechaEntrega);
+    return fechaEntrega.getMonth() === mesActual && fechaEntrega.getFullYear() === anioActual;
+  });
+
+  const resumenVehiculosMes = rentasMesActual.reduce((acc, renta) => {
+    const vehiculo = renta.vehiculo?.nombreVehiculo || 'Vehículo';
+    const placa = renta.vehiculo?.placa ? ` (${renta.vehiculo.placa})` : '';
+    const key = `${vehiculo}${placa}`;
+
+    if (!acc[key]) {
+      acc[key] = { salidas: 0, ingresos: 0 };
+    }
+
+    acc[key].salidas += 1;
+    acc[key].ingresos += Number(renta.valorTotal || 0);
+    return acc;
+  }, {});
+
+  const vehiculosOrdenados = Object.entries(resumenVehiculosMes)
+    .sort(([, a], [, b]) => b.ingresos - a.ingresos)
+    .slice(0, 8);
+
+  const dataIngresosVehiculoMes = {
+    labels: vehiculosOrdenados.map(([nombre]) => nombre),
+    datasets: [
+      {
+        label: 'Ingresos por vehículo',
+        data: vehiculosOrdenados.map(([, valores]) => valores.ingresos),
+        backgroundColor: '#173680',
+        borderRadius: 6,
+      },
+    ],
+  };
+
+  const handleDescargarReporte = () => {
+    const link = document.createElement('a');
+    link.href = '/Reportes/Certificado.docx';
+    link.download = 'Certificado.docx';
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+  };
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.dashboardContainer}>
+        <div className={styles.reportActions}>
+          <button type="button" className={styles.reportButton} onClick={handleDescargarReporte}>
+            Descargar reporte formal
+          </button>
+        </div>
         <div className={styles.statsContainer}>
           <div className={styles.statCard}>
             <div className={styles.statIcon}>💰</div>
@@ -142,6 +193,55 @@ const Dashboard = () => {
               <li><span className={`${styles.legendDot} ${styles.dotFinalizada}`} />Finalizada <strong>{estadoRentas.finalizada}</strong></li>
             </ul>
           </div>
+        </div>
+
+        <div className={styles.vehicleChartContainer}>
+          <h3 className={styles.chartTitle}>Carros que salieron en el mes</h3>
+          <p className={styles.chartSubtitle}>Salidas y generación de ingresos del mes actual</p>
+
+          {vehiculosOrdenados.length === 0 ? (
+            <p className={styles.emptyMessage}>No hay rentas registradas este mes.</p>
+          ) : (
+            <>
+              <div className={styles.vehicleChartWrapper}>
+                <Bar
+                  data={dataIngresosVehiculoMes}
+                  options={{
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                      legend: { display: false },
+                      tooltip: {
+                        callbacks: {
+                          label: (context) => {
+                            const valor = context.parsed.y || 0;
+                            return `Ingresos: ${valor.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}`;
+                          },
+                        },
+                      },
+                    },
+                    scales: {
+                      y: {
+                        beginAtZero: true,
+                        ticks: { callback: (value) => `$ ${Number(value).toLocaleString('es-CO')}` },
+                        grid: { color: 'rgba(79, 99, 141, 0.12)' },
+                      },
+                      x: { ticks: { maxRotation: 18, minRotation: 0 } },
+                    },
+                  }}
+                />
+              </div>
+
+              <ul className={styles.vehicleSummaryList}>
+                {vehiculosOrdenados.map(([nombre, valores]) => (
+                  <li key={nombre}>
+                    <span>{nombre}</span>
+                    <strong>{valores.salidas} salidas · {valores.ingresos.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}</strong>
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
         </div>
       </div>
     </div>

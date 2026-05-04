@@ -17,6 +17,26 @@
   margin: 0 30px;
 }
 
+.reportActions {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 14px;
+}
+
+.reportButton {
+  border: 0;
+  border-radius: 10px;
+  padding: 10px 14px;
+  background: var(--primary);
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.reportButton:hover {
+  opacity: 0.92;
+}
+
 .statsContainer {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -59,6 +79,43 @@
   border-radius: 14px;
   border: 1px solid #e5e9f2;
   padding: 20px;
+}
+
+.vehicleChartContainer {
+  margin-top: 18px;
+  background: #fff;
+  border-radius: 14px;
+  border: 1px solid #e5e9f2;
+  padding: 20px;
+}
+
+.vehicleChartWrapper {
+  height: 250px;
+  width: 100%;
+}
+
+.emptyMessage {
+  color: #5f6d86;
+  margin-top: 12px;
+}
+
+.vehicleSummaryList {
+  list-style: none;
+  margin-top: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.vehicleSummaryList li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  color: #4e5a71;
+  border-bottom: 1px dashed #e5e9f2;
+  padding-bottom: 6px;
+  font-size: 0.92rem;
 }
 
 .chartTitle {

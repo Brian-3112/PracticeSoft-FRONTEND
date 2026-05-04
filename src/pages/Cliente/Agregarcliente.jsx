@@ -19,6 +19,9 @@ const initialErrors = {
     celular: ''
 };
 
+const toTitleCaseByWords = (value) =>
+    String(value).replace(/\b([a-záéíóúñü])/gi, (letter) => letter.toUpperCase());
+
 // Valida en un solo punto los campos requeridos del formulario.
 const validateField = (name, value) => {
     const trimmedValue = value.trim();
@@ -41,13 +44,13 @@ const validateField = (name, value) => {
 
 const Agregarcliente = () => {
     // Verifica si el usuario esta autenticado.
-    const { auth, loading } = useAuth();
-    if (loading) return 'Cargando...';
+    const { loading } = useAuth();
 
     const { agregarCliente } = useCliente();
     const [show, setShow] = useState(false);
     const [formData, setFormData] = useState(initialFormData);
     const [errors, setErrors] = useState(initialErrors);
+    if (loading) return 'Cargando...';
 
     // Revalida los campos obligatorios antes de enviar. 
     const validateRequiredFields = (dataToValidate) => {
@@ -62,15 +65,16 @@ const Agregarcliente = () => {
     // Validacion en tiempo real mientras el usuario escribe.
     const handleChange = (e) => {
         const { name, value } = e.target;
+        const nextValue = name === 'nombre' ? toTitleCaseByWords(value) : value;
         setFormData((prev) => ({
             ...prev,
-            [name]: value
+            [name]: nextValue
         }));
 
         if (Object.prototype.hasOwnProperty.call(initialErrors, name)) {
             setErrors((prev) => ({
                 ...prev,
-                [name]: validateField(name, value)
+                [name]: validateField(name, nextValue)
             }));
         }
     };
