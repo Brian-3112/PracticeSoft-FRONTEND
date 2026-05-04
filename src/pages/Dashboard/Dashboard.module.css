@@ -61,6 +61,37 @@
   padding: 20px;
 }
 
+.vehicleChartContainer {
+  margin-top: 18px;
+  background: #fff;
+  border-radius: 14px;
+  border: 1px solid #e5e9f2;
+  padding: 20px;
+}
+
+.emptyMessage {
+  color: #5f6d86;
+  margin-top: 12px;
+}
+
+.vehicleSummaryList {
+  list-style: none;
+  margin-top: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.vehicleSummaryList li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  color: #4e5a71;
+  border-bottom: 1px dashed #e5e9f2;
+  padding-bottom: 6px;
+}
+
 .chartTitle {
   font-size: 1.8rem;
   font-weight: 700;
