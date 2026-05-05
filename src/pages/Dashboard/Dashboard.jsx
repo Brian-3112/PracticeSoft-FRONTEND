@@ -7,6 +7,13 @@ import 'chart.js/auto';
 
 const textEncoder = new TextEncoder();
 
+const parseDateOnly = (dateValue) => {
+  if (!dateValue) return null;
+  const dateString = String(dateValue).slice(0, 10);
+  const [year, month, day] = dateString.split('-').map(Number);
+  return new Date(year, month - 1, day);
+};
+
 const escapeXml = (value) => String(value)
   .replace(/&/g, '&amp;')
   .replace(/</g, '&lt;')
@@ -196,8 +203,10 @@ const Dashboard = () => {
 
   const estadoRentas = rentas.reduce(
     (acc, renta) => {
-      const fechaEntrega = new Date(String(renta.fechaEntrega).slice(0, 10));
-      const fechaDevolucion = new Date(String(renta.fechaDevolucion).slice(0, 10));
+      const fechaEntrega = parseDateOnly(renta.fechaEntrega);
+      const fechaDevolucion = parseDateOnly(renta.fechaDevolucion);
+
+      if (!fechaEntrega || !fechaDevolucion) return acc;
 
       if (today < fechaEntrega) acc.pendiente += 1;
       else if (today <= fechaDevolucion) acc.enCurso += 1;
@@ -223,8 +232,8 @@ const Dashboard = () => {
   const mesActual = today.getMonth();
   const anioActual = today.getFullYear();
   const rentasMesActual = rentas.filter((renta) => {
-    const fechaEntrega = new Date(renta.fechaEntrega);
-    return fechaEntrega.getMonth() === mesActual && fechaEntrega.getFullYear() === anioActual;
+    const fechaEntrega = parseDateOnly(renta.fechaEntrega);
+    return fechaEntrega?.getMonth() === mesActual && fechaEntrega.getFullYear() === anioActual;
   });
 
   const resumenVehiculosMes = rentasMesActual.reduce((acc, renta) => {

@@ -8,6 +8,13 @@ import Swal from 'sweetalert2';
 
 export const DashboardContext = createContext();
 
+const parseDateOnly = (dateValue) => {
+    if (!dateValue) return null;
+    const dateString = String(dateValue).slice(0, 10);
+    const [year, month, day] = dateString.split('-').map(Number);
+    return new Date(year, month - 1, day);
+};
+
 export const DashboardProvider = ({ children }) => {
 
 
@@ -38,7 +45,7 @@ export const DashboardProvider = ({ children }) => {
             // Cálculo Ingresos del mes
             const mesActual = new Date().getMonth(); //obtenemos el mes actual (0-11)
             const totalMes = rentasData
-                .filter(r => new Date(r.fechaEntrega).getMonth() === mesActual) //filtramos las rentas del mes actual
+                .filter(r => parseDateOnly(r.fechaEntrega)?.getMonth() === mesActual) //filtramos las rentas del mes actual
                 .reduce((acc, r) => acc + r.valorTotal, 0); //sumamos el valor total de las rentas del mes actual
             setIngresosMes(totalMes);
 
@@ -46,7 +53,9 @@ export const DashboardProvider = ({ children }) => {
             // 👇 Cálculo Ingresos por mes (array)
             const ingresosArray = Array(12).fill(0); //creamos un array de 12 posiciones (0-11) y lo llenamos con 0
             rentasData.forEach(r => { //recorremos todas las rentas
-                const mes = new Date(r.fechaEntrega).getMonth(); //obtenemos el mes de la renta (0-11)
+                const fechaEntrega = parseDateOnly(r.fechaEntrega);
+                if (!fechaEntrega) return;
+                const mes = fechaEntrega.getMonth(); //obtenemos el mes de la renta (0-11)
                 ingresosArray[mes] += r.valorTotal; //sumamos el valor total de la renta al mes correspondiente en el array
             });
             setIngresosPorMes(ingresosArray);
