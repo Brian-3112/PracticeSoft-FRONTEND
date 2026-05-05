@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
-import clienteAxios from "../../config/axios.jsx";
+import { requestPasswordReset } from "../../services/passwordResetService.js";
 import styles from "./login.module.css";
 
 const RestablecerContrasena = () => {
   const [email, setEmail] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     document.body.classList.add(styles.loginBody);
@@ -16,7 +17,8 @@ const RestablecerContrasena = () => {
     e.preventDefault();
 
     try {
-      await clienteAxios.post("/usuarios/forgot-password", { email });
+      setIsSubmitting(true);
+      await requestPasswordReset({ email });
       Swal.fire({
         title: "Revisa tu correo",
         text: "Si el correo existe, te enviamos instrucciones para restablecer tu contraseña.",
@@ -24,13 +26,14 @@ const RestablecerContrasena = () => {
       });
       setEmail("");
     } catch (error) {
-      const backendMessage = error?.response?.data?.message;
       Swal.fire({
-        title: "No se pudo enviar el enlace",
-        text: backendMessage || "El servidor respondió con error. Revisa configuración de correo en backend.",
+        title: error.title,
+        text: `${error.message} ${error.detail}`,
         icon: "error",
       });
-      console.error("Error forgot-password:", error?.response?.status, error?.response?.data || error.message);
+      console.error("Error forgot-password:", error);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -61,8 +64,8 @@ const RestablecerContrasena = () => {
             />
           </div>
 
-          <button className={styles.btn} type="submit">
-            Enviar enlace
+          <button className={styles.btn} type="submit" disabled={isSubmitting}>
+            {isSubmitting ? "Enviando..." : "Enviar enlace"}
           </button>
 
           <p className={styles.resetHelp}>Revisa también Spam o Promociones si no ves el correo.</p>

@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import Swal from "sweetalert2";
-import clienteAxios from "../../config/axios.jsx";
+import { updatePasswordWithToken } from "../../services/passwordResetService.js";
 import styles from "./login.module.css";
 
 const ResetPassword = () => {
@@ -10,6 +10,7 @@ const ResetPassword = () => {
   const token = useMemo(() => tokenParam || searchParams.get("token") || "", [tokenParam, searchParams]);
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -31,18 +32,22 @@ const ResetPassword = () => {
     }
 
     try {
-      await clienteAxios.post("/reset-password", { token, password });
+      setIsSubmitting(true);
+      await updatePasswordWithToken({ token, password });
       Swal.fire({
         title: "Contraseña actualizada",
         text: "Ya puedes iniciar sesión con tu nueva contraseña.",
         icon: "success",
       }).then(() => navigate("/login"));
-    } catch (_error) {
+    } catch (error) {
       Swal.fire({
-        title: "No se pudo restablecer",
-        text: "El token es inválido o ya expiró.",
+        title: error.title,
+        text: `${error.message} ${error.detail}`,
         icon: "error",
       });
+      console.error("Error reset-password:", error);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -82,8 +87,8 @@ const ResetPassword = () => {
             />
           </div>
 
-          <button className={styles.btn} type="submit">
-            Guardar contraseña
+          <button className={styles.btn} type="submit" disabled={isSubmitting}>
+            {isSubmitting ? "Guardando..." : "Guardar contraseña"}
           </button>
 
           <Link to="/login" className={styles.btnLink}>
