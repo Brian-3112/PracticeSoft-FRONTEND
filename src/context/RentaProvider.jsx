@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import clienteAxios from '../config/axios';
 import useAuth from '../hooks/useAuth';
 import Swal from 'sweetalert2';
-import { createRenta, downloadContratoDocx } from '../services/rentaService';
+import { createRenta, deleteRentaById, downloadContratoDocx } from '../services/rentaService';
 import { VehiculoContext } from './VehiculoProvider';
 import { DashboardContext } from './DashboardProvider';
 
@@ -21,6 +21,8 @@ export const RentaProvider = ({ children }) => {
     const [isDownloadingContrato, setIsDownloadingContrato] = useState(false);
     const [downloadingRentaId, setDownloadingRentaId] = useState(null);
     const [lastCreatedRentaId, setLastCreatedRentaId] = useState(null);
+    const [isDeletingRenta, setIsDeletingRenta] = useState(false);
+    const [deletingRentaId, setDeletingRentaId] = useState(null);
 
 
     const consultarRentas = async () => {
@@ -92,6 +94,55 @@ export const RentaProvider = ({ children }) => {
         }
     };
 
+
+    const eliminarRenta = async (rentaId) => {
+        const rentaIdNumerica = Number(rentaId);
+        if (!rentaIdNumerica) return false;
+
+        const confirmacion = await Swal.fire({
+            title: '¿Eliminar renta?',
+            text: 'Esta acción no se puede deshacer.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'Cancelar',
+        });
+
+        if (!confirmacion.isConfirmed) return false;
+
+        setIsDeletingRenta(true);
+        setDeletingRentaId(rentaIdNumerica);
+
+        try {
+            const response = await deleteRentaById({ rentaId: rentaIdNumerica, config });
+            setRentas((prev) => prev.filter((renta) => renta.id !== rentaIdNumerica));
+
+            await Promise.all([
+                vehiculoContext?.consultarVehiculos?.(),
+                vehiculoContext?.consultarRentas?.(),
+                dashboardContext?.calcularDashboard?.(),
+            ]);
+
+            await Swal.fire({
+                title: 'Renta eliminada',
+                text: response?.message || 'La renta se eliminó correctamente.',
+                icon: 'success',
+            });
+            return true;
+        } catch (error) {
+            Swal.fire({
+                title: 'No se pudo eliminar',
+                text: error?.response?.data?.message || 'Intenta nuevamente.',
+                icon: 'error',
+            });
+            return false;
+        } finally {
+            setIsDeletingRenta(false);
+            setDeletingRentaId(null);
+        }
+    };
+
+
     const descargarContrato = async ({ rentaId, rentaPayload } = {}) => {
         setIsDownloadingContrato(true);
         setDownloadingRentaId(rentaId || rentaPayload?.id || null);
@@ -147,6 +198,9 @@ export const RentaProvider = ({ children }) => {
                 isDownloadingContrato,
                 downloadingRentaId,
                 lastCreatedRentaId,
+                eliminarRenta,
+                isDeletingRenta,
+                deletingRentaId,
             }}
         >
             {children}

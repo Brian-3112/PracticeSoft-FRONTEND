@@ -24,3 +24,9 @@ export const downloadContratoDocx = async ({ rentaId, rentaPayload, config }) =>
     });
     return response.data;
 };
+
+
+export const deleteRentaById = async ({ rentaId, config }) => {
+    const { data } = await clienteAxios.delete(`/rentas/${rentaId}`, config);
+    return data;
+};

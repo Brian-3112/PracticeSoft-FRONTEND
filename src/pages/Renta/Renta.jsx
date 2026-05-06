@@ -157,7 +157,15 @@ const Renta = () => {
     const { loading } = useAuth();
 
 
-    const { rentas, descargarContrato, isDownloadingContrato, downloadingRentaId } = useRenta();
+    const {
+        rentas,
+        descargarContrato,
+        eliminarRenta,
+        isDownloadingContrato,
+        downloadingRentaId,
+        isDeletingRenta,
+        deletingRentaId,
+    } = useRenta();
     const [searchParams] = useSearchParams();
     const query = normalizeSearchText(searchParams.get('q') ?? '');
     const selectedMonth = getMonthFromQuery(query);
@@ -184,6 +192,10 @@ const Renta = () => {
         });
     const handleDownloadContrato = async (rentaId) => {
         await descargarContrato({ rentaId });
+    };
+
+    const handleDeleteRenta = async (rentaId) => {
+        await eliminarRenta(rentaId);
     };
 
     const today = new Date();
@@ -262,16 +274,26 @@ const Renta = () => {
                                         {estadoTexto}
                                     </span>
                                 </td>
-                                <td>
+                                <td className={styles.actionsCell}>
                                     <button
                                         type="button"
                                         className={styles.downloadButton}
                                         onClick={() => handleDownloadContrato(renta.id)}
-                                        disabled={isDownloadingContrato}
+                                        disabled={isDownloadingContrato || isDeletingRenta}
                                     >
                                         {isDownloadingContrato && downloadingRentaId === renta.id
                                             ? 'Descargando...'
                                             : 'Descargar contrato'}
+                                    </button>
+                                    <button
+                                        type="button"
+                                        className={styles.deleteButton}
+                                        onClick={() => handleDeleteRenta(renta.id)}
+                                        disabled={isDeletingRenta || isDownloadingContrato}
+                                        aria-label={`Eliminar renta ${renta.id}`}
+                                        title="Eliminar renta"
+                                    >
+                                        {isDeletingRenta && deletingRentaId === renta.id ? '...' : '×'}
                                     </button>
                                 </td>
                                         </>
