@@ -34,24 +34,7 @@ const MyRoutes = () => {
                                     <Route path="/reset-password/:token" element={<ResetPassword />} />
 
 
-                                    <Route
-                                        path="/admin"
-                                        element={<Navegador />}
-                                    >
 
-                                        <Route index element={<Dashboard />} />
-
-                                        <Route path="vehiculos" element={<Vehiculo />} />
-
-                                        <Route path="clientes" element={<Cliente />} />
-
-                                        <Route path="rentas" element={<Renta />} />
-
-
-
-
-
-                                    </Route>
 
 
 
@@ -59,8 +42,24 @@ const MyRoutes = () => {
                                     {/* Rutas protegidas */}
                                     <Route element={<ProtectedRoute />}>
 
-                                        {/* Puedes agregar más rutas protegidas aquí en el futuro */}
-                                        {/* <Route path="/admin" element={<AdminPanel />} /> */}
+                                        <Route
+                                            path="/admin"
+                                            element={<Navegador />}
+                                        >
+
+                                            <Route index element={<Dashboard />} />
+
+                                            <Route path="vehiculos" element={<Vehiculo />} />
+
+                                            <Route path="clientes" element={<Cliente />} />
+
+                                            <Route path="rentas" element={<Renta />} />
+
+
+
+
+
+                                        </Route>
                                     </Route>
 
 
