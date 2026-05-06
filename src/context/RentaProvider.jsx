@@ -106,8 +106,10 @@ export const RentaProvider = ({ children }) => {
             showCancelButton: true,
             confirmButtonText: 'Sí, eliminar',
             cancelButtonText: 'Cancelar',
-            confirmButtonColor: '#1ea76a',
-            cancelButtonColor: '#d9534f',
+            customClass: {
+                confirmButton: 'confirmarBoton',
+                cancelButton: 'cancelBoton',
+            },
         });
 
         if (!confirmacion.isConfirmed) return false;
@@ -129,6 +131,10 @@ export const RentaProvider = ({ children }) => {
                 title: 'Renta eliminada',
                 text: response?.message || 'La renta se eliminó correctamente.',
                 icon: 'success',
+                customClass: {
+                    confirmButton: 'confirmarBoton',
+                    cancelButton: 'cancelBoton',
+                },
             });
             return true;
         } catch (error) {
