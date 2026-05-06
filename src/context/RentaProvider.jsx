@@ -106,6 +106,8 @@ export const RentaProvider = ({ children }) => {
             showCancelButton: true,
             confirmButtonText: 'Sí, eliminar',
             cancelButtonText: 'Cancelar',
+            confirmButtonColor: '#1ea76a',
+            cancelButtonColor: '#d9534f',
         });
 
         if (!confirmacion.isConfirmed) return false;
