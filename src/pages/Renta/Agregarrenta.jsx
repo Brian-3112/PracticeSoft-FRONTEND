@@ -13,7 +13,8 @@ const initialFormData = {
     horaEntrega: '',
     fechaDevolucion: '',
     horaDevolucion: '',
-    valorDia: ''
+    valorDia: '',
+    valorTotalManual: ''
 };
 
 const initialErrors = {
@@ -105,7 +106,11 @@ const Agregarrenta = () => {
         return dias * valorDia;
     };
 
-    const totalEstimado = calcularTotalEstimado();
+
+    const totalBaseEstimado = calcularTotalEstimado();
+    const totalMostrado = formData.valorTotalManual.trim() !== ''
+        ? Number(formData.valorTotalManual)
+        : totalBaseEstimado;
 
     // Valida en tiempo real mientras el usuario escribe.
     const handleChange = (e) => {
@@ -180,7 +185,8 @@ const Agregarrenta = () => {
                 horaEntrega: formData.horaEntrega.trim(),
                 fechaDevolucion: formData.fechaDevolucion.trim(),
                 horaDevolucion: formData.horaDevolucion.trim(),
-                valorDia: parseFloat(formData.valorDia)
+                valorDia: parseFloat(formData.valorDia),
+                valorTotal: formData.valorTotalManual.trim() !== '' ? parseFloat(formData.valorTotalManual) : totalBaseEstimado
             },
             () => {
                 limpiarFormulario();
@@ -325,13 +331,23 @@ const Agregarrenta = () => {
                                             </div>
 
                                             <div className={styles.totalPreviewContainer}>
+                                                <label className={styles.totalPreviewLabel}>Valor total</label>
+                                                <input
+                                                    className={styles.totalPreviewInput}
+                                                    name="valorTotalManual"
+                                                    type="number"
+                                                    min="0"
+                                                    placeholder="Modifica el valor total"
+                                                    value={formData.valorTotalManual}
+                                                    onChange={handleChange}
+                                                />
                                                 <span className={styles.totalPreviewInline}>
-                                                    {totalEstimado.toLocaleString('es-CO', {
+                                                    {Number.isFinite(totalMostrado) ? totalMostrado.toLocaleString('es-CO', {
                                                         style: 'currency',
                                                         currency: 'COP',
                                                         minimumFractionDigits: 0,
                                                         maximumFractionDigits: 0
-                                                    })}
+                                                    }) : '$ 0'}
                                                 </span>
                                             </div>
 

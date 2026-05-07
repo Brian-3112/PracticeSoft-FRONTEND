@@ -17,7 +17,7 @@ const toTitleCaseByWords = (value) =>
 const validateField = (name, value) => {
     const trimmedValue = value.trim();
 
-    if (name === 'nombre' || name === 'direccion' || name === 'celular') {
+    if (name === 'nombre' || name === 'celular') {
         if (!trimmedValue) return 'Campo obligatorio';
         return '';
     }
@@ -71,8 +71,7 @@ const Editarcliente = ({ cliente, onClose }) => {
         return {
             nombre: validateField('nombre', dataToValidate.nombre),
             identificacion: validateField('identificacion', dataToValidate.identificacion),
-            direccion: validateField('direccion', dataToValidate.direccion),
-            celular: validateField('celular', dataToValidate.celular)
+                        celular: validateField('celular', dataToValidate.celular)
         };
     };
 

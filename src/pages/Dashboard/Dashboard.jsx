@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
 import useDashboard from '../../hooks/useDashboard';
@@ -175,11 +176,13 @@ const createExecutiveReportDocx = (lines) => {
 const Dashboard = () => {
   const { auth, loading } = useAuth();
   const { ingresosMes, clientesTotal, ingresosPorMes, rentas, ingresosAnual } = useDashboard();
+  const [ocultarIngresos, setOcultarIngresos] = useState(false);
 
   if (loading) return 'Cargando...';
   if (!auth) return <Navigate to="/login" />;
 
   const labelsMeses = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+  const formatoMonedaSinDecimales = { style: 'currency', currency: 'COP', minimumFractionDigits: 0, maximumFractionDigits: 0 };
 
   const dataIngresos = {
     labels: labelsMeses,
@@ -320,9 +323,9 @@ const Dashboard = () => {
           <div className={styles.statCard}>
             <div className={styles.statIcon}>💰</div>
             <div className={styles.statContent}>
-              <p className={styles.statTitle}>Ingresos del mes</p>
+              <div className={styles.statTitleRow}><p className={styles.statTitle}>Ingresos del mes</p><button type="button" className={styles.eyeButton} onClick={() => setOcultarIngresos((prev) => !prev)}>{ocultarIngresos ? '🙈' : '👁️'}</button></div>
               <p className={styles.statValue}>
-                {ingresosMes.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}
+                {ocultarIngresos ? '••••••' : ingresosMes.toLocaleString('es-CO', formatoMonedaSinDecimales)}
               </p>
             </div>
           </div>
@@ -330,9 +333,9 @@ const Dashboard = () => {
           <div className={styles.statCard}>
             <div className={styles.statIcon}>📅</div>
             <div className={styles.statContent}>
-              <p className={styles.statTitle}>Ingresos anuales</p>
+              <div className={styles.statTitleRow}><p className={styles.statTitle}>Ingresos anuales</p><button type="button" className={styles.eyeButton} onClick={() => setOcultarIngresos((prev) => !prev)}>{ocultarIngresos ? '🙈' : '👁️'}</button></div>
               <p className={styles.statValue}>
-                {ingresosAnual.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}
+                {ocultarIngresos ? '••••••' : ingresosAnual.toLocaleString('es-CO', formatoMonedaSinDecimales)}
               </p>
             </div>
           </div>
