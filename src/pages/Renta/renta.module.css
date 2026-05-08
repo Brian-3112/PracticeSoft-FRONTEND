@@ -350,8 +350,13 @@
   border-radius: 8px;
   padding: 6px 10px;
   font-size: 0.85rem;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
 }
 
 .downloadButton:hover:not(:disabled) {
@@ -362,6 +367,11 @@
 .downloadButton:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+}
+
+.downloadIcon {
+  font-size: 0.95rem;
+  line-height: 1;
 }
 
 

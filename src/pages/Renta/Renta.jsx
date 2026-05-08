@@ -230,7 +230,7 @@ const Renta = () => {
                             <th>Devolución</th>
                             <th>Valor Total</th>
                             <th>Estado</th>
-                            <th>Acciones</th>
+                            <th>Contrato / Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -280,10 +280,13 @@ const Renta = () => {
                                         className={styles.downloadButton}
                                         onClick={() => handleDownloadContrato(renta.id)}
                                         disabled={isDownloadingContrato || isDeletingRenta}
+                                        aria-label={`Descargar contrato de la renta ${renta.id}`}
+                                        title="Descargar contrato"
                                     >
+                                        <span className={styles.downloadIcon} aria-hidden="true">📄</span>
                                         {isDownloadingContrato && downloadingRentaId === renta.id
                                             ? 'Descargando...'
-                                            : 'Descargar contrato'}
+                                            : 'Contrato'}
                                     </button>
                                     <button
                                         type="button"
