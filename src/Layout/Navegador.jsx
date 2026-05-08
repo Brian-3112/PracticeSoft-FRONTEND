@@ -7,6 +7,9 @@ import styles from '../Layout/Navegador.module.css';
 const IconDashboard = () => (
   <svg className={styles.menuIcon} viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 13h8V3H3v10Zm0 8h8v-6H3v6Zm10 0h8V11h-8v10Zm0-18v6h8V3h-8Z" fill="currentColor"/></svg>
 );
+const IconDisponibilidad = () => (
+  <svg className={styles.menuIcon} viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 2v2M17 2v2M3 9h18M5 5h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round"/><path d="M8 13h3v3H8z" fill="currentColor"/></svg>
+);
 const IconClientes = () => (
   <svg className={styles.menuIcon} viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M16 11a4 4 0 1 0-4-4 4 4 0 0 0 4 4ZM8 12a3 3 0 1 0-3-3 3 3 0 0 0 3 3Zm8 2c-2.67 0-8 1.33-8 4v2h16v-2c0-2.67-5.33-4-8-4Zm-8 1c-2.33 0-7 1.17-7 3.5V20h5v-2c0-1.14.59-2.15 1.57-3Z" fill="currentColor"/></svg>
 );
@@ -18,7 +21,8 @@ const IconRentas = () => (
 );
 
 const menuItems = [
-  { to: '/admin', label: 'Dashboard', icon: IconDashboard },
+  { to: '/admin/disponibilidad', label: 'Disponibilidad', icon: IconDisponibilidad },
+  { to: '/admin/dashboard', label: 'Dashboard', icon: IconDashboard },
   { to: '/admin/clientes', label: 'Clientes', icon: IconClientes },
   { to: '/admin/vehiculos', label: 'Vehículos', icon: IconVehiculos },
   { to: '/admin/rentas', label: 'Rentas', icon: IconRentas },
@@ -26,6 +30,7 @@ const menuItems = [
 
 const getPageTitle = (pathname) => {
   if (pathname.includes('/clientes')) return 'Clientes';
+  if (pathname.includes('/disponibilidad')) return 'Disponibilidad';
   if (pathname.includes('/vehiculos')) return 'Vehículos';
   if (pathname.includes('/rentas')) return 'Rentas';
   return 'Dashboard';
@@ -33,6 +38,7 @@ const getPageTitle = (pathname) => {
 
 const getPageSubtitle = (pathname) => {
   if (pathname.includes('/clientes')) return 'Gestión de clientes';
+  if (pathname.includes('/disponibilidad')) return 'Calendario de disponibilidad por vehículo';
   if (pathname.includes('/vehiculos')) return 'Gestión de vehículos';
   if (pathname.includes('/rentas')) return 'Alquiler - Reservas';
   return 'Resumen general de operaciones';

@@ -116,8 +116,8 @@ const Login = () => {
                 // Si falla esta consulta, no bloqueamos el ingreso al sistema.
             }
 
-            // Redirige al panel privado (/admin).
-            navigate("/admin");
+            // Redirige al módulo principal de disponibilidad.
+            navigate("/admin/disponibilidad");
         } catch (error) {
             Swal.fire({
                 title: "Error",

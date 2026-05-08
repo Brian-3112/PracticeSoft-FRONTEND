@@ -10,6 +10,7 @@ import Dashboard from '../pages/Dashboard/Dashboard';
 import Vehiculo from '../pages/Vehiculo/Vehiculo';
 import Cliente from '../pages/Cliente/Cliente';
 import Renta from '../pages/Renta/Renta';
+import Disponibilidad from '../pages/Disponibilidad/Disponibilidad';
 import { AuthProvider } from '../context/AuthProvider';
 import { VehiculoProvider } from '../context/VehiculoProvider';
 import { ClienteProvider } from '../context/ClienteProvider';
@@ -47,7 +48,11 @@ const MyRoutes = () => {
                                             element={<Navegador />}
                                         >
 
-                                            <Route index element={<Dashboard />} />
+                                            <Route index element={<Navigate to="disponibilidad" replace />} />
+
+                                            <Route path="disponibilidad" element={<Disponibilidad />} />
+
+                                            <Route path="dashboard" element={<Dashboard />} />
 
                                             <Route path="vehiculos" element={<Vehiculo />} />
 
