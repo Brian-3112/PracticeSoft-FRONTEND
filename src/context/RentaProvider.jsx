@@ -56,7 +56,11 @@ export const RentaProvider = ({ children }) => {
             if (!token) return;
 
             const data = await createRenta({ rentaPayload: nuevaRenta, config });
-            setRentas(prev => [data.renta, ...prev]);
+            const rentaConTotalFinal = {
+                ...data.renta,
+                valorTotal: Number(nuevaRenta?.valorTotal ?? data?.renta?.valorTotal ?? 0),
+            };
+            setRentas(prev => [rentaConTotalFinal, ...prev]);
             setLastCreatedRentaId(data?.renta?.id ?? null);
 
             await Promise.all([
