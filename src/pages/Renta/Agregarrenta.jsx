@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import useAuth from '../../hooks/useAuth.jsx';
 import BotonVerde from '../../components/BotonVerde.jsx';
 import styles from '../Renta/renta.module.css';
@@ -14,7 +14,7 @@ const initialFormData = {
     fechaDevolucion: '',
     horaDevolucion: '',
     valorDia: '',
-    valorTotalManual: ''
+    ajusteTotal: ''
 };
 
 const initialErrors = {
@@ -55,9 +55,6 @@ const Agregarrenta = () => {
     // Estado para el formulario Renta
     const [formData, setFormData] = useState(initialFormData);
     const [errors, setErrors] = useState(initialErrors);
-    const [manualOverride, setManualOverride] = useState(false);
-    const manualTotalRef = useRef('');
-    const totalEditableRef = useRef(null);
 
     const validateRequiredFields = (dataToValidate) => {
         return {
@@ -111,9 +108,8 @@ const Agregarrenta = () => {
 
 
     const totalBaseEstimado = calcularTotalEstimado();
-    const totalMostrado = manualOverride && formData.valorTotalManual.trim() !== ''
-        ? Number(formData.valorTotalManual)
-        : totalBaseEstimado;
+    const ajusteTotal = Number(formData.ajusteTotal || 0);
+    const totalMostrado = Math.max(0, totalBaseEstimado + ajusteTotal);
 
     const formatearCOP = (value) => Number(value || 0).toLocaleString('es-CO', {
         style: 'currency',
@@ -121,13 +117,6 @@ const Agregarrenta = () => {
         minimumFractionDigits: 0,
         maximumFractionDigits: 0
     });
-
-    const parseCurrencyInput = (value) => {
-        const onlyDigits = String(value).replace(/\D/g, '');
-        if (!onlyDigits) return '';
-        const parsed = Number(onlyDigits);
-        return Number.isFinite(parsed) && parsed >= 0 ? String(parsed) : '';
-    };
 
     // Valida en tiempo real mientras el usuario escribe.
     const handleChange = (e) => {
@@ -137,12 +126,6 @@ const Agregarrenta = () => {
             ...prev,
             [name]: value
         }));
-
-        if (name === 'fechaEntrega' || name === 'horaEntrega' || name === 'fechaDevolucion' || name === 'horaDevolucion' || name === 'valorDia') {
-            setManualOverride(false);
-            manualTotalRef.current = '';
-            setFormData((prev) => ({ ...prev, valorTotalManual: '' }));
-        }
 
         if (Object.prototype.hasOwnProperty.call(initialErrors, name)) {
             setErrors((prev) => ({
@@ -200,9 +183,7 @@ const Agregarrenta = () => {
         const hasErrors = Object.values(nextErrors).some((error) => error !== '');
         if (hasErrors) return;
 
-        const textoActualTotal = totalEditableRef.current?.textContent || manualTotalRef.current || formData.valorTotalManual;
-        const manualTotalLimpio = parseCurrencyInput(textoActualTotal);
-        const valorTotalFinal = manualTotalLimpio !== '' ? parseFloat(manualTotalLimpio) : totalBaseEstimado;
+        const valorTotalFinal = Math.max(0, totalBaseEstimado + Number(formData.ajusteTotal || 0));
 
         await agregarRenta(
             {
@@ -358,29 +339,22 @@ const Agregarrenta = () => {
                                             </div>
 
                                             <div className={styles.totalPreviewContainer}>
-                                                                                                <span
-                                                    ref={totalEditableRef}
-                                                    className={styles.totalPreviewInline}
-                                                    contentEditable
-                                                    suppressContentEditableWarning
-                                                    role="textbox"
-                                                    aria-label="Valor total"
-                                                    onFocus={(e) => {
-                                                        e.currentTarget.textContent = formData.valorTotalManual || String(Math.round(totalBaseEstimado));
-                                                    }}
-                                                    onInput={(e) => {
-                                                        manualTotalRef.current = e.currentTarget.textContent || '';
-                                                    }}
-                                                    onBlur={(e) => {
-                                                        const parsedValue = parseCurrencyInput(e.currentTarget.textContent || '');
-                                                        manualTotalRef.current = parsedValue;
-                                                        setManualOverride(parsedValue !== '');
-                                                        setFormData((prev) => ({ ...prev, valorTotalManual: parsedValue }));
-                                                        e.currentTarget.textContent = formatearCOP(parsedValue || totalBaseEstimado);
-                                                    }}
-                                                >
+                                                <span className={styles.totalPreviewInline}>
                                                     {formatearCOP(totalMostrado)}
                                                 </span>
+                                            </div>
+
+                                            <div>
+                                                <label className={styles.labelFormu}>
+                                                    <input
+                                                        className={styles.inputFormu}
+                                                        name="ajusteTotal"
+                                                        type="number"
+                                                        placeholder="Ajuste total (+ / -)"
+                                                        value={formData.ajusteTotal}
+                                                        onChange={handleChange}
+                                                    />
+                                                </label>
                                             </div>
 
                                         </div>
