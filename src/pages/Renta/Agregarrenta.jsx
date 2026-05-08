@@ -356,7 +356,7 @@ const Agregarrenta = () => {
                                                     contentEditable
                                                     suppressContentEditableWarning
                                                     role="textbox"
-                                                    aria-label="Valor total editable"
+                                                    aria-label="Valor total"
                                                     onFocus={(e) => {
                                                         e.currentTarget.textContent = formData.valorTotalManual || String(Math.round(totalBaseEstimado));
                                                     }}
