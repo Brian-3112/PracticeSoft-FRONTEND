@@ -57,6 +57,7 @@ const Agregarrenta = () => {
     const [errors, setErrors] = useState(initialErrors);
     const [manualOverride, setManualOverride] = useState(false);
     const manualTotalRef = useRef('');
+    const totalEditableRef = useRef(null);
 
     const validateRequiredFields = (dataToValidate) => {
         return {
@@ -199,7 +200,8 @@ const Agregarrenta = () => {
         const hasErrors = Object.values(nextErrors).some((error) => error !== '');
         if (hasErrors) return;
 
-        const manualTotalLimpio = parseCurrencyInput(manualTotalRef.current || formData.valorTotalManual);
+        const textoActualTotal = totalEditableRef.current?.textContent || manualTotalRef.current || formData.valorTotalManual;
+        const manualTotalLimpio = parseCurrencyInput(textoActualTotal);
         const valorTotalFinal = manualTotalLimpio !== '' ? parseFloat(manualTotalLimpio) : totalBaseEstimado;
 
         await agregarRenta(
@@ -357,6 +359,7 @@ const Agregarrenta = () => {
 
                                             <div className={styles.totalPreviewContainer}>
                                                                                                 <span
+                                                    ref={totalEditableRef}
                                                     className={styles.totalPreviewInline}
                                                     contentEditable
                                                     suppressContentEditableWarning

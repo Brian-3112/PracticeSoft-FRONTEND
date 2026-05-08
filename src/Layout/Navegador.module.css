@@ -134,7 +134,7 @@
   }
 }
 
-.menuToggle { display:none; border:none; background:#eef2f7; border-radius:10px; padding:8px 10px; font-size:1.2rem; cursor:pointer; margin-bottom:8px; }
+.menuToggle { display:none; border:none; background:#eef2f7; border-radius:9px; padding:6px 8px; font-size:1rem; cursor:pointer; margin-bottom:6px; }
 .overlay { display:none; }
 
 @media (max-width: 900px) {
