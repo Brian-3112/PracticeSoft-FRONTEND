@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import useAuth from '../../hooks/useAuth.jsx';
 import BotonVerde from '../../components/BotonVerde.jsx';
 import styles from '../Renta/renta.module.css';
@@ -14,7 +14,7 @@ const initialFormData = {
     fechaDevolucion: '',
     horaDevolucion: '',
     valorDia: '',
-    ajusteTotal: ''
+    valorTotalEditable: ''
 };
 
 const initialErrors = {
@@ -55,6 +55,7 @@ const Agregarrenta = () => {
     // Estado para el formulario Renta
     const [formData, setFormData] = useState(initialFormData);
     const [errors, setErrors] = useState(initialErrors);
+    const [totalEditadoManualmente, setTotalEditadoManualmente] = useState(false);
 
     const validateRequiredFields = (dataToValidate) => {
         return {
@@ -108,8 +109,17 @@ const Agregarrenta = () => {
 
 
     const totalBaseEstimado = calcularTotalEstimado();
-    const ajusteTotal = Number(formData.ajusteTotal || 0);
-    const totalMostrado = Math.max(0, totalBaseEstimado + ajusteTotal);
+    const totalMostrado = Number(formData.valorTotalEditable || totalBaseEstimado || 0);
+
+
+    useEffect(() => {
+        if (!totalEditadoManualmente) {
+            setFormData((prev) => ({
+                ...prev,
+                valorTotalEditable: totalBaseEstimado > 0 ? String(totalBaseEstimado) : ''
+            }));
+        }
+    }, [totalBaseEstimado, totalEditadoManualmente]);
 
     const formatearCOP = (value) => Number(value || 0).toLocaleString('es-CO', {
         style: 'currency',
@@ -126,6 +136,14 @@ const Agregarrenta = () => {
             ...prev,
             [name]: value
         }));
+
+        if (name === 'valorTotalEditable') {
+            setTotalEditadoManualmente(true);
+        }
+
+        if (name === 'fechaEntrega' || name === 'horaEntrega' || name === 'fechaDevolucion' || name === 'horaDevolucion' || name === 'valorDia') {
+            setTotalEditadoManualmente(false);
+        }
 
         if (Object.prototype.hasOwnProperty.call(initialErrors, name)) {
             setErrors((prev) => ({
@@ -183,7 +201,7 @@ const Agregarrenta = () => {
         const hasErrors = Object.values(nextErrors).some((error) => error !== '');
         if (hasErrors) return;
 
-        const valorTotalFinal = Math.max(0, totalBaseEstimado + Number(formData.ajusteTotal || 0));
+        const valorTotalFinal = Math.max(0, Number(formData.valorTotalEditable || totalBaseEstimado || 0));
 
         await agregarRenta(
             {
@@ -338,23 +356,24 @@ const Agregarrenta = () => {
                                                 </label>
                                             </div>
 
-                                            <div className={styles.totalPreviewContainer}>
-                                                <span className={styles.totalPreviewInline}>
-                                                    {formatearCOP(totalMostrado)}
-                                                </span>
-                                            </div>
-
                                             <div>
                                                 <label className={styles.labelFormu}>
                                                     <input
                                                         className={styles.inputFormu}
-                                                        name="ajusteTotal"
+                                                        name="valorTotalEditable"
                                                         type="number"
-                                                        placeholder="Ajuste total (+ / -)"
-                                                        value={formData.ajusteTotal}
+                                                        min="0"
+                                                        placeholder="Valor total"
+                                                        value={formData.valorTotalEditable}
                                                         onChange={handleChange}
                                                     />
                                                 </label>
+                                            </div>
+
+                                            <div className={styles.totalPreviewContainer}>
+                                                <span className={styles.totalPreviewInline}>
+                                                    {formatearCOP(totalMostrado)}
+                                                </span>
                                             </div>
 
                                         </div>
