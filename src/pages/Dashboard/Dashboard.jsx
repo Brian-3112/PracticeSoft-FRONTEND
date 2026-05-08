@@ -280,12 +280,14 @@ const Dashboard = () => {
     const ingresoMensualTexto = ingresosMes.toLocaleString('es-CO', {
       style: 'currency',
       currency: 'COP',
-      minimumFractionDigits: 2,
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
     });
     const ingresoAnualTexto = ingresosAnual.toLocaleString('es-CO', {
       style: 'currency',
       currency: 'COP',
-      minimumFractionDigits: 2,
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
     });
 
     const reporteLineas = [
@@ -326,7 +328,7 @@ const Dashboard = () => {
               <p className={styles.statTitle}>Ingresos del mes</p>
               <div className={styles.statValueRow}>
                 <p className={styles.statValue}>
-                  {mostrarIngresosMes ? ingresosMes.toLocaleString('es-CO', { style: 'currency', currency: 'COP' }) : '••••••••'}
+                  {mostrarIngresosMes ? ingresosMes.toLocaleString('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0, maximumFractionDigits: 0 }) : '••••••••'}
                 </p>
                 <button type="button" className={styles.eyeButton} onClick={() => setMostrarIngresosMes((prev) => !prev)} aria-label={mostrarIngresosMes ? 'Ocultar ingresos del mes' : 'Mostrar ingresos del mes'}>
                   {mostrarIngresosMes ? '🙈' : '👁️'}
@@ -341,7 +343,7 @@ const Dashboard = () => {
               <p className={styles.statTitle}>Ingresos anuales</p>
               <div className={styles.statValueRow}>
                 <p className={styles.statValue}>
-                  {mostrarIngresosAnual ? ingresosAnual.toLocaleString('es-CO', { style: 'currency', currency: 'COP' }) : '••••••••'}
+                  {mostrarIngresosAnual ? ingresosAnual.toLocaleString('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0, maximumFractionDigits: 0 }) : '••••••••'}
                 </p>
                 <button type="button" className={styles.eyeButton} onClick={() => setMostrarIngresosAnual((prev) => !prev)} aria-label={mostrarIngresosAnual ? 'Ocultar ingresos anuales' : 'Mostrar ingresos anuales'}>
                   {mostrarIngresosAnual ? '🙈' : '👁️'}
