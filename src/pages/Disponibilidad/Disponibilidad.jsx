@@ -118,11 +118,11 @@ const Disponibilidad = () => {
         <div className={styles.header}>
           <h2>{selectedVehiculo?.nombreVehiculo || 'Disponibilidad'}</h2>
           <div className={styles.monthNav}>
-            <button type="button" className={styles.monthBtn} onClick={() => setMonthOffset((prev) => prev - 1)}>
-              ← Mes anterior
+            <button type="button" className={styles.monthBtn} onClick={() => setMonthOffset((prev) => prev - 1)} aria-label="Mes anterior">
+              ←
             </button>
-            <button type="button" className={styles.monthBtn} onClick={() => setMonthOffset((prev) => prev + 1)}>
-              Mes siguiente →
+            <button type="button" className={styles.monthBtn} onClick={() => setMonthOffset((prev) => prev + 1)} aria-label="Mes siguiente">
+              →
             </button>
           </div>
           <div className={styles.legend}>
