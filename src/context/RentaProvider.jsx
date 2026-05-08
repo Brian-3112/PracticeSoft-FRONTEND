@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import clienteAxios from '../config/axios';
 import useAuth from '../hooks/useAuth';
 import Swal from 'sweetalert2';
-import { createRenta, deleteRentaById, downloadContratoDocx } from '../services/rentaService';
+import { createRenta, downloadContratoDocx } from '../services/rentaService';
 import { VehiculoContext } from './VehiculoProvider';
 import { DashboardContext } from './DashboardProvider';
 
@@ -21,8 +21,6 @@ export const RentaProvider = ({ children }) => {
     const [isDownloadingContrato, setIsDownloadingContrato] = useState(false);
     const [downloadingRentaId, setDownloadingRentaId] = useState(null);
     const [lastCreatedRentaId, setLastCreatedRentaId] = useState(null);
-    const [isDeletingRenta, setIsDeletingRenta] = useState(false);
-    const [deletingRentaId, setDeletingRentaId] = useState(null);
 
 
     const consultarRentas = async () => {
@@ -56,25 +54,13 @@ export const RentaProvider = ({ children }) => {
             if (!token) return;
 
             const data = await createRenta({ rentaPayload: nuevaRenta, config });
-            const rentaConTotalFinal = {
-                ...data.renta,
-                valorTotal: Number(nuevaRenta?.valorTotal ?? data?.renta?.valorTotal ?? 0),
-            };
-            setRentas(prev => [rentaConTotalFinal, ...prev]);
+            setRentas(prev => [data.renta, ...prev]);
             setLastCreatedRentaId(data?.renta?.id ?? null);
-            dashboardContext?.aplicarRentaLocal?.(rentaConTotalFinal);
-
-            if (rentaConTotalFinal?.id && Number.isFinite(Number(nuevaRenta?.valorTotal))) {
-                try {
-                    await clienteAxios.patch(`/rentas/${rentaConTotalFinal.id}`, { valorTotal: Number(nuevaRenta.valorTotal) }, config);
-                } catch {
-                    // Si el backend no soporta actualizar valorTotal, mantenemos al menos el valor en UI.
-                }
-            }
 
             await Promise.all([
                 vehiculoContext?.consultarVehiculos?.(),
                 vehiculoContext?.consultarRentas?.(),
+                dashboardContext?.calcularDashboard?.(),
             ]);
 
             await Swal.fire({
@@ -105,62 +91,6 @@ export const RentaProvider = ({ children }) => {
             setIsCreatingRenta(false);
         }
     };
-
-
-    const eliminarRenta = async (rentaId) => {
-        const rentaIdNumerica = Number(rentaId);
-        if (!rentaIdNumerica) return false;
-
-        const confirmacion = await Swal.fire({
-            title: '¿Eliminar renta?',
-            text: 'Esta acción no se puede deshacer.',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonText: 'Sí, eliminar',
-            cancelButtonText: 'Cancelar',
-            customClass: {
-                confirmButton: 'confirmarBoton',
-                cancelButton: 'cancelBoton',
-            },
-        });
-
-        if (!confirmacion.isConfirmed) return false;
-
-        setIsDeletingRenta(true);
-        setDeletingRentaId(rentaIdNumerica);
-
-        try {
-            const response = await deleteRentaById({ rentaId: rentaIdNumerica, config });
-            setRentas((prev) => prev.filter((renta) => renta.id !== rentaIdNumerica));
-
-            await Promise.all([
-                vehiculoContext?.consultarVehiculos?.(),
-                vehiculoContext?.consultarRentas?.(),
-            ]);
-
-            await Swal.fire({
-                title: 'Renta eliminada',
-                text: response?.message || 'La renta se eliminó correctamente.',
-                icon: 'success',
-                customClass: {
-                    confirmButton: 'confirmarBoton',
-                    cancelButton: 'cancelBoton',
-                },
-            });
-            return true;
-        } catch (error) {
-            Swal.fire({
-                title: 'No se pudo eliminar',
-                text: error?.response?.data?.message || 'Intenta nuevamente.',
-                icon: 'error',
-            });
-            return false;
-        } finally {
-            setIsDeletingRenta(false);
-            setDeletingRentaId(null);
-        }
-    };
-
 
     const descargarContrato = async ({ rentaId, rentaPayload } = {}) => {
         setIsDownloadingContrato(true);
@@ -217,9 +147,6 @@ export const RentaProvider = ({ children }) => {
                 isDownloadingContrato,
                 downloadingRentaId,
                 lastCreatedRentaId,
-                eliminarRenta,
-                isDeletingRenta,
-                deletingRentaId,
             }}
         >
             {children}

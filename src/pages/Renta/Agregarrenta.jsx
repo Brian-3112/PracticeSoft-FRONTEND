@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import useAuth from '../../hooks/useAuth.jsx';
 import BotonVerde from '../../components/BotonVerde.jsx';
 import styles from '../Renta/renta.module.css';
@@ -13,8 +13,7 @@ const initialFormData = {
     horaEntrega: '',
     fechaDevolucion: '',
     horaDevolucion: '',
-    valorDia: '',
-    valorTotalEditable: ''
+    valorDia: ''
 };
 
 const initialErrors = {
@@ -55,7 +54,6 @@ const Agregarrenta = () => {
     // Estado para el formulario Renta
     const [formData, setFormData] = useState(initialFormData);
     const [errors, setErrors] = useState(initialErrors);
-    const [totalEditadoManualmente, setTotalEditadoManualmente] = useState(false);
 
     const validateRequiredFields = (dataToValidate) => {
         return {
@@ -94,39 +92,9 @@ const Agregarrenta = () => {
     };
 
     const calcularTotalEstimado = () => {
-        const valorDia = Number(formData.valorDia);
-        const fechaEntrega = combineDateAndTime(formData.fechaEntrega, formData.horaEntrega);
-        const fechaDevolucion = combineDateAndTime(formData.fechaDevolucion, formData.horaDevolucion);
-
-        if (!valorDia || !fechaEntrega || !fechaDevolucion || fechaDevolucion <= fechaEntrega) {
-            return 0;
-        }
-
-        const diffMs = fechaDevolucion.getTime() - fechaEntrega.getTime();
-        const dias = Math.max(1, Math.ceil(diffMs / (1000 * 60 * 60 * 24)));
-        return dias * valorDia;
     };
 
-
-    const totalBaseEstimado = calcularTotalEstimado();
-    const totalMostrado = Number(formData.valorTotalEditable || totalBaseEstimado || 0);
-
-
-    useEffect(() => {
-        if (!totalEditadoManualmente) {
-            setFormData((prev) => ({
-                ...prev,
-                valorTotalEditable: totalBaseEstimado > 0 ? String(totalBaseEstimado) : ''
-            }));
-        }
-    }, [totalBaseEstimado, totalEditadoManualmente]);
-
-    const formatearCOP = (value) => Number(value || 0).toLocaleString('es-CO', {
-        style: 'currency',
-        currency: 'COP',
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 0
-    });
+    const totalEstimado = calcularTotalEstimado();
 
     // Valida en tiempo real mientras el usuario escribe.
     const handleChange = (e) => {
@@ -136,14 +104,6 @@ const Agregarrenta = () => {
             ...prev,
             [name]: value
         }));
-
-        if (name === 'valorTotalEditable') {
-            setTotalEditadoManualmente(true);
-        }
-
-        if (name === 'fechaEntrega' || name === 'horaEntrega' || name === 'fechaDevolucion' || name === 'horaDevolucion' || name === 'valorDia') {
-            setTotalEditadoManualmente(false);
-        }
 
         if (Object.prototype.hasOwnProperty.call(initialErrors, name)) {
             setErrors((prev) => ({
@@ -201,20 +161,12 @@ const Agregarrenta = () => {
         const hasErrors = Object.values(nextErrors).some((error) => error !== '');
         if (hasErrors) return;
 
-        const valorTotalFinal = Math.max(0, Number(formData.valorTotalEditable || totalBaseEstimado || 0));
-
-        await agregarRenta(
-            {
-                vehiculoId: parseInt(formData.vehiculoId),
                 clienteId: parseInt(formData.clienteId),
                 fechaEntrega: formData.fechaEntrega.trim(),
                 horaEntrega: formData.horaEntrega.trim(),
                 fechaDevolucion: formData.fechaDevolucion.trim(),
                 horaDevolucion: formData.horaDevolucion.trim(),
-                valorDia: parseFloat(formData.valorDia),
-                valorTotal: valorTotalFinal
-            },
-            () => {
+                valorDia: parseFloat(formData.valorDia)
                 limpiarFormulario();
                 handleClose();
             }
@@ -357,16 +309,13 @@ const Agregarrenta = () => {
                                             </div>
 
                                             <div className={styles.totalPreviewContainer}>
-                                                <input
-                                                    className={styles.totalEditableInput}
-                                                    name="valorTotalEditable"
-                                                    type="number"
-                                                    min="0"
-                                                    value={formData.valorTotalEditable}
-                                                    onChange={handleChange}
-                                                />
                                                 <span className={styles.totalPreviewInline}>
-                                                    {formatearCOP(totalMostrado)}
+                                                    {totalEstimado.toLocaleString('es-CO', {
+                                                        style: 'currency',
+                                                        currency: 'COP',
+                                                        minimumFractionDigits: 0,
+                                                        maximumFractionDigits: 0
+                                                    })}
                                                 </span>
                                             </div>
 

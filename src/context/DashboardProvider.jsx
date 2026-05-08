@@ -8,13 +8,6 @@ import Swal from 'sweetalert2';
 
 export const DashboardContext = createContext();
 
-const parseDateOnly = (dateValue) => {
-    if (!dateValue) return null;
-    const dateString = String(dateValue).slice(0, 10);
-    const [year, month, day] = dateString.split('-').map(Number);
-    return new Date(year, month - 1, day);
-};
-
 export const DashboardProvider = ({ children }) => {
 
 
@@ -27,36 +20,7 @@ export const DashboardProvider = ({ children }) => {
 
 
 
-    
-    const recalcularDesdeRentas = (rentasFuente) => {
-        const mesActual = new Date().getMonth();
-
-        const totalMes = rentasFuente
-            .filter((r) => parseDateOnly(r.fechaEntrega)?.getMonth() === mesActual)
-            .reduce((acc, r) => acc + Number(r.valorTotal || 0), 0);
-        setIngresosMes(totalMes);
-
-        const ingresosArray = Array(12).fill(0);
-        rentasFuente.forEach((r) => {
-            const fechaEntrega = parseDateOnly(r.fechaEntrega);
-            if (!fechaEntrega) return;
-            const mes = fechaEntrega.getMonth();
-            ingresosArray[mes] += Number(r.valorTotal || 0);
-        });
-        setIngresosPorMes(ingresosArray);
-        setIngresosAnual(ingresosArray.reduce((acc, val) => acc + val, 0));
-    };
-
-    const aplicarRentaLocal = (rentaNueva) => {
-        if (!rentaNueva) return;
-        setRentas((prev) => {
-            const nextRentas = [rentaNueva, ...prev];
-            recalcularDesdeRentas(nextRentas);
-            return nextRentas;
-        });
-    };
-
-const calcularDashboard = async () => {
+    const calcularDashboard = async () => {
         try {
             const token = localStorage.getItem("token");
             if (!token) return;
@@ -70,7 +34,27 @@ const calcularDashboard = async () => {
             setClientesTotal(clientes.length);
 
             setRentas(rentasData); //guardamos las rentas
-            recalcularDesdeRentas(rentasData);
+
+            // Cálculo Ingresos del mes
+            const mesActual = new Date().getMonth(); //obtenemos el mes actual (0-11)
+            const totalMes = rentasData
+                .filter(r => new Date(r.fechaEntrega).getMonth() === mesActual) //filtramos las rentas del mes actual
+                .reduce((acc, r) => acc + r.valorTotal, 0); //sumamos el valor total de las rentas del mes actual
+            setIngresosMes(totalMes);
+
+
+            // 👇 Cálculo Ingresos por mes (array)
+            const ingresosArray = Array(12).fill(0); //creamos un array de 12 posiciones (0-11) y lo llenamos con 0
+            rentasData.forEach(r => { //recorremos todas las rentas
+                const mes = new Date(r.fechaEntrega).getMonth(); //obtenemos el mes de la renta (0-11)
+                ingresosArray[mes] += r.valorTotal; //sumamos el valor total de la renta al mes correspondiente en el array
+            });
+            setIngresosPorMes(ingresosArray);
+
+
+            // 👇 cálculo Ingresos Anuales
+            const totalAnual = ingresosArray.reduce((acc, val) => acc + val, 0); //sumamos todos los valores del array
+            setIngresosAnual(totalAnual);
 
 
 
@@ -94,7 +78,7 @@ const calcularDashboard = async () => {
 
 
     return (
-        <DashboardContext.Provider value={{ ingresosMes, clientesTotal, ingresosPorMes, rentas, ingresosAnual, calcularDashboard, aplicarRentaLocal }}>
+        <DashboardContext.Provider value={{ ingresosMes, clientesTotal, ingresosPorMes, rentas, ingresosAnual, calcularDashboard }}>
             {children}
         </DashboardContext.Provider>
     );

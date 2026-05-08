@@ -253,7 +253,6 @@
   line-height: 1.2;
 }
 
-
 .totalPreviewContainer {
   display: flex;
   align-items: center;
@@ -262,24 +261,12 @@
   padding-top: 12px;
 }
 
-.totalEditableInput {
-  width: 100%;
-  max-width: 220px;
-  border: 1px solid #d62828;
-  border-radius: 6px;
-  padding: 6px 8px;
-  color: #7d1a1a;
-  font-weight: 600;
-}
-
 .totalPreviewInline {
   font-size: 16px;
   font-weight: 700;
   color: #d62828;
   line-height: 1;
-  display: inline-block;
 }
-
 
 @media (max-width: 768px) {
   .totalPreviewContainer {
@@ -485,66 +472,4 @@
     padding: 6px 8px;
     white-space: nowrap;
   }
-}
-
-.actionsCell {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.deleteButton {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  border: 1px solid #d93025;
-  background-color: transparent;
-  color: #d93025;
-  font-size: 1.2rem;
-  line-height: 1;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.deleteButton:hover:not(:disabled) {
-  background-color: #d93025;
-  color: #fff;
-}
-
-.deleteButton:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.totalPreviewInline[contenteditable="true"] {
-  border-bottom: 1px dashed #d62828;
-  padding: 4px 0;
-  min-width: 140px;
-  text-align: right;
-  cursor: text;
-}
-
-.totalPreviewInline[contenteditable="true"]:focus {
-  outline: none;
-  border-bottom: 2px solid #d62828;
-}
-
-@media (max-width: 992px) {
-  .tableContainer { margin: 0 2%; padding: 14px; }
-  .table th, .table td { font-size: 0.86rem; padding: 10px 8px; }
-  .buttonContainer { flex-wrap: wrap; justify-content: center; top: 15px; }
-  .divAddVehiculo { left: 0; display: flex; justify-content: center; }
-}
-
-@media (max-width: 576px) {
-  .heading { font-size: 34px; }
-  .modalDialog { width: 95vw; margin: 0.75rem auto; }
-  .modalBody { padding: 0.65rem; }
-  .formGrid { grid-template-columns: 1fr; gap: 0.7rem; }
-  .modalFooter { flex-direction: column-reverse; align-items: stretch; }
-  .btn { width: 100%; }
-  .table { min-width: 800px; }
 }
