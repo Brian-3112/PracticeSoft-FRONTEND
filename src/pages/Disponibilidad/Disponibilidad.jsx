@@ -56,6 +56,7 @@ const MonthCalendar = ({ date, occupiedDates }) => {
 const Disponibilidad = () => {
   const { vehiculos, rentas } = useVehiculo();
   const [selectedVehiculoId, setSelectedVehiculoId] = useState(null);
+  const [monthOffset, setMonthOffset] = useState(0);
 
   useEffect(() => {
     if (!selectedVehiculoId && vehiculos?.length) {
@@ -91,8 +92,8 @@ const Disponibilidad = () => {
   }, [rentas, selectedVehiculo]);
 
   const hoy = new Date();
-  const mes1 = new Date(hoy.getFullYear(), hoy.getMonth(), 1);
-  const mes2 = new Date(hoy.getFullYear(), hoy.getMonth() + 1, 1);
+  const mes1 = new Date(hoy.getFullYear(), hoy.getMonth() + monthOffset, 1);
+  const mes2 = new Date(hoy.getFullYear(), hoy.getMonth() + monthOffset + 1, 1);
 
   return (
     <div className={styles.wrapper}>
@@ -116,6 +117,14 @@ const Disponibilidad = () => {
       <section className={styles.calendarPanel}>
         <div className={styles.header}>
           <h2>{selectedVehiculo?.nombreVehiculo || 'Disponibilidad'}</h2>
+          <div className={styles.monthNav}>
+            <button type="button" className={styles.monthBtn} onClick={() => setMonthOffset((prev) => prev - 1)}>
+              ← Mes anterior
+            </button>
+            <button type="button" className={styles.monthBtn} onClick={() => setMonthOffset((prev) => prev + 1)}>
+              Mes siguiente →
+            </button>
+          </div>
           <div className={styles.legend}>
             <span><i className={`${styles.dot} ${styles.dotRed}`} />Rentado</span>
             <span><i className={`${styles.dot} ${styles.dotGreen}`} />Disponible</span>

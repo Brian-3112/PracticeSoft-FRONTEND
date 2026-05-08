@@ -6,6 +6,9 @@
 .vehicleName { display:block; font-weight:700; }
 .vehiclePlate { color:#657089; font-size:.85rem; }
 .header { display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; }
+.monthNav { display:flex; gap:8px; }
+.monthBtn { border:1px solid #d7deea; background:#f8fafc; border-radius:8px; padding:6px 10px; cursor:pointer; }
+.monthBtn:hover { background:#eef3f8; }
 .legend { display:flex; gap:14px; }
 .dot { width:10px; height:10px; border-radius:999px; display:inline-block; margin-right:6px; }
 .dotRed { background:#d33; }
