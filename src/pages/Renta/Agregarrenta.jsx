@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import useAuth from '../../hooks/useAuth.jsx';
 import BotonVerde from '../../components/BotonVerde.jsx';
 import styles from '../Renta/renta.module.css';
@@ -56,6 +56,7 @@ const Agregarrenta = () => {
     const [formData, setFormData] = useState(initialFormData);
     const [errors, setErrors] = useState(initialErrors);
     const [manualOverride, setManualOverride] = useState(false);
+    const manualTotalRef = useRef('');
 
     const validateRequiredFields = (dataToValidate) => {
         return {
@@ -138,6 +139,7 @@ const Agregarrenta = () => {
 
         if (name === 'fechaEntrega' || name === 'horaEntrega' || name === 'fechaDevolucion' || name === 'horaDevolucion' || name === 'valorDia') {
             setManualOverride(false);
+            manualTotalRef.current = '';
             setFormData((prev) => ({ ...prev, valorTotalManual: '' }));
         }
 
@@ -197,6 +199,9 @@ const Agregarrenta = () => {
         const hasErrors = Object.values(nextErrors).some((error) => error !== '');
         if (hasErrors) return;
 
+        const manualTotalLimpio = parseCurrencyInput(manualTotalRef.current || formData.valorTotalManual);
+        const valorTotalFinal = manualTotalLimpio !== '' ? parseFloat(manualTotalLimpio) : totalBaseEstimado;
+
         await agregarRenta(
             {
                 vehiculoId: parseInt(formData.vehiculoId),
@@ -206,7 +211,7 @@ const Agregarrenta = () => {
                 fechaDevolucion: formData.fechaDevolucion.trim(),
                 horaDevolucion: formData.horaDevolucion.trim(),
                 valorDia: parseFloat(formData.valorDia),
-                valorTotal: manualOverride && formData.valorTotalManual.trim() !== '' ? parseFloat(formData.valorTotalManual) : totalBaseEstimado
+                valorTotal: valorTotalFinal
             },
             () => {
                 limpiarFormulario();
@@ -360,8 +365,12 @@ const Agregarrenta = () => {
                                                     onFocus={(e) => {
                                                         e.currentTarget.textContent = formData.valorTotalManual || String(Math.round(totalBaseEstimado));
                                                     }}
+                                                    onInput={(e) => {
+                                                        manualTotalRef.current = e.currentTarget.textContent || '';
+                                                    }}
                                                     onBlur={(e) => {
                                                         const parsedValue = parseCurrencyInput(e.currentTarget.textContent || '');
+                                                        manualTotalRef.current = parsedValue;
                                                         setManualOverride(parsedValue !== '');
                                                         setFormData((prev) => ({ ...prev, valorTotalManual: parsedValue }));
                                                         e.currentTarget.textContent = formatearCOP(parsedValue || totalBaseEstimado);
