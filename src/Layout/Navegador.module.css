@@ -61,6 +61,8 @@
   background: transparent; color: #dbe7ff; text-align: left; cursor: pointer;
   display: flex; align-items: center; gap: 8px;
   text-decoration: none;
+  font: inherit;
+  font-size: 0.95rem;
 }
 .logoutButton:hover,
 .settingsLink:hover,
