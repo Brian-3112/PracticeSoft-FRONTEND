@@ -1,5 +1,6 @@
 .wrapper { display:flex; flex-direction:column; gap:12px; max-width:1200px; margin:0 auto; }
 .toolbar { display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; }
+.toolbar h2 { font-size:1.2rem; margin:0; }
 .monthNav { display:flex; align-items:center; gap:10px; }
 .monthBtn { border:1px solid #d7deea; background:#f8fafc; border-radius:8px; width:30px; height:30px; cursor:pointer; }
 .monthTitle { text-transform:capitalize; font-weight:600; min-width:140px; text-align:center; }
