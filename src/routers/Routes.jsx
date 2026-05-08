@@ -11,6 +11,7 @@ import Vehiculo from '../pages/Vehiculo/Vehiculo';
 import Cliente from '../pages/Cliente/Cliente';
 import Renta from '../pages/Renta/Renta';
 import Disponibilidad from '../pages/Disponibilidad/Disponibilidad';
+import Configuracion from '../pages/Configuracion/Configuracion';
 import { AuthProvider } from '../context/AuthProvider';
 import { VehiculoProvider } from '../context/VehiculoProvider';
 import { ClienteProvider } from '../context/ClienteProvider';
@@ -59,6 +60,8 @@ const MyRoutes = () => {
                                             <Route path="clientes" element={<Cliente />} />
 
                                             <Route path="rentas" element={<Renta />} />
+
+                                            <Route path="configuracion" element={<Configuracion />} />
 
 
 

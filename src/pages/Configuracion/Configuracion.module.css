@@ -1,0 +1,226 @@
+.wrapper {
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: 1.3fr 0.7fr;
+  gap: 18px;
+  margin-bottom: 20px;
+}
+
+.card,
+.passwordCard {
+  background: #fff;
+  border: 1px solid #e5e9f2;
+  border-radius: 18px;
+  box-shadow: 0 12px 28px rgba(15, 23, 41, 0.08);
+  padding: 24px;
+}
+
+.profileHeader {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 22px;
+}
+
+.avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, var(--primary), #173680);
+  color: #fff;
+  font-size: 1.55rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  flex-shrink: 0;
+}
+
+.profileName {
+  color: #0f1e4a;
+  font-size: 1.65rem;
+  font-weight: 800;
+  margin: 0;
+}
+
+.profileSubtitle {
+  color: #657089;
+  margin-top: 4px;
+}
+
+.sectionTitle {
+  color: #0f1e4a;
+  font-size: 1.25rem;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.sectionText {
+  color: #657089;
+  line-height: 1.5;
+  margin-bottom: 16px;
+}
+
+.infoGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.infoItem {
+  background: #f5f7fb;
+  border: 1px solid #e7ebf3;
+  border-radius: 14px;
+  padding: 14px;
+}
+
+.infoLabel,
+.formLabel {
+  display: block;
+  color: #657089;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 7px;
+}
+
+.infoValue {
+  color: #0f1e4a;
+  font-weight: 700;
+  word-break: break-word;
+}
+
+.securityBox {
+  height: 100%;
+  background: linear-gradient(135deg, #0f1729, #173680);
+  color: #fff;
+  border-radius: 18px;
+  padding: 24px;
+  box-shadow: 0 12px 28px rgba(15, 23, 41, 0.14);
+}
+
+.securityIcon {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.14);
+  margin-bottom: 18px;
+}
+
+.securityTitle {
+  font-size: 1.35rem;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.securityText {
+  color: rgba(255, 255, 255, 0.78);
+  line-height: 1.55;
+}
+
+.passwordCard {
+  max-width: 720px;
+}
+
+.passwordForm {
+  display: grid;
+  gap: 16px;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.input {
+  border: 1px solid #dce3ee;
+  border-radius: 12px;
+  padding: 12px 14px;
+  color: #0f1e4a;
+  background: #f8fafc;
+  font-size: 1rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--primary);
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(40, 160, 135, 0.15);
+}
+
+.helpText {
+  color: #657089;
+  font-size: 0.88rem;
+  margin-top: 6px;
+}
+
+.submitButton {
+  justify-self: flex-start;
+  border: 0;
+  border-radius: 12px;
+  padding: 12px 18px;
+  background: var(--primary);
+  color: #fff;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.submitButton:hover:not(:disabled) {
+  transform: translateY(-1px);
+  opacity: 0.94;
+}
+
+.submitButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+@media (max-width: 980px) {
+  .hero {
+    grid-template-columns: 1fr;
+  }
+
+  .passwordCard {
+    max-width: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .card,
+  .passwordCard,
+  .securityBox {
+    padding: 18px;
+  }
+
+  .profileHeader {
+    align-items: flex-start;
+  }
+
+  .avatar {
+    width: 56px;
+    height: 56px;
+    font-size: 1.2rem;
+  }
+
+  .profileName {
+    font-size: 1.25rem;
+  }
+
+  .infoGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .submitButton {
+    width: 100%;
+  }
+}

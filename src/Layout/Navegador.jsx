@@ -19,6 +19,9 @@ const IconVehiculos = () => (
 const IconRentas = () => (
   <svg className={styles.menuIcon} viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 2h9l5 5v15a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Zm8 1.5V8h4.5" stroke="currentColor" strokeWidth="1.6"/><path d="M8 12h8M8 16h8" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/></svg>
 );
+const IconConfiguracion = () => (
+  <svg className={styles.menuIcon} viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 15.5A3.5 3.5 0 1 0 12 8a3.5 3.5 0 0 0 0 7.5Z" stroke="currentColor" strokeWidth="1.7"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06A1.7 1.7 0 0 0 15 19.38a1.7 1.7 0 0 0-1 .62 1.7 1.7 0 0 0-.4 1.08V21a2 2 0 0 1-4 0v-.09A1.7 1.7 0 0 0 8.6 19.4a1.7 1.7 0 0 0-1.88.34l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.22 15a1.7 1.7 0 0 0-.62-1 1.7 1.7 0 0 0-1.08-.4H2.5a2 2 0 0 1 0-4h.09A1.7 1.7 0 0 0 4.1 8.6a1.7 1.7 0 0 0-.34-1.88l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 8.5 4.22a1.7 1.7 0 0 0 1-.62 1.7 1.7 0 0 0 .4-1.08V2.5a2 2 0 0 1 4 0v.09A1.7 1.7 0 0 0 15 4.1a1.7 1.7 0 0 0 1.88-.34l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.7 1.7 0 0 0 19.38 8.5a1.7 1.7 0 0 0 .62 1 1.7 1.7 0 0 0 1.08.4H21a2 2 0 0 1 0 4h-.09a1.7 1.7 0 0 0-1.51 1.1Z" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>
+);
 
 const menuItems = [
   { to: '/admin/disponibilidad', label: 'Disponibilidad', icon: IconDisponibilidad },
@@ -33,6 +36,7 @@ const getPageTitle = (pathname) => {
   if (pathname.includes('/disponibilidad')) return 'Disponibilidad';
   if (pathname.includes('/vehiculos')) return 'Vehículos';
   if (pathname.includes('/rentas')) return 'Rentas';
+  if (pathname.includes('/configuracion')) return 'Configuración';
   return 'Dashboard';
 };
 
@@ -41,6 +45,7 @@ const getPageSubtitle = (pathname) => {
   if (pathname.includes('/disponibilidad')) return 'Calendario de disponibilidad por vehículo';
   if (pathname.includes('/vehiculos')) return 'Gestión de vehículos';
   if (pathname.includes('/rentas')) return 'Alquiler - Reservas';
+  if (pathname.includes('/configuracion')) return 'Perfil y seguridad de la cuenta';
   return 'Resumen general de operaciones';
 };
 
@@ -129,6 +134,14 @@ const Navegador = () => {
         </nav>
 
         <div className={styles.sidebarBottom}>
+          <Link
+            to="/admin/configuracion"
+            onClick={() => setMenuOpen(false)}
+            className={`${styles.settingsLink} ${location.pathname === '/admin/configuracion' ? styles.settingsLinkActive : ''}`}
+          >
+            <IconConfiguracion />
+            <span>Configuración</span>
+          </Link>
           <button type="button" onClick={cerrarSesion} className={styles.logoutButton}>
             <svg className={styles.logoutIcon} xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" aria-hidden="true">
               <path d="M232-172q-26 0-43-17t-17-43v-114h28v114q0 12 10 22t22 10h496q12 0 22-10t10-22v-496q0-12-10-22t-22-10H232q-12 0-22 10t-10 22v114h-28v-114q0-26 17-43t43-17h496q26 0 43 17t17 43v496q0 26-17 43t-43 17H232Zm206-164-20-20 110-110H172v-28h356L418-604l20-20 144 144-144 144Z"/>
