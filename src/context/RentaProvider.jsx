@@ -63,6 +63,14 @@ export const RentaProvider = ({ children }) => {
             setRentas(prev => [rentaConTotalFinal, ...prev]);
             setLastCreatedRentaId(data?.renta?.id ?? null);
 
+            if (rentaConTotalFinal?.id && Number.isFinite(Number(nuevaRenta?.valorTotal))) {
+                try {
+                    await clienteAxios.patch(`/rentas/${rentaConTotalFinal.id}`, { valorTotal: Number(nuevaRenta.valorTotal) }, config);
+                } catch {
+                    // Si el backend no soporta actualizar valorTotal, mantenemos al menos el valor en UI.
+                }
+            }
+
             await Promise.all([
                 vehiculoContext?.consultarVehiculos?.(),
                 vehiculoContext?.consultarRentas?.(),

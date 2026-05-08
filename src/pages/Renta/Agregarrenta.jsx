@@ -164,22 +164,6 @@ const Agregarrenta = () => {
         }
     };
 
-
-    const handleEditarTotal = () => {
-        const valorActual = String(Math.round(totalMostrado || 0));
-        const nuevoValor = window.prompt('Ingrese el valor total final', valorActual);
-        if (nuevoValor === null) return;
-
-        const soloNumeros = nuevoValor.replace(/\D/g, '');
-        if (!soloNumeros) return;
-
-        setTotalEditadoManualmente(true);
-        setFormData((prev) => ({
-            ...prev,
-            valorTotalEditable: soloNumeros
-        }));
-    };
-
     // Limpiar formulario
     const limpiarFormulario = () => {
         setFormData(initialFormData);
@@ -373,7 +357,15 @@ const Agregarrenta = () => {
                                             </div>
 
                                             <div className={styles.totalPreviewContainer}>
-                                                <span className={styles.totalPreviewInline} onClick={handleEditarTotal} title="Click para editar total final">
+                                                <input
+                                                    className={styles.totalEditableInput}
+                                                    name="valorTotalEditable"
+                                                    type="number"
+                                                    min="0"
+                                                    value={formData.valorTotalEditable}
+                                                    onChange={handleChange}
+                                                />
+                                                <span className={styles.totalPreviewInline}>
                                                     {formatearCOP(totalMostrado)}
                                                 </span>
                                             </div>

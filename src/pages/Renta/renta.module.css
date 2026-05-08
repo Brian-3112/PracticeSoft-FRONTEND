@@ -262,6 +262,16 @@
   padding-top: 12px;
 }
 
+.totalEditableInput {
+  width: 100%;
+  max-width: 220px;
+  border: 1px solid #d62828;
+  border-radius: 6px;
+  padding: 6px 8px;
+  color: #7d1a1a;
+  font-weight: 600;
+}
+
 .totalPreviewInline {
   font-size: 16px;
   font-weight: 700;
