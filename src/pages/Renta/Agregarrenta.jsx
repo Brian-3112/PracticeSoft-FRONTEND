@@ -123,9 +123,9 @@ const Agregarrenta = () => {
     });
 
     const parseCurrencyInput = (value) => {
-        const normalized = String(value).replace(/[^0-9.-]/g, '');
-        if (!normalized) return '';
-        const parsed = Number(normalized);
+        const onlyDigits = String(value).replace(/\D/g, '');
+        if (!onlyDigits) return '';
+        const parsed = Number(onlyDigits);
         return Number.isFinite(parsed) && parsed >= 0 ? String(parsed) : '';
     };
 
