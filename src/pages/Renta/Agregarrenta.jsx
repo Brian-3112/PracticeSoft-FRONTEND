@@ -55,6 +55,7 @@ const Agregarrenta = () => {
     // Estado para el formulario Renta
     const [formData, setFormData] = useState(initialFormData);
     const [errors, setErrors] = useState(initialErrors);
+    const [manualOverride, setManualOverride] = useState(false);
 
     const validateRequiredFields = (dataToValidate) => {
         return {
@@ -108,7 +109,7 @@ const Agregarrenta = () => {
 
 
     const totalBaseEstimado = calcularTotalEstimado();
-    const totalMostrado = formData.valorTotalManual.trim() !== ''
+    const totalMostrado = manualOverride && formData.valorTotalManual.trim() !== ''
         ? Number(formData.valorTotalManual)
         : totalBaseEstimado;
 
@@ -134,6 +135,11 @@ const Agregarrenta = () => {
             ...prev,
             [name]: value
         }));
+
+        if (name === 'fechaEntrega' || name === 'horaEntrega' || name === 'fechaDevolucion' || name === 'horaDevolucion' || name === 'valorDia') {
+            setManualOverride(false);
+            setFormData((prev) => ({ ...prev, valorTotalManual: '' }));
+        }
 
         if (Object.prototype.hasOwnProperty.call(initialErrors, name)) {
             setErrors((prev) => ({
@@ -200,7 +206,7 @@ const Agregarrenta = () => {
                 fechaDevolucion: formData.fechaDevolucion.trim(),
                 horaDevolucion: formData.horaDevolucion.trim(),
                 valorDia: parseFloat(formData.valorDia),
-                valorTotal: formData.valorTotalManual.trim() !== '' ? parseFloat(formData.valorTotalManual) : totalBaseEstimado
+                valorTotal: manualOverride && formData.valorTotalManual.trim() !== '' ? parseFloat(formData.valorTotalManual) : totalBaseEstimado
             },
             () => {
                 limpiarFormulario();
@@ -345,8 +351,7 @@ const Agregarrenta = () => {
                                             </div>
 
                                             <div className={styles.totalPreviewContainer}>
-                                                <label className={styles.totalPreviewLabel}>Valor total (editable)</label>
-                                                <span
+                                                                                                <span
                                                     className={styles.totalPreviewInline}
                                                     contentEditable
                                                     suppressContentEditableWarning
@@ -357,6 +362,7 @@ const Agregarrenta = () => {
                                                     }}
                                                     onBlur={(e) => {
                                                         const parsedValue = parseCurrencyInput(e.currentTarget.textContent || '');
+                                                        setManualOverride(parsedValue !== '');
                                                         setFormData((prev) => ({ ...prev, valorTotalManual: parsedValue }));
                                                         e.currentTarget.textContent = formatearCOP(parsedValue || totalBaseEstimado);
                                                     }}
