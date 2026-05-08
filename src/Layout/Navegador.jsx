@@ -1,5 +1,6 @@
 
 import { Link, Outlet, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+import { useState } from 'react';
 import useAuth from '../hooks/useAuth';
 import styles from '../Layout/Navegador.module.css';
 
@@ -69,6 +70,7 @@ const Navegador = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const [menuOpen, setMenuOpen] = useState(false);
 
   if (loading) return 'Cargando...';
   const query = searchParams.get('q') ?? '';
@@ -88,7 +90,8 @@ const Navegador = () => {
 
   return (
     <div className={styles.appLayout}>
-      <aside className={styles.sidebar}>
+      {menuOpen && <button type="button" className={styles.mobileOverlay} onClick={() => setMenuOpen(false)} aria-label="Cerrar menú" />}
+      <aside className={`${styles.sidebar} ${menuOpen ? styles.sidebarOpen : ''}`}>
         <div className={styles.logoSection}>
           <svg className={styles.brandCarIcon} viewBox="0 0 24 24" fill="none" aria-hidden="true">
             <path d="M5 11l1.5-4.5A2 2 0 0 1 8.4 5h7.2a2 2 0 0 1 1.9 1.5L19 11v7h-2v-2H7v2H5v-7Z" stroke="currentColor" strokeWidth="1.7"/>
@@ -109,7 +112,7 @@ const Navegador = () => {
               <Link
                 key={item.to}
                 to={item.to}
-                
+                onClick={() => setMenuOpen(false)}
                 className={`${styles.menuLink} ${location.pathname === item.to ? styles.menuLinkActive : ''}`}
               >
                 <Icon />
@@ -138,6 +141,9 @@ const Navegador = () => {
 
       <main className={styles.contentArea}>
         <header className={styles.topbar}>
+          <button type="button" className={styles.menuToggle} onClick={() => setMenuOpen((prev) => !prev)} aria-label="Abrir menú">
+            ☰
+          </button>
           <div>
             <div>
               <h2 className={styles.topbarTitle}>{getPageTitle(location.pathname)}</h2>

@@ -15,7 +15,6 @@ const initialFormData = {
 const initialErrors = {
     nombre: '',
     identificacion: '',
-    direccion: '',
     celular: ''
 };
 
@@ -26,7 +25,7 @@ const toTitleCaseByWords = (value) =>
 const validateField = (name, value) => {
     const trimmedValue = value.trim();
 
-    if (name === 'nombre' || name === 'direccion' || name === 'celular') {
+    if (name === 'nombre' || name === 'celular') {
         if (!trimmedValue) return 'Campo obligatorio';
         return '';
     }
@@ -57,7 +56,6 @@ const Agregarcliente = () => {
         return {
             nombre: validateField('nombre', dataToValidate.nombre),
             identificacion: validateField('identificacion', dataToValidate.identificacion),
-            direccion: validateField('direccion', dataToValidate.direccion),
             celular: validateField('celular', dataToValidate.celular)
         };
     };
@@ -203,7 +201,7 @@ const Agregarcliente = () => {
                                             <div>
                                                 <label className={styles.labelFormu}>
                                                     <input
-                                                        className={`${styles.inputFormu} ${errors.direccion ? styles.inputError : ''}`}
+                                                        className={styles.inputFormu}
                                                         name="direccion"
                                                         type="text"
                                                         placeholder="Direccion"
@@ -211,7 +209,6 @@ const Agregarcliente = () => {
                                                         onChange={handleChange}
                                                         onBlur={handleBlur}
                                                     />
-                                                    {errors.direccion && <span className={styles.fieldError}>{errors.direccion}</span>}
                                                 </label>
                                             </div>
 

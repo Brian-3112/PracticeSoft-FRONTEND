@@ -4,6 +4,8 @@
   background: #f3f5f8;
   overflow: hidden;
 }
+.menuToggle { display: none; }
+.mobileOverlay { display: none; }
 
 .sidebar {
   width: 260px;
@@ -92,8 +94,34 @@
 .pageContent { padding: 22px; flex: 1; overflow-y: auto; }
 
 @media (max-width: 900px) {
-  .sidebar { width: 260px; }
+  .sidebar {
+    position: fixed;
+    left: -280px;
+    width: 260px;
+    z-index: 30;
+    transition: left .2s ease;
+  }
+  .sidebarOpen { left: 0; }
   .searchInput { width: 180px; }
+  .menuToggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #dde3ea;
+    background: #fff;
+    border-radius: 8px;
+    width: 36px;
+    height: 36px;
+    font-size: 1.1rem;
+  }
+  .mobileOverlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(3, 10, 24, 0.45);
+    border: 0;
+    z-index: 20;
+  }
 }
 
 .logoutIcon { width: 18px; height: 18px; fill: currentColor; }

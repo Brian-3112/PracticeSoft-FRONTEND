@@ -1,4 +1,5 @@
 import { Navigate } from 'react-router-dom';
+import { useState } from 'react';
 import useAuth from '../../hooks/useAuth';
 import useDashboard from '../../hooks/useDashboard';
 import { Line, Doughnut, Bar } from 'react-chartjs-2';
@@ -175,6 +176,8 @@ const createExecutiveReportDocx = (lines) => {
 const Dashboard = () => {
   const { auth, loading } = useAuth();
   const { ingresosMes, clientesTotal, ingresosPorMes, rentas, ingresosAnual } = useDashboard();
+  const [mostrarIngresosMes, setMostrarIngresosMes] = useState(true);
+  const [mostrarIngresosAnual, setMostrarIngresosAnual] = useState(true);
 
   if (loading) return 'Cargando...';
   if (!auth) return <Navigate to="/login" />;
@@ -321,9 +324,14 @@ const Dashboard = () => {
             <div className={styles.statIcon}>💰</div>
             <div className={styles.statContent}>
               <p className={styles.statTitle}>Ingresos del mes</p>
-              <p className={styles.statValue}>
-                {ingresosMes.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}
-              </p>
+              <div className={styles.statValueRow}>
+                <p className={styles.statValue}>
+                  {mostrarIngresosMes ? ingresosMes.toLocaleString('es-CO', { style: 'currency', currency: 'COP' }) : '••••••••'}
+                </p>
+                <button type="button" className={styles.eyeButton} onClick={() => setMostrarIngresosMes((prev) => !prev)} aria-label={mostrarIngresosMes ? 'Ocultar ingresos del mes' : 'Mostrar ingresos del mes'}>
+                  {mostrarIngresosMes ? '🙈' : '👁️'}
+                </button>
+              </div>
             </div>
           </div>
 
@@ -331,9 +339,14 @@ const Dashboard = () => {
             <div className={styles.statIcon}>📅</div>
             <div className={styles.statContent}>
               <p className={styles.statTitle}>Ingresos anuales</p>
-              <p className={styles.statValue}>
-                {ingresosAnual.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}
-              </p>
+              <div className={styles.statValueRow}>
+                <p className={styles.statValue}>
+                  {mostrarIngresosAnual ? ingresosAnual.toLocaleString('es-CO', { style: 'currency', currency: 'COP' }) : '••••••••'}
+                </p>
+                <button type="button" className={styles.eyeButton} onClick={() => setMostrarIngresosAnual((prev) => !prev)} aria-label={mostrarIngresosAnual ? 'Ocultar ingresos anuales' : 'Mostrar ingresos anuales'}>
+                  {mostrarIngresosAnual ? '🙈' : '👁️'}
+                </button>
+              </div>
             </div>
           </div>
 

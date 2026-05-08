@@ -66,6 +66,15 @@
 
 .statTitle { color: #5f6d86; font-size: 0.9rem; }
 .statValue { color: #0f1e4a; font-size: 1.9rem; font-weight: 700; }
+.statValueRow { display: flex; align-items: center; gap: 10px; }
+.eyeButton {
+  border: 0;
+  background: #eff3fb;
+  border-radius: 10px;
+  width: 34px;
+  height: 34px;
+  cursor: pointer;
+}
 
 .chartTableWrapper {
   display: grid;
@@ -169,4 +178,6 @@
 @media (max-width: 980px) {
   .chartTableWrapper { grid-template-columns: 1fr; }
   .dashboardContainer { margin: 0 10px; }
+  .wrapper { padding: 0; }
+  .statValue { font-size: 1.35rem; }
 }
