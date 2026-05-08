@@ -3,6 +3,8 @@ import styles from '../Renta/renta.module.css';
 import useAuth from '../../hooks/useAuth.jsx';
 import Agregarrenta from '../Renta/Agregarrenta.jsx';
 import { useSearchParams } from 'react-router-dom';
+import Swal from 'sweetalert2';
+import { downloadContratoLimpio } from '../../services/rentaService.js';
 
 
 
@@ -191,7 +193,27 @@ const Renta = () => {
             return coincideTexto || coincideFecha || coincideMes;
         });
     const handleDownloadContrato = async (rentaId) => {
-        await descargarContrato({ rentaId });
+        const result = await Swal.fire({
+            title: '¿Qué contrato deseas descargar?',
+            text: 'Puedes descargar el contrato con los datos de esta renta o un contrato limpio para llenar manualmente.',
+            icon: 'question',
+            showDenyButton: true,
+            showCancelButton: true,
+            confirmButtonText: 'Contrato de esta renta',
+            denyButtonText: 'Contrato limpio',
+            cancelButtonText: 'Cancelar',
+            customClass: {
+                confirmButton: 'confirmarBoton',
+                cancelButton: 'cancelBoton',
+            },
+        });
+
+        if (result.isConfirmed) {
+            await descargarContrato({ rentaId });
+            return;
+        }
+
+        if (result.isDenied) downloadContratoLimpio();
     };
 
     const handleDeleteRenta = async (rentaId) => {
@@ -280,8 +302,8 @@ const Renta = () => {
                                         className={styles.downloadButton}
                                         onClick={() => handleDownloadContrato(renta.id)}
                                         disabled={isDownloadingContrato || isDeletingRenta}
-                                        aria-label={`Descargar contrato de la renta ${renta.id}`}
-                                        title="Descargar contrato"
+                                        aria-label={`Elegir contrato para la renta ${renta.id}`}
+                                        title="Elegir contrato"
                                     >
                                         <span className={styles.downloadIcon} aria-hidden="true">📄</span>
                                         {isDownloadingContrato && downloadingRentaId === renta.id
