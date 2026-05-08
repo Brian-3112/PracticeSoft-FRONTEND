@@ -62,7 +62,7 @@
   display: flex; align-items: center; gap: 8px;
   text-decoration: none;
   font: inherit;
-  font-size: 0.95rem;
+  font-size: 0.85rem;
 }
 .logoutButton:hover,
 .settingsLink:hover,
@@ -131,7 +131,7 @@
   }
 }
 
-.logoutIcon { width: 18px; height: 18px; fill: currentColor; }
+.logoutIcon { width: 16px; height: 16px; fill: currentColor; flex-shrink: 0; }
 
 .menuIcon { width: 17px; height: 17px; color: currentColor; flex-shrink: 0; }
 
