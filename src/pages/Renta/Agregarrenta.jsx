@@ -112,6 +112,20 @@ const Agregarrenta = () => {
         ? Number(formData.valorTotalManual)
         : totalBaseEstimado;
 
+    const formatearCOP = (value) => Number(value || 0).toLocaleString('es-CO', {
+        style: 'currency',
+        currency: 'COP',
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0
+    });
+
+    const parseCurrencyInput = (value) => {
+        const normalized = String(value).replace(/[^0-9.-]/g, '');
+        if (!normalized) return '';
+        const parsed = Number(normalized);
+        return Number.isFinite(parsed) && parsed >= 0 ? String(parsed) : '';
+    };
+
     // Valida en tiempo real mientras el usuario escribe.
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -331,23 +345,23 @@ const Agregarrenta = () => {
                                             </div>
 
                                             <div className={styles.totalPreviewContainer}>
-                                                <label className={styles.totalPreviewLabel}>Valor total</label>
-                                                <input
-                                                    className={styles.totalPreviewInput}
-                                                    name="valorTotalManual"
-                                                    type="number"
-                                                    min="0"
-                                                    placeholder="Modifica el valor total"
-                                                    value={formData.valorTotalManual}
-                                                    onChange={handleChange}
-                                                />
-                                                <span className={styles.totalPreviewInline}>
-                                                    {Number.isFinite(totalMostrado) ? totalMostrado.toLocaleString('es-CO', {
-                                                        style: 'currency',
-                                                        currency: 'COP',
-                                                        minimumFractionDigits: 0,
-                                                        maximumFractionDigits: 0
-                                                    }) : '$ 0'}
+                                                <label className={styles.totalPreviewLabel}>Valor total (editable)</label>
+                                                <span
+                                                    className={styles.totalPreviewInline}
+                                                    contentEditable
+                                                    suppressContentEditableWarning
+                                                    role="textbox"
+                                                    aria-label="Valor total editable"
+                                                    onFocus={(e) => {
+                                                        e.currentTarget.textContent = formData.valorTotalManual || String(Math.round(totalBaseEstimado));
+                                                    }}
+                                                    onBlur={(e) => {
+                                                        const parsedValue = parseCurrencyInput(e.currentTarget.textContent || '');
+                                                        setFormData((prev) => ({ ...prev, valorTotalManual: parsedValue }));
+                                                        e.currentTarget.textContent = formatearCOP(parsedValue || totalBaseEstimado);
+                                                    }}
+                                                >
+                                                    {formatearCOP(totalMostrado)}
                                                 </span>
                                             </div>
 

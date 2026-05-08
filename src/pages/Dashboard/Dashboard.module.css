@@ -173,3 +173,17 @@
 
 .statTitleRow { display:flex; align-items:center; justify-content:space-between; gap:8px; }
 .eyeButton { border:none; background:transparent; cursor:pointer; font-size:1rem; line-height:1; }
+
+@media (max-width: 768px) {
+  .wrapper { padding: 0 8px; }
+  .dashboardContainer { padding: 10px; border-radius: 14px; }
+  .reportActions { justify-content: center; }
+  .reportButton { width: 100%; max-width: 320px; }
+  .statsContainer { grid-template-columns: 1fr; gap: 12px; }
+  .statCard { padding: 14px; }
+  .statValue { font-size: 1.35rem; }
+  .chartContainer, .donutContainer, .vehicleChartContainer { padding: 12px; }
+  .chartTitle { font-size: 1.35rem; }
+  .chartWrapper { height: 240px; }
+  .donutWrapper { height: 190px; }
+}
