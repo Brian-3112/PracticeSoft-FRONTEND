@@ -19,7 +19,9 @@ export const RentaProvider = ({ children }) => {
     const [rentas, setRentas] = useState([]);
     const [isCreatingRenta, setIsCreatingRenta] = useState(false);
     const [isDownloadingContrato, setIsDownloadingContrato] = useState(false);
+    const [isSharingContrato, setIsSharingContrato] = useState(false);
     const [downloadingRentaId, setDownloadingRentaId] = useState(null);
+    const [sharingRentaId, setSharingRentaId] = useState(null);
     const [lastCreatedRentaId, setLastCreatedRentaId] = useState(null);
     const [isDeletingRenta, setIsDeletingRenta] = useState(false);
     const [deletingRentaId, setDeletingRentaId] = useState(null);
@@ -195,6 +197,65 @@ export const RentaProvider = ({ children }) => {
 
 
 
+    const compartirContrato = async ({ rentaId, rentaPayload } = {}) => {
+        setIsSharingContrato(true);
+        setSharingRentaId(rentaId || rentaPayload?.id || null);
+
+        try {
+            const blobData = await downloadContratoDocx({
+                rentaId,
+                rentaPayload,
+                config,
+            });
+
+            const rentaIdFromPayload = rentaPayload?.id || rentaId || lastCreatedRentaId || 'sin-id';
+            const blob = blobData instanceof Blob
+                ? blobData
+                : new Blob([blobData], {
+                    type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                });
+            const file = new File([blob], `contrato-renta-${rentaIdFromPayload}.docx`, {
+                type: blob.type || 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+            });
+
+            if (!navigator.share || !navigator.canShare || !navigator.canShare({ files: [file] })) {
+                await Swal.fire({
+                    title: 'Compartir no disponible',
+                    text: 'Tu dispositivo no permite compartir archivos desde el navegador. Se descargará el contrato.',
+                    icon: 'info',
+                });
+                const url = window.URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', file.name);
+                document.body.appendChild(link);
+                link.click();
+                link.remove();
+                window.URL.revokeObjectURL(url);
+                return false;
+            }
+
+            await navigator.share({
+                files: [file],
+                title: 'Contrato de renta',
+                text: 'Comparto el contrato de renta',
+            });
+            return true;
+        } catch (error) {
+            if (error?.name === 'AbortError') return false;
+
+            Swal.fire({
+                title: 'No se pudo compartir',
+                text: 'Intenta nuevamente.',
+                icon: 'warning',
+            });
+            return false;
+        } finally {
+            setIsSharingContrato(false);
+            setSharingRentaId(null);
+        }
+    };
+
 
     return (
         <RentaContext.Provider
@@ -205,7 +266,10 @@ export const RentaProvider = ({ children }) => {
                 isCreatingRenta,
                 isDownloadingContrato,
                 downloadingRentaId,
+                isSharingContrato,
+                sharingRentaId,
                 lastCreatedRentaId,
+                compartirContrato,
                 eliminarRenta,
                 isDeletingRenta,
                 deletingRentaId,

@@ -365,6 +365,27 @@
 }
 
 
+.shareButton {
+  border: 1px solid #1b9c5a;
+  background-color: transparent;
+  color: #1b9c5a;
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.shareButton:hover:not(:disabled) {
+  background-color: #1b9c5a;
+  color: #fff;
+}
+
+.shareButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 
 /* ===== AJUSTES RESPONSIVE DEL MODULO RENTAS ===== */
 @media (max-width: 768px) {
@@ -467,7 +488,8 @@
     gap: 0.75rem;
   }
 
-  .downloadButton {
+  .downloadButton,
+  .shareButton {
     font-size: 0.8rem;
     padding: 6px 8px;
     white-space: nowrap;

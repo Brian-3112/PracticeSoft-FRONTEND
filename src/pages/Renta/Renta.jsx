@@ -161,8 +161,11 @@ const Renta = () => {
         rentas,
         descargarContrato,
         eliminarRenta,
+        compartirContrato,
         isDownloadingContrato,
         downloadingRentaId,
+        isSharingContrato,
+        sharingRentaId,
         isDeletingRenta,
         deletingRentaId,
     } = useRenta();
@@ -196,6 +199,10 @@ const Renta = () => {
 
     const handleDeleteRenta = async (rentaId) => {
         await eliminarRenta(rentaId);
+    };
+
+    const handleShareContrato = async (rentaId) => {
+        await compartirContrato({ rentaId });
     };
 
     const today = new Date();
@@ -279,11 +286,21 @@ const Renta = () => {
                                         type="button"
                                         className={styles.downloadButton}
                                         onClick={() => handleDownloadContrato(renta.id)}
-                                        disabled={isDownloadingContrato || isDeletingRenta}
+                                        disabled={isDownloadingContrato || isDeletingRenta || isSharingContrato}
                                     >
                                         {isDownloadingContrato && downloadingRentaId === renta.id
                                             ? 'Descargando...'
                                             : 'Descargar contrato'}
+                                    </button>
+                                    <button
+                                        type="button"
+                                        className={styles.shareButton}
+                                        onClick={() => handleShareContrato(renta.id)}
+                                        disabled={isSharingContrato || isDeletingRenta || isDownloadingContrato}
+                                    >
+                                        {isSharingContrato && sharingRentaId === renta.id
+                                            ? 'Compartiendo...'
+                                            : 'Compartir contrato'}
                                     </button>
                                     <button
                                         type="button"
