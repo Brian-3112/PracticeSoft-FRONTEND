@@ -62,6 +62,7 @@ export const RentaProvider = ({ children }) => {
             };
             setRentas(prev => [rentaConTotalFinal, ...prev]);
             setLastCreatedRentaId(data?.renta?.id ?? null);
+            dashboardContext?.aplicarRentaLocal?.(rentaConTotalFinal);
 
             if (rentaConTotalFinal?.id && Number.isFinite(Number(nuevaRenta?.valorTotal))) {
                 try {
@@ -74,7 +75,6 @@ export const RentaProvider = ({ children }) => {
             await Promise.all([
                 vehiculoContext?.consultarVehiculos?.(),
                 vehiculoContext?.consultarRentas?.(),
-                dashboardContext?.calcularDashboard?.(),
             ]);
 
             await Swal.fire({
@@ -136,7 +136,6 @@ export const RentaProvider = ({ children }) => {
             await Promise.all([
                 vehiculoContext?.consultarVehiculos?.(),
                 vehiculoContext?.consultarRentas?.(),
-                dashboardContext?.calcularDashboard?.(),
             ]);
 
             await Swal.fire({
