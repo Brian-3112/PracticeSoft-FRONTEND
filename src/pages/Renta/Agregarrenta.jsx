@@ -161,15 +161,17 @@ const Agregarrenta = () => {
         const hasErrors = Object.values(nextErrors).some((error) => error !== '');
         if (hasErrors) return;
 
-                clienteId: parseInt(formData.clienteId),
-                fechaEntrega: formData.fechaEntrega.trim(),
-                horaEntrega: formData.horaEntrega.trim(),
-                fechaDevolucion: formData.fechaDevolucion.trim(),
-                horaDevolucion: formData.horaDevolucion.trim(),
-                valorDia: parseFloat(formData.valorDia)
-                limpiarFormulario();
-                handleClose();
-            }
+        const rentaPayload = {
+            vehiculoId: Number.parseInt(formData.vehiculoId, 10),
+            clienteId: Number.parseInt(formData.clienteId, 10),
+            fechaEntrega: formData.fechaEntrega.trim(),
+            horaEntrega: formData.horaEntrega.trim(),
+            fechaDevolucion: formData.fechaDevolucion.trim(),
+            horaDevolucion: formData.horaDevolucion.trim(),
+            valorDia: Number.parseFloat(formData.valorDia),
+        };
+
+            rentaPayload,
         );
 
     };
