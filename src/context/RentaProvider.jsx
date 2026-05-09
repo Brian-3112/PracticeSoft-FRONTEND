@@ -151,7 +151,7 @@ export const RentaProvider = ({ children }) => {
     };
 
 
-    const descargarContrato = async ({ rentaId, rentaPayload, sinDatosCliente = false } = {}) => {
+    const descargarContrato = async ({ rentaId, rentaPayload, contratoVacio = false } = {}) => {
         setIsDownloadingContrato(true);
         setDownloadingRentaId(rentaId || rentaPayload?.id || null);
         try {
@@ -159,7 +159,7 @@ export const RentaProvider = ({ children }) => {
                 rentaId,
                 rentaPayload,
                 config,
-                sinDatosCliente,
+                contratoVacio,
             });
 
             const rentaIdFromPayload = rentaPayload?.id || rentaId || lastCreatedRentaId || 'sin-id';
@@ -171,7 +171,7 @@ export const RentaProvider = ({ children }) => {
             const url = window.URL.createObjectURL(blob);
             const link = document.createElement('a');
             link.href = url;
-            const filePrefix = sinDatosCliente ? 'contrato-vacio-renta' : 'contrato-renta';
+            const filePrefix = contratoVacio ? 'contrato-vacio-renta' : 'contrato-renta';
             link.setAttribute('download', `${filePrefix}-${rentaIdFromPayload}.docx`);
             document.body.appendChild(link);
             link.click();
@@ -185,8 +185,8 @@ export const RentaProvider = ({ children }) => {
                 title: 'Advertencia',
                 text: selectedRentaId && selectedRentaId === lastCreatedRentaId
                     ? 'Renta creada, pero no se pudo descargar el contrato'
-                    : sinDatosCliente
-                        ? 'No se pudo descargar el contrato vacío. Verifica que el backend tenga habilitado el documento sin datos del cliente.'
+                    : contratoVacio
+                        ? 'No se pudo descargar el contrato vacío. Verifica que el backend tenga habilitado el documento sin cliente, vehículo, fechas ni valores.'
                         : 'No se pudo descargar el contrato',
                 icon: 'warning',
             });

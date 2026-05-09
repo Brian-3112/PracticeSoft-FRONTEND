@@ -5,9 +5,9 @@ export const createRenta = async ({ rentaPayload, config }) => {
     return data;
 };
 
-export const downloadContratoDocx = async ({ rentaId, rentaPayload, config, sinDatosCliente = false }) => {
+export const downloadContratoDocx = async ({ rentaId, rentaPayload, config, contratoVacio = false }) => {
     if (rentaId) {
-        const contratoEndpoint = sinDatosCliente
+        const contratoEndpoint = contratoVacio
             ? `/rentas/${rentaId}/contrato-vacio.docx`
             : `/rentas/${rentaId}/contrato.docx`;
 
