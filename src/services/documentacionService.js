@@ -29,3 +29,9 @@ export const downloadDocumento = async ({ documentoId, config }) => {
     });
     return response.data;
 };
+
+
+export const deleteDocumento = async ({ documentoId, config }) => {
+    const { data } = await clienteAxios.delete(`/documentacion/${documentoId}`, config);
+    return data;
+};

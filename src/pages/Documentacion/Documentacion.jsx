@@ -3,7 +3,7 @@ import Swal from 'sweetalert2';
 import { useSearchParams } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth.jsx';
 import BotonVerde from '../../components/BotonVerde.jsx';
-import { createDocumento, downloadDocumento, getDocumentos } from '../../services/documentacionService.js';
+import { createDocumento, deleteDocumento, downloadDocumento, getDocumentos } from '../../services/documentacionService.js';
 import styles from './documentacion.module.css';
 
 const initialFormData = {
@@ -53,6 +53,7 @@ const Documentacion = () => {
     const [formData, setFormData] = useState(initialFormData);
     const [isSaving, setIsSaving] = useState(false);
     const [downloadingId, setDownloadingId] = useState(null);
+    const [deletingId, setDeletingId] = useState(null);
     const [searchParams] = useSearchParams();
 
     const query = normalizeSearchText(searchParams.get('q') ?? '');
@@ -163,6 +164,45 @@ const Documentacion = () => {
         }
     };
 
+    const handleDelete = async (documento) => {
+        const documentoId = getDocumentoId(documento);
+        if (!documentoId) return;
+
+        const confirmacion = await Swal.fire({
+            title: '¿Eliminar documento?',
+            text: 'Esta acción eliminará el registro y el archivo asociado.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'Cancelar',
+            customClass: {
+                confirmButton: 'confirmarBoton',
+                cancelButton: 'cancelBoton',
+            },
+        });
+
+        if (!confirmacion.isConfirmed) return;
+
+        try {
+            setDeletingId(documentoId);
+            const response = await deleteDocumento({ documentoId, config });
+            setDocumentos((prev) => prev.filter((item) => getDocumentoId(item) !== documentoId));
+            Swal.fire({
+                title: 'Documento eliminado',
+                text: response?.message || 'El documento se eliminó correctamente.',
+                icon: 'success',
+            });
+        } catch (error) {
+            Swal.fire({
+                title: 'No se pudo eliminar',
+                text: error?.response?.data?.message || 'Intenta nuevamente.',
+                icon: 'error',
+            });
+        } finally {
+            setDeletingId(null);
+        }
+    };
+
     if (loading) return 'Cargando...';
 
     return (
@@ -199,14 +239,24 @@ const Documentacion = () => {
                                         <td>{documento.cedula ?? documento.cliente?.identificacion}</td>
                                         <td>{formatDateOnly(documento.fechaContrato)}</td>
                                         <td>{getArchivoNombre(documento)}</td>
-                                        <td>
+                                        <td className={styles.actionsCell}>
                                             <button
                                                 type="button"
                                                 className={`${styles.btn} ${styles.btnPrimary}`}
                                                 onClick={() => handleDownload(documento)}
-                                                disabled={downloadingId === documentoId}
+                                                disabled={downloadingId === documentoId || deletingId === documentoId}
                                             >
                                                 {downloadingId === documentoId ? 'Descargando...' : 'Descargar'}
+                                            </button>
+                                            <button
+                                                type="button"
+                                                className={styles.deleteButton}
+                                                onClick={() => handleDelete(documento)}
+                                                disabled={deletingId === documentoId || downloadingId === documentoId}
+                                                aria-label={`Eliminar documento de ${documento.nombreCliente ?? documento.cliente?.nombre ?? 'cliente'}`}
+                                                title="Eliminar documento"
+                                            >
+                                                {deletingId === documentoId ? '...' : '×'}
                                             </button>
                                         </td>
                                     </tr>

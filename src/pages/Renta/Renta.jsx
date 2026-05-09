@@ -307,7 +307,7 @@ const Renta = () => {
                                         <span className={styles.downloadIcon} aria-hidden="true">📄</span>
                                         {isDownloadingContrato && downloadingRentaId === renta.id
                                             ? 'Descargando...'
-                                            : 'Contrato'}
+                                            : 'Contratos'}
                                     </button>
                                     <button
                                         type="button"
