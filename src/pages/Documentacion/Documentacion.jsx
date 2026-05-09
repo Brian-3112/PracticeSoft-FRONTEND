@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import Swal from 'sweetalert2';
 import { useSearchParams } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth.jsx';
+import BotonVerde from '../../components/BotonVerde.jsx';
 import { createDocumento, downloadDocumento, getDocumentos } from '../../services/documentacionService.js';
 import styles from './documentacion.module.css';
 
@@ -166,10 +167,8 @@ const Documentacion = () => {
 
     return (
         <div className={styles.wrapper}>
-            <div className={styles.headerActions}>
-                <button type="button" className={styles.primaryButton} onClick={() => setShowModal(true)}>
-                    + Subir contrato
-                </button>
+            <div className={styles.divAddDocumentacion}>
+                <BotonVerde text="Subir contrato" onClick={() => setShowModal(true)} />
             </div>
 
             <section className={styles.card}>
@@ -203,7 +202,7 @@ const Documentacion = () => {
                                         <td>
                                             <button
                                                 type="button"
-                                                className={styles.secondaryButton}
+                                                className={`${styles.btn} ${styles.btnPrimary}`}
                                                 onClick={() => handleDownload(documento)}
                                                 disabled={downloadingId === documentoId}
                                             >
@@ -223,58 +222,68 @@ const Documentacion = () => {
             {showModal && (
                 <div className={styles.modalBackdrop}>
                     <div className={styles.modal}>
-                        <div className={styles.modalHeader}>
-                            <h3>Subir contrato firmado</h3>
-                            <button type="button" className={styles.closeButton} onClick={handleClose}>×</button>
+                        <div className={styles.modalDialog}>
+                            <div className={styles.modalContent}>
+                                <div className={styles.modalHeader}>
+                                    <h5 className={styles.modalTitle}>Subir <span className={styles.modalTitle2}>Contrato Firmado</span></h5>
+                                    <button type="button" className={styles.btnClose} onClick={handleClose}>x</button>
+                                </div>
+
+                                <form onSubmit={handleSubmit} noValidate>
+                                    <div className={styles.modalBody}>
+                                        <div className={styles.formGrid}>
+                                            <label className={styles.labelFormu}>
+                                                Nombre del cliente *
+                                                <input
+                                                    className={styles.inputFormu}
+                                                    name="nombreCliente"
+                                                    value={formData.nombreCliente}
+                                                    onChange={handleChange}
+                                                    placeholder="Nombre del cliente"
+                                                />
+                                            </label>
+                                            <label className={styles.labelFormu}>
+                                                Cédula *
+                                                <input
+                                                    className={styles.inputFormu}
+                                                    name="cedula"
+                                                    value={formData.cedula}
+                                                    onChange={handleChange}
+                                                    placeholder="Cédula"
+                                                />
+                                            </label>
+                                            <label className={styles.labelFormu}>
+                                                Fecha de contrato *
+                                                <input
+                                                    className={styles.inputFormu}
+                                                    name="fechaContrato"
+                                                    type="date"
+                                                    value={formData.fechaContrato}
+                                                    onChange={handleChange}
+                                                />
+                                            </label>
+                                            <label className={styles.labelFormu}>
+                                                Archivo escaneado *
+                                                <input
+                                                    className={styles.inputFormu}
+                                                    name="archivo"
+                                                    type="file"
+                                                    accept=".pdf,.doc,.docx,image/*"
+                                                    onChange={handleChange}
+                                                />
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div className={styles.modalFooter}>
+                                        <button type="button" className={`${styles.btn} ${styles.btnSecondary}`} onClick={handleClose}>Cancelar</button>
+                                        <button type="submit" className={`${styles.btn} ${styles.btnPrimary}`} disabled={isSaving}>
+                                            {isSaving ? 'Guardando...' : 'Guardar'}
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
-
-                        <form onSubmit={handleSubmit} className={styles.form}>
-                            <div className={styles.formGrid}>
-                                <label className={styles.field}>
-                                    Nombre del cliente *
-                                    <input
-                                        name="nombreCliente"
-                                        value={formData.nombreCliente}
-                                        onChange={handleChange}
-                                        placeholder="Nombre del cliente"
-                                    />
-                                </label>
-                                <label className={styles.field}>
-                                    Cédula *
-                                    <input
-                                        name="cedula"
-                                        value={formData.cedula}
-                                        onChange={handleChange}
-                                        placeholder="Cédula"
-                                    />
-                                </label>
-                                <label className={styles.field}>
-                                    Fecha de contrato *
-                                    <input
-                                        name="fechaContrato"
-                                        type="date"
-                                        value={formData.fechaContrato}
-                                        onChange={handleChange}
-                                    />
-                                </label>
-                                <label className={`${styles.field} ${styles.fullField}`}>
-                                    Archivo escaneado *
-                                    <input
-                                        name="archivo"
-                                        type="file"
-                                        accept=".pdf,.doc,.docx,image/*"
-                                        onChange={handleChange}
-                                    />
-                                </label>
-                            </div>
-
-                            <div className={styles.modalFooter}>
-                                <button type="button" className={styles.cancelButton} onClick={handleClose}>Cancelar</button>
-                                <button type="submit" className={styles.primaryButton} disabled={isSaving}>
-                                    {isSaving ? 'Guardando...' : 'Guardar'}
-                                </button>
-                            </div>
-                        </form>
                     </div>
                 </div>
             )}
