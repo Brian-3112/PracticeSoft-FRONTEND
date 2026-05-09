@@ -13,6 +13,38 @@ const normalizeSearchText = (value = '') => String(value)
     .toLowerCase()
     .trim();
 
+
+const getWhatsAppPhone = (phone = '') => {
+    const digits = String(phone).replace(/\D/g, '');
+    if (!digits) return '';
+    if (digits.startsWith('00')) return digits.slice(2);
+    if (digits.length === 10 && digits.startsWith('3')) return `57${digits}`;
+    return digits;
+};
+
+const buildContratoWhatsAppMessage = (renta) => {
+    const nombreCliente = renta?.cliente?.nombre ?? '';
+    const nombreVehiculo = renta?.vehiculo?.nombreVehiculo ?? '';
+    const placaVehiculo = renta?.vehiculo?.placa ?? '';
+    const detalleVehiculo = [nombreVehiculo, placaVehiculo && `placa ${placaVehiculo}`]
+        .filter(Boolean)
+        .join(' ');
+
+    return [
+        `Hola ${nombreCliente},`,
+        'te comparto el contrato de renta',
+        detalleVehiculo ? `del vehículo ${detalleVehiculo}.` : '.',
+    ].join(' ');
+};
+
+const openContratoWhatsAppChat = (renta) => {
+    const phone = getWhatsAppPhone(renta?.cliente?.celular);
+    if (!phone) return;
+
+    const message = encodeURIComponent(buildContratoWhatsAppMessage(renta));
+    window.open(`https://wa.me/${phone}?text=${message}`, '_blank', 'noopener,noreferrer');
+};
+
 const MONTH_SEARCH_TERMS = [
     { month: 0, terms: ['enero', 'ene'] },
     { month: 1, terms: ['febrero', 'feb', 'febereto', 'feberero', 'febrerro'] },
@@ -307,6 +339,17 @@ const Renta = () => {
                                         {isDownloadingContrato && downloadingRentaId === renta.id
                                             ? 'Descargando...'
                                             : 'Contrato'}
+                                    </button>
+                                    <button
+                                        type="button"
+                                        className={styles.whatsappButton}
+                                        onClick={() => openContratoWhatsAppChat(renta)}
+                                        disabled={!getWhatsAppPhone(renta.cliente?.celular) || isDeletingRenta || isDownloadingContrato}
+                                        aria-label={`Compartir contrato por WhatsApp con ${renta.cliente?.nombre ?? 'cliente'}`}
+                                        title="Compartir contrato por WhatsApp"
+                                    >
+                                        <span className={styles.whatsappIcon} aria-hidden="true">💬</span>
+                                        WhatsApp
                                     </button>
                                     <button
                                         type="button"

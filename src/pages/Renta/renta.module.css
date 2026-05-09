@@ -488,6 +488,39 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  flex-wrap: wrap;
+}
+
+
+.whatsappButton {
+  border: 1px solid #25d366;
+  background-color: transparent;
+  color: #128c4a;
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.whatsappButton:hover:not(:disabled) {
+  background-color: #25d366;
+  color: #fff;
+}
+
+.whatsappButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.whatsappIcon {
+  font-size: 0.95rem;
+  line-height: 1;
 }
 
 .deleteButton {
