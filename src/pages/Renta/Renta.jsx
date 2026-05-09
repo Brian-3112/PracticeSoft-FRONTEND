@@ -4,7 +4,6 @@ import useAuth from '../../hooks/useAuth.jsx';
 import Agregarrenta from '../Renta/Agregarrenta.jsx';
 import { useSearchParams } from 'react-router-dom';
 import Swal from 'sweetalert2';
-import { downloadContratoLimpio } from '../../services/rentaService.js';
 
 
 
@@ -195,12 +194,12 @@ const Renta = () => {
     const handleDownloadContrato = async (rentaId) => {
         const result = await Swal.fire({
             title: '¿Qué contrato deseas descargar?',
-            text: 'Puedes descargar el contrato con los datos de esta renta o un contrato limpio para llenar manualmente.',
+            text: 'Puedes descargar el contrato con los datos de esta renta o el mismo formato sin datos del cliente.',
             icon: 'question',
             showDenyButton: true,
             showCancelButton: true,
             confirmButtonText: 'Contrato de esta renta',
-            denyButtonText: 'Contrato limpio',
+            denyButtonText: 'Contrato vacío',
             cancelButtonText: 'Cancelar',
             customClass: {
                 confirmButton: 'confirmarBoton',
@@ -213,7 +212,7 @@ const Renta = () => {
             return;
         }
 
-        if (result.isDenied) downloadContratoLimpio();
+        if (result.isDenied) await descargarContrato({ rentaId, sinDatosCliente: true });
     };
 
     const handleDeleteRenta = async (rentaId) => {

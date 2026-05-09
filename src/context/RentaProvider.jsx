@@ -151,7 +151,7 @@ export const RentaProvider = ({ children }) => {
     };
 
 
-    const descargarContrato = async ({ rentaId, rentaPayload } = {}) => {
+    const descargarContrato = async ({ rentaId, rentaPayload, sinDatosCliente = false } = {}) => {
         setIsDownloadingContrato(true);
         setDownloadingRentaId(rentaId || rentaPayload?.id || null);
         try {
@@ -159,6 +159,7 @@ export const RentaProvider = ({ children }) => {
                 rentaId,
                 rentaPayload,
                 config,
+                sinDatosCliente,
             });
 
             const rentaIdFromPayload = rentaPayload?.id || rentaId || lastCreatedRentaId || 'sin-id';
@@ -170,7 +171,8 @@ export const RentaProvider = ({ children }) => {
             const url = window.URL.createObjectURL(blob);
             const link = document.createElement('a');
             link.href = url;
-            link.setAttribute('download', `contrato-renta-${rentaIdFromPayload}.docx`);
+            const filePrefix = sinDatosCliente ? 'contrato-vacio-renta' : 'contrato-renta';
+            link.setAttribute('download', `${filePrefix}-${rentaIdFromPayload}.docx`);
             document.body.appendChild(link);
             link.click();
             link.remove();
@@ -183,7 +185,9 @@ export const RentaProvider = ({ children }) => {
                 title: 'Advertencia',
                 text: selectedRentaId && selectedRentaId === lastCreatedRentaId
                     ? 'Renta creada, pero no se pudo descargar el contrato'
-                    : 'No se pudo descargar el contrato',
+                    : sinDatosCliente
+                        ? 'No se pudo descargar el contrato vacío'
+                        : 'No se pudo descargar el contrato',
                 icon: 'warning',
             });
             return false;
