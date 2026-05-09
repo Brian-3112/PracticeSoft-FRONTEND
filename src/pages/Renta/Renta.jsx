@@ -194,11 +194,10 @@ const Renta = () => {
     const handleDownloadContrato = async (rentaId) => {
         const result = await Swal.fire({
             title: '¿Qué contrato deseas descargar?',
-            text: 'Puedes descargar el contrato con los datos de esta renta o el mismo formato vacío, sin cliente, vehículo, fechas ni valores.',
             icon: 'question',
             showDenyButton: true,
             showCancelButton: true,
-            confirmButtonText: 'Contrato de esta renta',
+            confirmButtonText: 'Contrato de renta',
             denyButtonText: 'Contrato vacío',
             cancelButtonText: 'Cancelar',
             customClass: {
