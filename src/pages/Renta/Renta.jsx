@@ -287,12 +287,17 @@ const Renta = () => {
             const message = buildContratoWhatsAppMessage(renta);
 
             if (navigator.canShare?.({ files: [file] })) {
-                await navigator.share({
-                    title: contratoVacio ? 'Contrato vacío de renta' : 'Contrato de renta',
-                    text: message,
-                    files: [file],
-                });
-                return;
+                try {
+                    await navigator.share({
+                        title: contratoVacio ? 'Contrato vacío de renta' : 'Contrato de renta',
+                        text: message,
+                        files: [file],
+                    });
+                    return;
+                } catch (shareError) {
+                    if (shareError?.name === 'AbortError') return;
+                    console.warn('No fue posible adjuntar el contrato automáticamente en WhatsApp:', shareError);
+                }
             }
 
             downloadBlobFile({ blob, fileName });
@@ -305,10 +310,13 @@ const Renta = () => {
             });
         } catch (error) {
             if (error?.name === 'AbortError') return;
+            console.error('No fue posible preparar el contrato para WhatsApp:', error);
 
             await Swal.fire({
-                title: 'No se pudo compartir',
-                text: 'No fue posible preparar el contrato para WhatsApp. Intenta descargarlo y adjuntarlo manualmente.',
+                title: 'No se pudo preparar el contrato',
+                text: error?.response?.status
+                    ? `El backend respondió con error ${error.response.status} al generar el contrato. Intenta descargarlo desde el botón Contrato.`
+                    : 'No fue posible preparar el contrato para WhatsApp. Intenta descargarlo y adjuntarlo manualmente.',
                 icon: 'warning',
             });
         } finally {
