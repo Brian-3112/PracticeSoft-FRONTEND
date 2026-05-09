@@ -214,7 +214,6 @@ const Documentacion = () => {
             <section className={styles.card}>
                 <div className={styles.cardHeader}>
                     <h3>{documentosFiltrados.length} documentos</h3>
-                    <p>Contratos firmados y escaneados</p>
                 </div>
 
                 <div className={styles.tableContainer}>
