@@ -1,9 +1,11 @@
+import { useState } from 'react';
 import useRenta from '../../hooks/useRenta.jsx';
 import styles from '../Renta/renta.module.css';
 import useAuth from '../../hooks/useAuth.jsx';
 import Agregarrenta from '../Renta/Agregarrenta.jsx';
 import { useSearchParams } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import { downloadContratoDocx } from '../../services/rentaService.js';
 
 
 
@@ -13,6 +15,28 @@ const normalizeSearchText = (value = '') => String(value)
     .toLowerCase()
     .trim();
 
+
+const CONTRATO_DOCX_MIME = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+
+const getContratoFileName = ({ rentaId, contratoVacio = false }) => {
+    const filePrefix = contratoVacio ? 'contrato-vacio-renta' : 'contrato-renta';
+    return `${filePrefix}-${rentaId || 'sin-id'}.docx`;
+};
+
+const getContratoBlob = (blobData) => blobData instanceof Blob
+    ? blobData
+    : new Blob([blobData], { type: CONTRATO_DOCX_MIME });
+
+const downloadBlobFile = ({ blob, fileName }) => {
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', fileName);
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    window.URL.revokeObjectURL(url);
+};
 
 const getWhatsAppPhone = (phone = '') => {
     const digits = String(phone).replace(/\D/g, '');
@@ -35,14 +59,6 @@ const buildContratoWhatsAppMessage = (renta) => {
         'te comparto el contrato de renta',
         detalleVehiculo ? `del vehículo ${detalleVehiculo}.` : '.',
     ].join(' ');
-};
-
-const openContratoWhatsAppChat = (renta) => {
-    const phone = getWhatsAppPhone(renta?.cliente?.celular);
-    if (!phone) return;
-
-    const message = encodeURIComponent(buildContratoWhatsAppMessage(renta));
-    window.open(`https://wa.me/${phone}?text=${message}`, '_blank', 'noopener,noreferrer');
 };
 
 const MONTH_SEARCH_TERMS = [
@@ -187,7 +203,7 @@ const Renta = () => {
         return `${day}/${month}/${year}`;
     };
 
-    const { loading } = useAuth();
+    const { loading, config } = useAuth();
 
 
     const {
@@ -199,6 +215,8 @@ const Renta = () => {
         isDeletingRenta,
         deletingRentaId,
     } = useRenta();
+    const [isSharingContrato, setIsSharingContrato] = useState(false);
+    const [sharingContratoId, setSharingContratoId] = useState(null);
     const [searchParams] = useSearchParams();
     const query = normalizeSearchText(searchParams.get('q') ?? '');
     const selectedMonth = getMonthFromQuery(query);
@@ -223,9 +241,9 @@ const Renta = () => {
 
             return coincideTexto || coincideFecha || coincideMes;
         });
-    const handleDownloadContrato = async (rentaId) => {
+    const seleccionarTipoContrato = async ({ title }) => {
         const result = await Swal.fire({
-            title: '¿Qué contrato deseas descargar?',
+            title,
             icon: 'question',
             showDenyButton: true,
             showCancelButton: true,
@@ -238,12 +256,97 @@ const Renta = () => {
             },
         });
 
-        if (result.isConfirmed) {
-            await descargarContrato({ rentaId });
+        if (result.isConfirmed) return { selected: true, contratoVacio: false };
+        if (result.isDenied) return { selected: true, contratoVacio: true };
+        return { selected: false, contratoVacio: false };
+    };
+
+    const compartirContratoWhatsApp = async ({ renta, contratoVacio = false }) => {
+        const phone = getWhatsAppPhone(renta?.cliente?.celular);
+        if (!phone) {
+            await Swal.fire({
+                title: 'Sin número de WhatsApp',
+                text: 'Este cliente no tiene un celular válido para compartir el contrato.',
+                icon: 'warning',
+            });
             return;
         }
 
-        if (result.isDenied) await descargarContrato({ rentaId, contratoVacio: true });
+        setIsSharingContrato(true);
+        setSharingContratoId(renta.id);
+
+        try {
+            const blobData = await downloadContratoDocx({
+                rentaId: renta.id,
+                config,
+                contratoVacio,
+            });
+            const blob = getContratoBlob(blobData);
+            const fileName = getContratoFileName({ rentaId: renta.id, contratoVacio });
+            const file = new File([blob], fileName, { type: CONTRATO_DOCX_MIME });
+            const message = buildContratoWhatsAppMessage(renta);
+
+            if (navigator.canShare?.({ files: [file] })) {
+                await navigator.share({
+                    title: contratoVacio ? 'Contrato vacío de renta' : 'Contrato de renta',
+                    text: message,
+                    files: [file],
+                });
+                return;
+            }
+
+            downloadBlobFile({ blob, fileName });
+            window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank', 'noopener,noreferrer');
+
+            await Swal.fire({
+                title: 'Adjunta el contrato descargado',
+                text: 'Tu navegador no permite adjuntar el DOCX automáticamente. Se descargó el contrato y se abrió WhatsApp para que lo adjuntes manualmente.',
+                icon: 'info',
+            });
+        } catch (error) {
+            if (error?.name === 'AbortError') return;
+
+            await Swal.fire({
+                title: 'No se pudo compartir',
+                text: 'No fue posible preparar el contrato para WhatsApp. Intenta descargarlo y adjuntarlo manualmente.',
+                icon: 'warning',
+            });
+        } finally {
+            setIsSharingContrato(false);
+            setSharingContratoId(null);
+        }
+    };
+
+    const handleDownloadContrato = async (renta) => {
+        const result = await Swal.fire({
+            title: '¿Qué deseas hacer?',
+            icon: 'question',
+            showDenyButton: true,
+            showCancelButton: true,
+            confirmButtonText: 'Descargar',
+            denyButtonText: 'Enviar WhatsApp',
+            cancelButtonText: 'Cancelar',
+            customClass: {
+                confirmButton: 'confirmarBoton',
+                cancelButton: 'cancelBoton',
+            },
+        });
+
+        if (!result.isConfirmed && !result.isDenied) return;
+
+        const tipoContrato = await seleccionarTipoContrato({
+            title: result.isConfirmed
+                ? '¿Qué contrato deseas descargar?'
+                : '¿Qué contrato deseas enviar?',
+        });
+        if (!tipoContrato.selected) return;
+
+        if (result.isConfirmed) {
+            await descargarContrato({ rentaId: renta.id, contratoVacio: tipoContrato.contratoVacio });
+            return;
+        }
+
+        await compartirContratoWhatsApp({ renta, contratoVacio: tipoContrato.contratoVacio });
     };
 
     const handleDeleteRenta = async (rentaId) => {
@@ -330,26 +433,15 @@ const Renta = () => {
                                     <button
                                         type="button"
                                         className={styles.downloadButton}
-                                        onClick={() => handleDownloadContrato(renta.id)}
-                                        disabled={isDownloadingContrato || isDeletingRenta}
+                                        onClick={() => handleDownloadContrato(renta)}
+                                        disabled={isDownloadingContrato || isDeletingRenta || isSharingContrato}
                                         aria-label={`Elegir contrato para la renta ${renta.id}`}
                                         title="Elegir contrato"
                                     >
                                         <span className={styles.downloadIcon} aria-hidden="true">📄</span>
-                                        {isDownloadingContrato && downloadingRentaId === renta.id
-                                            ? 'Descargando...'
+                                        {(isDownloadingContrato && downloadingRentaId === renta.id) || (isSharingContrato && sharingContratoId === renta.id)
+                                            ? 'Procesando...'
                                             : 'Contrato'}
-                                    </button>
-                                    <button
-                                        type="button"
-                                        className={styles.whatsappButton}
-                                        onClick={() => openContratoWhatsAppChat(renta)}
-                                        disabled={!getWhatsAppPhone(renta.cliente?.celular) || isDeletingRenta || isDownloadingContrato}
-                                        aria-label={`Compartir contrato por WhatsApp con ${renta.cliente?.nombre ?? 'cliente'}`}
-                                        title="Compartir contrato por WhatsApp"
-                                    >
-                                        <span className={styles.whatsappIcon} aria-hidden="true">💬</span>
-                                        WhatsApp
                                     </button>
                                     <button
                                         type="button"
