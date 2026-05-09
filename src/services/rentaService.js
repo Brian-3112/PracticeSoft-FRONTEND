@@ -7,9 +7,12 @@ export const createRenta = async ({ rentaPayload, config }) => {
 
 export const downloadContratoDocx = async ({ rentaId, rentaPayload, config, sinDatosCliente = false }) => {
     if (rentaId) {
-        const response = await clienteAxios.get(`/rentas/${rentaId}/contrato.docx`, {
+        const contratoEndpoint = sinDatosCliente
+            ? `/rentas/${rentaId}/contrato-vacio.docx`
+            : `/rentas/${rentaId}/contrato.docx`;
+
+        const response = await clienteAxios.get(contratoEndpoint, {
             ...config,
-            params: sinDatosCliente ? { sinDatosCliente: true } : undefined,
             responseType: 'blob',
         });
         return response.data;

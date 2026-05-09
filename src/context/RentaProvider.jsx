@@ -186,7 +186,7 @@ export const RentaProvider = ({ children }) => {
                 text: selectedRentaId && selectedRentaId === lastCreatedRentaId
                     ? 'Renta creada, pero no se pudo descargar el contrato'
                     : sinDatosCliente
-                        ? 'No se pudo descargar el contrato vacío'
+                        ? 'No se pudo descargar el contrato vacío. Verifica que el backend tenga habilitado el documento sin datos del cliente.'
                         : 'No se pudo descargar el contrato',
                 icon: 'warning',
             });
