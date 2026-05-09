@@ -44,16 +44,6 @@
 }
 
 
-.whatsappButton:disabled {
-  cursor: not-allowed;
-  opacity: 0.45;
-}
-
-.whatsappIcon {
-  fill: #25d366;
-  width: 32px;
-}
-
 .editar .colorimgg {
   fill: var(--primary);
   stroke: var(--primary);
