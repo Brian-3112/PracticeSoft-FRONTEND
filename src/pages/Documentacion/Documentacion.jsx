@@ -225,53 +225,41 @@ const Documentacion = () => {
                         <div className={styles.modalDialog}>
                             <div className={styles.modalContent}>
                                 <div className={styles.modalHeader}>
-                                    <h5 className={styles.modalTitle}>Subir <span className={styles.modalTitle2}>Contrato Firmado</span></h5>
+                                    <h5 className={styles.modalTitle}>Subir <span className={styles.modalTitle2}>Contrato</span></h5>
                                     <button type="button" className={styles.btnClose} onClick={handleClose}>x</button>
                                 </div>
 
                                 <form onSubmit={handleSubmit} noValidate>
                                     <div className={styles.modalBody}>
                                         <div className={styles.formGrid}>
-                                            <label className={styles.labelFormu}>
-                                                Nombre del cliente *
-                                                <input
-                                                    className={styles.inputFormu}
-                                                    name="nombreCliente"
-                                                    value={formData.nombreCliente}
-                                                    onChange={handleChange}
-                                                    placeholder="Nombre del cliente"
-                                                />
-                                            </label>
-                                            <label className={styles.labelFormu}>
-                                                Cédula *
-                                                <input
-                                                    className={styles.inputFormu}
-                                                    name="cedula"
-                                                    value={formData.cedula}
-                                                    onChange={handleChange}
-                                                    placeholder="Cédula"
-                                                />
-                                            </label>
-                                            <label className={styles.labelFormu}>
-                                                Fecha de contrato *
-                                                <input
-                                                    className={styles.inputFormu}
-                                                    name="fechaContrato"
-                                                    type="date"
-                                                    value={formData.fechaContrato}
-                                                    onChange={handleChange}
-                                                />
-                                            </label>
-                                            <label className={styles.labelFormu}>
-                                                Archivo escaneado *
-                                                <input
-                                                    className={styles.inputFormu}
-                                                    name="archivo"
-                                                    type="file"
-                                                    accept=".pdf,.doc,.docx,image/*"
-                                                    onChange={handleChange}
-                                                />
-                                            </label>
+                                            <input
+                                                className={styles.inputFormu}
+                                                name="nombreCliente"
+                                                value={formData.nombreCliente}
+                                                onChange={handleChange}
+                                                placeholder="Nombre del cliente *"
+                                            />
+                                            <input
+                                                className={styles.inputFormu}
+                                                name="cedula"
+                                                value={formData.cedula}
+                                                onChange={handleChange}
+                                                placeholder="Cédula *"
+                                            />
+                                            <input
+                                                className={styles.inputFormu}
+                                                name="fechaContrato"
+                                                type="date"
+                                                value={formData.fechaContrato}
+                                                onChange={handleChange}
+                                            />
+                                            <input
+                                                className={styles.inputFormu}
+                                                name="archivo"
+                                                type="file"
+                                                accept=".pdf,.doc,.docx,image/*"
+                                                onChange={handleChange}
+                                            />
                                         </div>
                                     </div>
 
