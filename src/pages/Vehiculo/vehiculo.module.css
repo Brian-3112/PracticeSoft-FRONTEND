@@ -304,13 +304,13 @@
 
 .validityDateText {
   color: #172033;
-  font-weight: 700;
+  font-weight: 500;
   line-height: 1.1;
 }
 
 .validityStatusText {
-  font-size: 0.8rem;
-  font-weight: 700;
+  font-size: 0.7rem;
+  font-weight: 600;
   line-height: 1.1;
 }
 
