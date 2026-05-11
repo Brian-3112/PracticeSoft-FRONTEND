@@ -59,7 +59,7 @@
 .settingsLink {
   width: 100%; border: 0; border-radius: 10px; padding: 10px 12px;
   background: transparent; color: #dbe7ff; text-align: left; cursor: pointer;
-  display: flex; align-items: center; gap: 8px;
+  display: flex; align-items: center; gap: 10px;
   text-decoration: none;
   font: inherit;
   font-size: 0.85rem;
@@ -132,6 +132,8 @@
 }
 
 .logoutIcon { width: 16px; height: 16px; fill: currentColor; flex-shrink: 0; }
+
+.settingsIcon { width: 17px; height: 17px; color: currentColor; fill: none; stroke: currentColor; flex-shrink: 0; }
 
 .menuIcon { width: 17px; height: 17px; color: currentColor; flex-shrink: 0; }
 
