@@ -47,6 +47,14 @@ const getDocumentoId = (documento) => documento?.id ?? documento?._id;
 
 const getClienteId = (cliente) => cliente?.id ?? cliente?._id;
 
+const getDocumentoClienteId = (documento) => documento?.clienteId ?? getClienteId(documento?.cliente);
+
+const getSyncedDocumentoCliente = (documento, clientesById) => {
+    const clienteId = getDocumentoClienteId(documento);
+    if (!clienteId) return documento?.cliente ?? null;
+    return clientesById.get(String(clienteId)) ?? documento?.cliente ?? null;
+};
+
 const getArchivoNombre = (documento) => documento?.archivoNombre
     ?? documento?.nombreArchivo
     ?? documento?.fileName
@@ -82,6 +90,9 @@ const Documentacion = () => {
     const [downloadingId, setDownloadingId] = useState(null);
     const [deletingId, setDeletingId] = useState(null);
     const [searchParams] = useSearchParams();
+    const clientesById = useMemo(() => new Map(
+        clientes.map((cliente) => [String(getClienteId(cliente)), cliente])
+    ), [clientes]);
 
     const query = normalizeSearchText(searchParams.get('q') ?? '');
 
@@ -89,14 +100,15 @@ const Documentacion = () => {
         if (!query) return documentos;
 
         return documentos.filter((documento) => {
-            const nombreCliente = normalizeSearchText(documento.nombreCliente ?? documento.cliente?.nombre ?? '');
-            const cedula = normalizeSearchText(documento.cedula ?? documento.cliente?.identificacion ?? '');
+            const clienteActualizado = getSyncedDocumentoCliente(documento, clientesById);
+            const nombreCliente = normalizeSearchText(clienteActualizado?.nombre ?? documento.nombreCliente ?? documento.cliente?.nombre ?? '');
+            const cedula = normalizeSearchText(clienteActualizado?.identificacion ?? documento.cedula ?? documento.cliente?.identificacion ?? '');
             const fechaContrato = normalizeSearchText(documento.fechaContrato ?? '');
             return nombreCliente.includes(query)
                 || cedula.includes(query)
                 || fechaContrato.includes(query);
         });
-    }, [documentos, query]);
+    }, [clientesById, documentos, query]);
 
     const consultarDocumentos = useCallback(async () => {
         try {
@@ -271,18 +283,21 @@ const Documentacion = () => {
                                 <tr><td colSpan="5" className={styles.emptyCell}>Cargando documentos...</td></tr>
                             ) : documentosFiltrados.length ? documentosFiltrados.map((documento) => {
                                 const documentoId = getDocumentoId(documento);
+                                const clienteActualizado = getSyncedDocumentoCliente(documento, clientesById);
+                                const nombreCliente = clienteActualizado?.nombre ?? documento.nombreCliente ?? documento.cliente?.nombre;
+                                const cedulaCliente = clienteActualizado?.identificacion ?? documento.cedula ?? documento.cliente?.identificacion;
                                 return (
                                     <tr key={documentoId}>
                                         <td>
                                             <div className={styles.clientCell}>
-                                                <span className={styles.clientAvatar}>{getClientInitials(documento.nombreCliente ?? documento.cliente?.nombre)}</span>
+                                                <span className={styles.clientAvatar}>{getClientInitials(nombreCliente)}</span>
                                                 <div className={styles.clientInfo}>
-                                                    <span className={styles.clientName}>{documento.nombreCliente ?? documento.cliente?.nombre}</span>
+                                                    <span className={styles.clientName}>{nombreCliente}</span>
                                                     <span className={styles.clientLabel}>Cliente</span>
                                                 </div>
                                             </div>
                                         </td>
-                                        <td>{documento.cedula ?? documento.cliente?.identificacion}</td>
+                                        <td>{cedulaCliente}</td>
                                         <td>
                                             <div className={styles.contractDateCell}>
                                                 {renderCalendarIcon(styles.contractDateIcon)}
@@ -304,7 +319,7 @@ const Documentacion = () => {
                                                 className={styles.deleteButton}
                                                 onClick={() => handleDelete(documento)}
                                                 disabled={deletingId === documentoId || downloadingId === documentoId}
-                                                aria-label={`Eliminar documento de ${documento.nombreCliente ?? documento.cliente?.nombre ?? 'cliente'}`}
+                                                aria-label={`Eliminar documento de ${nombreCliente ?? 'cliente'}`}
                                                 title="Eliminar documento"
                                             >
                                                 {deletingId === documentoId ? '...' : '×'}

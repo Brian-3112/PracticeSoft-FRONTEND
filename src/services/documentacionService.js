@@ -7,6 +7,7 @@ export const getDocumentos = async ({ config }) => {
 
 export const createDocumento = async ({ documentoPayload, config }) => {
     const formData = new FormData();
+    if (documentoPayload.clienteId) formData.append('clienteId', documentoPayload.clienteId);
     formData.append('nombreCliente', documentoPayload.nombreCliente);
     formData.append('cedula', documentoPayload.cedula);
     formData.append('fechaContrato', documentoPayload.fechaContrato);

@@ -1,6 +1,8 @@
+import { useMemo } from 'react';
 import useRenta from '../../hooks/useRenta.jsx';
 import styles from '../Renta/renta.module.css';
 import useAuth from '../../hooks/useAuth.jsx';
+import useCliente from '../../hooks/useCliente.jsx';
 import Agregarrenta from '../Renta/Agregarrenta.jsx';
 import { useSearchParams } from 'react-router-dom';
 import Swal from 'sweetalert2';
@@ -14,6 +16,15 @@ const normalizeSearchText = (value = '') => String(value)
     .trim();
 
 
+
+
+const getEntityId = (entity) => entity?.id ?? entity?._id;
+
+const getSyncedCliente = (renta, clientesById) => {
+    const clienteId = renta?.clienteId ?? getEntityId(renta?.cliente);
+    if (!clienteId) return renta?.cliente ?? {};
+    return clientesById.get(String(clienteId)) ?? renta?.cliente ?? {};
+};
 
 const getClientInitials = (name = '') => {
     const nameParts = String(name).trim().split(/\s+/).filter(Boolean);
@@ -195,6 +206,7 @@ const Renta = () => {
     };
 
     const { loading } = useAuth();
+    const { clientes } = useCliente();
 
 
     const {
@@ -207,6 +219,9 @@ const Renta = () => {
         deletingRentaId,
     } = useRenta();
     const [searchParams] = useSearchParams();
+    const clientesById = useMemo(() => new Map(
+        clientes.map((cliente) => [String(getEntityId(cliente)), cliente])
+    ), [clientes]);
     const query = normalizeSearchText(searchParams.get('q') ?? '');
     const selectedMonth = getMonthFromQuery(query);
     const searchedDate = getDateFromQuery(query);
@@ -214,12 +229,15 @@ const Renta = () => {
     const rentasFiltradas = !query
         ? rentas
         : rentas.filter((renta) => {
-            const nombreCliente = normalizeSearchText(renta.cliente?.nombre ?? '');
+            const clienteActualizado = getSyncedCliente(renta, clientesById);
+            const nombreCliente = normalizeSearchText(clienteActualizado?.nombre ?? '');
+            const cedulaCliente = normalizeSearchText(clienteActualizado?.identificacion ?? '');
             const nombreVehiculo = normalizeSearchText(renta.vehiculo?.nombreVehiculo ?? '');
             const placaVehiculo = normalizeSearchText(renta.vehiculo?.placa ?? '');
             const fechaEntrega = parseDateOnly(renta.fechaEntrega);
             const fechaDevolucion = parseDateOnly(renta.fechaDevolucion);
             const coincideTexto = nombreCliente.includes(query)
+                || cedulaCliente.includes(query)
                 || nombreVehiculo.includes(query)
                 || placaVehiculo.includes(query);
             const coincideFecha = searchedDate !== undefined
@@ -296,6 +314,7 @@ const Renta = () => {
                         {rentasFiltradas.map((renta) => (
                             <tr key={renta.id}>
                                 {(() => {
+                                    const clienteActualizado = getSyncedCliente(renta, clientesById);
                                     const fechaEntrega = parseDateOnly(renta.fechaEntrega);
                                     const fechaDevolucion = parseDateOnly(renta.fechaDevolucion);
                                     const isPending = fechaEntrega && today < fechaEntrega;
@@ -316,11 +335,11 @@ const Renta = () => {
                                 <td>
                                     <div className={styles.clientCell}>
                                         <span className={`${styles.clientAvatar} ${estadoClase}`}>
-                                            {getClientInitials(renta.cliente?.nombre)}
+                                            {getClientInitials(clienteActualizado?.nombre)}
                                         </span>
                                         <div className={styles.clientInfo}>
-                                            <span className={styles.clientName}>{renta.cliente?.nombre}</span>
-                                            <span className={styles.clientId}>CC {renta.cliente?.identificacion ?? 'Sin identificar'}</span>
+                                            <span className={styles.clientName}>{clienteActualizado?.nombre}</span>
+                                            <span className={styles.clientId}>CC {clienteActualizado?.identificacion ?? 'Sin identificar'}</span>
                                         </div>
                                     </div>
                                 </td>
