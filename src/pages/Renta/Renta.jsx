@@ -324,7 +324,7 @@ const Renta = () => {
                                         </div>
                                     </div>
                                 </td>
-                                <td>{renta.vehiculo?.nombreVehiculo}</td>
+                                <td className={styles.vehicleNameCell}>{renta.vehiculo?.nombreVehiculo}</td>
                                 <td>{renta.vehiculo?.placa}</td>
                                 <td>
                                     <div className={styles.dateCell}>

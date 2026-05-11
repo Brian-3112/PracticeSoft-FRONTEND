@@ -285,12 +285,13 @@
   border-radius: 15px;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
   overflow-x: auto;
-  margin: 0px 11% 0px 9%;
+  margin: 0px 6% 0px 6%;
 }
 
 
 .table {
   width: 100%;
+  min-width: 1080px;
   border-collapse: collapse;
   font-size: 0.95rem;
 }
@@ -316,6 +317,11 @@
 }
 
 
+
+.vehicleNameCell {
+  min-width: 180px;
+  white-space: nowrap;
+}
 
 .clientCell {
   display: flex;
@@ -483,7 +489,7 @@
 
 @media (max-width: 1024px) {
   .tableContainer {
-    margin: 0 4%;
+    margin: 0 2%;
   }
 
   .divAddVehiculo {
