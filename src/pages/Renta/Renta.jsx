@@ -344,7 +344,7 @@ const Renta = () => {
                                         </div>
                                     </div>
                                 </td>
-                                <td>
+                                <td className={styles.totalValueCell}>
                                     {renta.valorTotal.toLocaleString("es-CO", {
                                         style: "currency",
                                         currency: "COP",

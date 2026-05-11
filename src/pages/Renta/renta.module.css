@@ -350,10 +350,15 @@
   gap: 3px;
 }
 
-.clientName,
-.dateText {
+.clientName {
   color: #172033;
   font-weight: 700;
+  line-height: 1.1;
+}
+
+.dateText {
+  color: #172033;
+  font-weight: 500;
   line-height: 1.1;
 }
 
@@ -363,6 +368,12 @@
   font-size: 0.8rem;
   font-weight: 500;
   line-height: 1.1;
+}
+
+.totalValueCell {
+  color: #172033;
+  font-weight: 800;
+  white-space: nowrap;
 }
 
 .dateCell {
