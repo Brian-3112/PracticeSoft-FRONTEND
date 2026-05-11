@@ -281,6 +281,47 @@
   background: #f9f9f9;
 }
 
+
+.validityDateCell {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 10px;
+  min-width: 120px;
+}
+
+.validityCalendarIcon {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+  margin-top: 2px;
+}
+
+.validityDateInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.validityDateText {
+  color: #172033;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.validityStatusText {
+  font-size: 0.8rem;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.validDate {
+  color: #28A087;
+}
+
+.expiredDate {
+  color: #dc2626;
+}
+
 /* ===== AJUSTES RESPONSIVE DEL MODULO VEHICULOS ===== */
 @media (max-width: 768px) {
   .wrapper {

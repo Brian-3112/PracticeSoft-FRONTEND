@@ -7,6 +7,55 @@ import VerInfoVehiculo from '../Vehiculo/VerInfoVehiculo.jsx';
 import Editarvehiculo from '../Vehiculo/Editarvehiculo.jsx';
 import { useSearchParams } from 'react-router-dom';
 
+
+const formatDateOnly = (dateValue) => {
+  if (!dateValue) return '';
+  const dateString = String(dateValue).slice(0, 10);
+  const [year, month, day] = dateString.split('-');
+  if (!year || !month || !day) return '';
+  return `${day}/${month}/${year}`;
+};
+
+const isDateValid = (dateValue) => {
+  if (!dateValue) return false;
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const dateString = String(dateValue).slice(0, 10);
+  const [year, month, day] = dateString.split('-').map(Number);
+  const dateToValidate = new Date(year, month - 1, day);
+  return dateToValidate >= today;
+};
+
+const renderCalendarIcon = (className) => (
+  <svg
+    className={className}
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+    strokeWidth="2"
+    aria-hidden="true"
+  >
+    <path strokeLinecap="round" strokeLinejoin="round" d="M8 2v4m8-4v4M3.5 9.5h17M5 5h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z" />
+    <path strokeLinecap="round" strokeLinejoin="round" d="M8 13h.01M12 13h.01M16 13h.01M8 17h.01M12 17h.01" />
+  </svg>
+);
+
+const renderValidityDate = (dateValue, styles) => {
+  const vigente = isDateValid(dateValue);
+  const statusClass = vigente ? styles.validDate : styles.expiredDate;
+
+  return (
+    <div className={`${styles.validityDateCell} ${statusClass}`}>
+      {renderCalendarIcon(styles.validityCalendarIcon)}
+      <div className={styles.validityDateInfo}>
+        <span className={styles.validityDateText}>{formatDateOnly(dateValue)}</span>
+        <span className={styles.validityStatusText}>{vigente ? 'Vigente' : 'Vencido'}</span>
+      </div>
+    </div>
+  );
+};
+
 const Vehiculo = () => {
   const { loading } = useAuth();
   const { vehiculos, eliminarVehiculo, rentas } = useVehiculo();
@@ -79,8 +128,8 @@ const Vehiculo = () => {
                 <tr key={vehiculo.id}>
                   <td>{vehiculo.nombreVehiculo}</td>
                   <td>{vehiculo.placa}</td>
-                  <td>{new Date(vehiculo.fechaSOAT).toLocaleDateString()}</td>
-                  <td>{new Date(vehiculo.fechaTecno).toLocaleDateString()}</td>
+                  <td>{renderValidityDate(vehiculo.fechaSOAT, styles)}</td>
+                  <td>{renderValidityDate(vehiculo.fechaTecno, styles)}</td>
                   <td>
                     <span className={`${styles.estadoBadge} ${estado === 'Rentado' ? styles.estadoRentado : styles.estadoDisponible}`}>
                       {estado}
