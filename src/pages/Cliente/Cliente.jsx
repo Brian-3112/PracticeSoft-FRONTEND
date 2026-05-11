@@ -8,16 +8,23 @@ import Editarcliente from '../Cliente/Editarcliente.jsx';
 import { useSearchParams } from 'react-router-dom';
 
 
-const Cliente = () => {
-  const { auth, loading } = useAuth();
-  if (loading) return 'Cargando...';
 
+const getClientInitials = (name = '') => {
+  const nameParts = String(name).trim().split(/\s+/).filter(Boolean);
+  const initials = nameParts.slice(0, 2).map((part) => part.charAt(0)).join('');
+  return initials.toUpperCase() || 'CL';
+};
+
+const Cliente = () => {
+  const { loading } = useAuth();
   const { clientes, eliminarCliente } = useCliente();
   const [searchParams] = useSearchParams();
   // Controlan la apertura de modales de ver informacion y editar.
   const [selectedCliente, setSelectedCliente] = useState(null);
   const [editingCliente, setEditingCliente] = useState(null);
   const query = (searchParams.get('q') ?? '').trim().toLowerCase();
+
+  if (loading) return 'Cargando...';
 
   const clientesFiltrados = !query
     ? clientes
@@ -49,7 +56,12 @@ const Cliente = () => {
           <tbody>
             {clientesFiltrados.map((cliente) => (
               <tr key={cliente.id}>
-                <td>{cliente.nombre}</td>
+                <td>
+                  <div className={styles.clientCell}>
+                    <span className={styles.clientAvatar}>{getClientInitials(cliente.nombre)}</span>
+                    <span>{cliente.nombre}</span>
+                  </div>
+                </td>
                 <td>{cliente.identificacion}</td>
                 <td>{cliente.direccion}</td>
                 <td>{cliente.celular}</td>
