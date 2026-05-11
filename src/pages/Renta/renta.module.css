@@ -300,6 +300,7 @@
 .table td {
   padding: 12px 10px;
   border-bottom: 1px solid #eaeaea;
+  color: #111827;
   text-align: left;
 }
 
@@ -357,7 +358,7 @@
 }
 
 .dateText {
-  color: #172033;
+  color: #111827;
   font-weight: 500;
   line-height: 1.1;
 }
@@ -371,8 +372,8 @@
 }
 
 .totalValueCell {
-  color: #172033;
-  font-weight: 800;
+  color: inherit;
+  font-weight: 500;
   white-space: nowrap;
 }
 

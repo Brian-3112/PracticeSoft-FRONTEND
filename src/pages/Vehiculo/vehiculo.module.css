@@ -265,6 +265,7 @@
 .table td {
   padding: 12px 10px;
   border-bottom: 1px solid #eaeaea;
+  color: #111827;
   text-align: left;
 }
 
@@ -303,7 +304,7 @@
 }
 
 .validityDateText {
-  color: #172033;
+  color: #111827;
   font-weight: 500;
   line-height: 1.1;
 }

@@ -2,11 +2,13 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import Swal from 'sweetalert2';
 import { useSearchParams } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth.jsx';
+import useCliente from '../../hooks/useCliente.jsx';
 import BotonVerde from '../../components/BotonVerde.jsx';
 import { createDocumento, deleteDocumento, downloadDocumento, getDocumentos } from '../../services/documentacionService.js';
 import styles from './documentacion.module.css';
 
 const initialFormData = {
+    clienteId: '',
     nombreCliente: '',
     cedula: '',
     fechaContrato: '',
@@ -19,7 +21,31 @@ const normalizeSearchText = (value = '') => String(value)
     .toLowerCase()
     .trim();
 
+
+const getClientInitials = (name = '') => {
+    const nameParts = String(name).trim().split(/\s+/).filter(Boolean);
+    const initials = nameParts.slice(0, 2).map((part) => part.charAt(0)).join('');
+    return initials.toUpperCase() || 'CL';
+};
+
+const renderCalendarIcon = (className) => (
+    <svg
+        className={className}
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        strokeWidth="2"
+        aria-hidden="true"
+    >
+        <path strokeLinecap="round" strokeLinejoin="round" d="M8 2v4m8-4v4M3.5 9.5h17M5 5h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M8 13h.01M12 13h.01M16 13h.01M8 17h.01M12 17h.01" />
+    </svg>
+);
+
 const getDocumentoId = (documento) => documento?.id ?? documento?._id;
+
+const getClienteId = (cliente) => cliente?.id ?? cliente?._id;
 
 const getArchivoNombre = (documento) => documento?.archivoNombre
     ?? documento?.nombreArchivo
@@ -47,6 +73,7 @@ const downloadBlobFile = ({ blob, fileName }) => {
 
 const Documentacion = () => {
     const { loading, config } = useAuth();
+    const { clientes } = useCliente();
     const [documentos, setDocumentos] = useState([]);
     const [isLoadingDocumentos, setIsLoadingDocumentos] = useState(false);
     const [showModal, setShowModal] = useState(false);
@@ -104,6 +131,18 @@ const Documentacion = () => {
         setFormData((prev) => ({
             ...prev,
             [name]: files ? files[0] : value,
+        }));
+    };
+
+    const handleClienteChange = (event) => {
+        const selectedClienteId = event.target.value;
+        const selectedCliente = clientes.find((cliente) => String(getClienteId(cliente)) === selectedClienteId);
+
+        setFormData((prev) => ({
+            ...prev,
+            clienteId: selectedClienteId,
+            nombreCliente: selectedCliente?.nombre ?? '',
+            cedula: selectedCliente?.identificacion ?? '',
         }));
     };
 
@@ -234,9 +273,22 @@ const Documentacion = () => {
                                 const documentoId = getDocumentoId(documento);
                                 return (
                                     <tr key={documentoId}>
-                                        <td>{documento.nombreCliente ?? documento.cliente?.nombre}</td>
+                                        <td>
+                                            <div className={styles.clientCell}>
+                                                <span className={styles.clientAvatar}>{getClientInitials(documento.nombreCliente ?? documento.cliente?.nombre)}</span>
+                                                <div className={styles.clientInfo}>
+                                                    <span className={styles.clientName}>{documento.nombreCliente ?? documento.cliente?.nombre}</span>
+                                                    <span className={styles.clientLabel}>Cliente</span>
+                                                </div>
+                                            </div>
+                                        </td>
                                         <td>{documento.cedula ?? documento.cliente?.identificacion}</td>
-                                        <td>{formatDateOnly(documento.fechaContrato)}</td>
+                                        <td>
+                                            <div className={styles.contractDateCell}>
+                                                {renderCalendarIcon(styles.contractDateIcon)}
+                                                <span>{formatDateOnly(documento.fechaContrato)}</span>
+                                            </div>
+                                        </td>
                                         <td>{getArchivoNombre(documento)}</td>
                                         <td className={styles.actionsCell}>
                                             <button
@@ -281,18 +333,23 @@ const Documentacion = () => {
                                 <form onSubmit={handleSubmit} noValidate>
                                     <div className={styles.modalBody}>
                                         <div className={styles.formGrid}>
-                                            <input
+                                            <select
                                                 className={styles.inputFormu}
                                                 name="nombreCliente"
-                                                value={formData.nombreCliente}
-                                                onChange={handleChange}
-                                                placeholder="Nombre del cliente *"
-                                            />
+                                                value={formData.clienteId}
+                                                onChange={handleClienteChange}
+                                            >
+                                                <option value="">Seleccione un cliente *</option>
+                                                {clientes.map((cliente) => {
+                                                    const clienteId = getClienteId(cliente);
+                                                    return <option key={clienteId} value={clienteId}>{cliente.nombre}</option>;
+                                                })}
+                                            </select>
                                             <input
                                                 className={styles.inputFormu}
                                                 name="cedula"
                                                 value={formData.cedula}
-                                                onChange={handleChange}
+                                                readOnly
                                                 placeholder="Cédula *"
                                             />
                                             <input

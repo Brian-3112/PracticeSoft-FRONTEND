@@ -20,7 +20,7 @@
   background: #fff;
   border-radius: 15px;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-  margin: 0 11% 0 9%;
+  margin: 0 6%;
   overflow: hidden;
 }
 
@@ -47,6 +47,7 @@
 
 .table {
   width: 100%;
+  min-width: 980px;
   border-collapse: collapse;
   font-size: 0.95rem;
 }
@@ -55,6 +56,8 @@
 .table td {
   padding: 12px 20px;
   border-bottom: 1px solid #eaeaea;
+  color: #111827;
+  font-weight: 400;
   text-align: left;
 }
 
@@ -69,6 +72,62 @@
 
 .table tr:hover {
   background: #f9f9f9;
+}
+
+
+.clientCell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 220px;
+  font-weight: 400;
+}
+
+.clientAvatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  background: rgba(40, 160, 135, 0.16);
+  color: #28A087;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+
+.clientInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.clientName,
+.clientLabel {
+  font-weight: 400;
+  line-height: 1.1;
+}
+
+.clientLabel {
+  color: #6b7280;
+  font-size: 0.78rem;
+}
+
+.contractDateCell {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 120px;
+  font-weight: 400;
+}
+
+.contractDateIcon {
+  width: 17px;
+  height: 17px;
+  flex: 0 0 auto;
+  color: #28A087;
 }
 
 .emptyCell {
