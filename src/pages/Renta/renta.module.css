@@ -316,6 +316,71 @@
 }
 
 
+
+.clientCell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 150px;
+}
+
+.clientAvatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+}
+
+.clientInfo,
+.dateInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.clientName,
+.dateText {
+  color: #172033;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.clientId,
+.timeText {
+  color: #52617a;
+  font-size: 0.8rem;
+  font-weight: 500;
+  line-height: 1.1;
+}
+
+.dateCell {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 8px;
+  min-width: 112px;
+}
+
+.calendarIcon {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+  margin-top: 1px;
+}
+
+.deliveryIcon {
+  color: #28A087;
+}
+
+.returnIcon {
+  color: #d93025;
+}
+
 /* ===== ESTADOS DE LA RENTA (PENDIENTE / EN CURSO / FINALIZADA) ===== */
 .status {
   padding: 5px 10px;

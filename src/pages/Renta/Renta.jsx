@@ -14,6 +14,44 @@ const normalizeSearchText = (value = '') => String(value)
     .trim();
 
 
+
+const getClientInitials = (name = '') => {
+    const nameParts = String(name).trim().split(/\s+/).filter(Boolean);
+    const initials = nameParts.slice(0, 2).map((part) => part.charAt(0)).join('');
+    return initials.toUpperCase() || 'CL';
+};
+
+const formatTimeOnly = (timeValue) => {
+    if (!timeValue) return '';
+
+    const rawTime = String(timeValue).trim();
+    const timeMatch = rawTime.match(/(\d{1,2}):(\d{2})/);
+    if (!timeMatch) return rawTime;
+
+    const [, hourValue, minuteValue] = timeMatch;
+    const hour = Number(hourValue);
+    if (Number.isNaN(hour)) return rawTime;
+
+    const period = hour >= 12 ? 'PM' : 'AM';
+    const normalizedHour = hour % 12 || 12;
+    return `${String(normalizedHour).padStart(2, '0')}:${minuteValue} ${period}`;
+};
+
+const renderCalendarIcon = (className) => (
+    <svg
+        className={className}
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        strokeWidth="2"
+        aria-hidden="true"
+    >
+        <path strokeLinecap="round" strokeLinejoin="round" d="M8 2v4m8-4v4M3.5 9.5h17M5 5h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M8 13h.01M12 13h.01M16 13h.01M8 17h.01M12 17h.01" />
+    </svg>
+);
+
 const MONTH_SEARCH_TERMS = [
     { month: 0, terms: ['enero', 'ene'] },
     { month: 1, terms: ['febrero', 'feb', 'febereto', 'feberero', 'febrerro'] },
@@ -275,11 +313,37 @@ const Renta = () => {
 
                                     return (
                                         <>
-                                <td>{renta.cliente?.nombre}</td>
+                                <td>
+                                    <div className={styles.clientCell}>
+                                        <span className={`${styles.clientAvatar} ${estadoClase}`}>
+                                            {getClientInitials(renta.cliente?.nombre)}
+                                        </span>
+                                        <div className={styles.clientInfo}>
+                                            <span className={styles.clientName}>{renta.cliente?.nombre}</span>
+                                            <span className={styles.clientId}>CC {renta.cliente?.identificacion ?? 'Sin identificar'}</span>
+                                        </div>
+                                    </div>
+                                </td>
                                 <td>{renta.vehiculo?.nombreVehiculo}</td>
                                 <td>{renta.vehiculo?.placa}</td>
-                                <td>{formatDateOnly(renta.fechaEntrega)}</td>
-                                <td>{formatDateOnly(renta.fechaDevolucion)}</td>
+                                <td>
+                                    <div className={styles.dateCell}>
+                                        {renderCalendarIcon(`${styles.calendarIcon} ${styles.deliveryIcon}`)}
+                                        <div className={styles.dateInfo}>
+                                            <span className={styles.dateText}>{formatDateOnly(renta.fechaEntrega)}</span>
+                                            <span className={styles.timeText}>{formatTimeOnly(renta.horaEntrega)}</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div className={styles.dateCell}>
+                                        {renderCalendarIcon(`${styles.calendarIcon} ${styles.returnIcon}`)}
+                                        <div className={styles.dateInfo}>
+                                            <span className={styles.dateText}>{formatDateOnly(renta.fechaDevolucion)}</span>
+                                            <span className={styles.timeText}>{formatTimeOnly(renta.horaDevolucion)}</span>
+                                        </div>
+                                    </div>
+                                </td>
                                 <td>
                                     {renta.valorTotal.toLocaleString("es-CO", {
                                         style: "currency",
