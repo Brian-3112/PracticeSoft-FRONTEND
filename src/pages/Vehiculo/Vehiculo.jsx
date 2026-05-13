@@ -6,7 +6,6 @@ import Agregarvehiculo from '../Vehiculo/Agregarvehiculo.jsx';
 import VerInfoVehiculo from '../Vehiculo/VerInfoVehiculo.jsx';
 import Editarvehiculo from '../Vehiculo/Editarvehiculo.jsx';
 import { useSearchParams } from 'react-router-dom';
-import Swal from 'sweetalert2';
 
 
 const formatDateOnly = (dateValue) => {
@@ -63,9 +62,6 @@ const Vehiculo = () => {
     vehiculos,
     eliminarVehiculo,
     rentas,
-    descargarContratoSubarriendo,
-    isDownloadingContratoSubarriendo,
-    downloadingVehiculoId,
   } = useVehiculo();
   const [searchParams] = useSearchParams();
   const [selectedVehiculo, setSelectedVehiculo] = useState(null);
@@ -108,53 +104,6 @@ const Vehiculo = () => {
     return rentaActiva ? 'Rentado' : 'Disponible';
   };
 
-  const handleDownloadContratoSubarriendo = async (vehiculo) => {
-    const result = await Swal.fire({
-      title: 'Contrato de subarriendo',
-      html: `
-        <div class="swal2-input-label">Fecha de inicio</div>
-        <input id="fechaInicioSubarriendo" class="swal2-input" type="date">
-        <div class="swal2-input-label">Fecha fin</div>
-        <input id="fechaFinSubarriendo" class="swal2-input" type="date">
-      `,
-      focusConfirm: false,
-      showCancelButton: true,
-      confirmButtonText: 'Descargar',
-      cancelButtonText: 'Cancelar',
-      customClass: {
-        confirmButton: 'confirmarBoton',
-        cancelButton: 'cancelBoton',
-      },
-      preConfirm: () => {
-        const fechaInicio = document.getElementById('fechaInicioSubarriendo')?.value;
-        const fechaFin = document.getElementById('fechaFinSubarriendo')?.value;
-
-        if (!fechaInicio || !fechaFin) {
-          Swal.showValidationMessage('Debes seleccionar la fecha de inicio y la fecha fin.');
-          return false;
-        }
-
-        if (new Date(fechaFin) < new Date(fechaInicio)) {
-          Swal.showValidationMessage('La fecha fin no puede ser menor a la fecha de inicio.');
-          return false;
-        }
-
-        return { fechaInicio, fechaFin };
-      },
-    });
-
-    if (!result.isConfirmed) return;
-
-    await descargarContratoSubarriendo({
-      vehiculoId: vehiculo.id,
-      vehiculoPayload: {
-        nombreVehiculo: vehiculo.nombreVehiculo,
-        placa: vehiculo.placa,
-        fechaInicio: result.value.fechaInicio,
-        fechaFin: result.value.fechaFin,
-      },
-    });
-  };
 
   if (loading) return 'Cargando...';
 
@@ -174,7 +123,7 @@ const Vehiculo = () => {
               <th>Tecnomecanica</th>
               <th>Estado</th>
               <th>Información</th>
-              <th>Contratos / Acciones</th>
+              <th>Acciones</th>
             </tr>
           </thead>
           <tbody>
@@ -197,35 +146,17 @@ const Vehiculo = () => {
                       <path strokeLinecap="round" strokeLinejoin="round" d="M15 2.25v6h6" />
                     </svg>
                   </button></td>
-                  <td>
-                    <div className={styles.actionsCell}>
-                      <button
-                        type="button"
-                        className={styles.downloadButton}
-                        onClick={() => handleDownloadContratoSubarriendo(vehiculo)}
-                        disabled={isDownloadingContratoSubarriendo}
-                        aria-label={`Descargar contrato de subarriendo del vehículo ${vehiculo.id}`}
-                        title="Contrato de subarriendo"
-                      >
-                        <span aria-hidden="true">📄</span>
-                        {isDownloadingContratoSubarriendo && downloadingVehiculoId === vehiculo.id
-                          ? 'Descargando...'
-                          : 'Subarriendo'}
-                      </button>
+                  <td><button onClick={() => setEditingVehiculo(vehiculo)} className={styles.iconOnlyButton} >
+                    <svg className={`${styles.iconButton} ${styles.editar}`} xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                      <path className={`${styles.colorimgg} ${styles.editar}`} d="M200-200h43.92l427.93-427.92-43.93-43.93L200-243.92V-200Zm-40 40v-100.77l527.23-527.77q6.15-5.48 13.57-8.47 7.43-2.99 15.49-2.99t15.62 2.54q7.55 2.54 13.94 9.15l42.69 42.93q6.61 6.38 9.04 14 2.42 7.63 2.42 15.25 0 8.13-2.74 15.56-2.74 7.42-8.72 13.57L260.77-160H160Zm600.77-556.31-44.46-44.46 44.46 44.46ZM649.5-649.5l-21.58-22.35 43.93 43.93-22.35-21.58Z" />
+                    </svg>
+                  </button>
 
-                      <button onClick={() => setEditingVehiculo(vehiculo)} className={styles.iconOnlyButton} >
-                        <svg className={`${styles.iconButton} ${styles.editar}`} xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
-                          <path className={`${styles.colorimgg} ${styles.editar}`} d="M200-200h43.92l427.93-427.92-43.93-43.93L200-243.92V-200Zm-40 40v-100.77l527.23-527.77q6.15-5.48 13.57-8.47 7.43-2.99 15.49-2.99t15.62 2.54q7.55 2.54 13.94 9.15l42.69 42.93q6.61 6.38 9.04 14 2.42 7.63 2.42 15.25 0 8.13-2.74 15.56-2.74 7.42-8.72 13.57L260.77-160H160Zm600.77-556.31-44.46-44.46 44.46 44.46ZM649.5-649.5l-21.58-22.35 43.93 43.93-22.35-21.58Z" />
-                        </svg>
-                      </button>
-
-                      <button onClick={() => eliminarVehiculo(vehiculo.id)} className={styles.iconOnlyButton}>
-                        <svg className={`${styles.iconButton} ${styles.eliminar}`} xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
-                          <path className={`${styles.colorimgg} ${styles.eliminar}`} d="M312-172q-25 0-42.5-17.5T252-232v-488h-40v-28h148v-28h240v28h148v28h-40v488q0 26-17 43t-43 17H312Zm368-548H280v488q0 14 9 23t23 9h336q12 0 22-10t10-22v-488ZM402-280h28v-360h-28v360Zm128 0h28v-360h-28v360ZM280-720v520-520Z" />
-                        </svg>
-                      </button>
-                    </div>
-                  </td>
+                    <button onClick={() => eliminarVehiculo(vehiculo.id)} className={styles.iconOnlyButton}>
+                      <svg className={`${styles.iconButton} ${styles.eliminar}`} xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                        <path className={`${styles.colorimgg} ${styles.eliminar}`} d="M312-172q-25 0-42.5-17.5T252-232v-488h-40v-28h148v-28h240v28h148v28h-40v488q0 26-17 43t-43 17H312Zm368-548H280v488q0 14 9 23t23 9h336q12 0 22-10t10-22v-488ZM402-280h28v-360h-28v360Zm128 0h28v-360h-28v360ZM280-720v520-520Z" />
+                      </svg>
+                    </button></td>
                 </tr>
               );
             })}

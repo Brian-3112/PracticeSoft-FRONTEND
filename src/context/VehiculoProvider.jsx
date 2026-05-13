@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import clienteAxios from '../config/axios';
 import useAuth from '../hooks/useAuth';
 import Swal from 'sweetalert2';
-import { downloadContratoSubarriendoDocx } from '../services/vehiculoService';
 
 
 
@@ -15,9 +14,6 @@ const vehiculoContextDefaultValue = {
     rentas: [],
     consultarVehiculos: async () => undefined,
     consultarRentas: async () => undefined,
-    descargarContratoSubarriendo: async () => false,
-    isDownloadingContratoSubarriendo: false,
-    downloadingVehiculoId: null,
 };
 
 export const VehiculoContext = createContext(vehiculoContextDefaultValue);
@@ -28,8 +24,6 @@ export const VehiculoProvider = ({ children }) => {
     const { auth, config } = useAuth();
     const [vehiculos, setVehiculos] = useState([]);
     const [rentas, setRentas] = useState([]);
-    const [isDownloadingContratoSubarriendo, setIsDownloadingContratoSubarriendo] = useState(false);
-    const [downloadingVehiculoId, setDownloadingVehiculoId] = useState(null);
 
 
     //funcion para ver que vehiculos estas disponibles
@@ -84,96 +78,22 @@ export const VehiculoProvider = ({ children }) => {
 
 
 
-    const descargarContratoSubarriendo = async ({ vehiculoId, vehiculoPayload } = {}) => {
-        setIsDownloadingContratoSubarriendo(true);
-        setDownloadingVehiculoId(vehiculoId || null);
 
-        try {
-            const blobData = await downloadContratoSubarriendoDocx({
-                vehiculoId,
-                vehiculoPayload,
-                config,
-            });
-            const blob = blobData instanceof Blob
-                ? blobData
-                : new Blob([blobData], {
-                    type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-                });
-            const url = window.URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            const fileId = vehiculoId || vehiculoPayload?.placa || 'sin-id';
-
-            link.href = url;
-            link.setAttribute('download', `contrato-subarriendo-vehiculo-${fileId}.docx`);
-            document.body.appendChild(link);
-            link.click();
-            link.remove();
-            window.URL.revokeObjectURL(url);
-
-            return true;
-        } catch {
-            Swal.fire({
-                title: 'Advertencia',
-                text: 'No se pudo descargar el contrato de subarriendo. Verifica que el backend tenga habilitado este documento para vehículos.',
-                icon: 'warning',
-            });
-            return false;
-        } finally {
-            setIsDownloadingContratoSubarriendo(false);
-            setDownloadingVehiculoId(null);
-        }
-    };
-
-
-    const agregarVehiculo = async (nuevoVehiculo, handleClose, opciones = {}) => {
+    const agregarVehiculo = async (nuevoVehiculo, handleClose) => {
         try {
             const token = localStorage.getItem('token');
-            if (!token) return false;
+            if (!token) return;
 
             const { data } = await clienteAxios.post('/vehiculos', nuevoVehiculo, config);
-            const vehiculoCreado = data.vehiculo;
-            setVehiculos(prev => [vehiculoCreado, ...prev]);
+            setVehiculos(prev => [data.vehiculo, ...prev]);
 
-            const contratoSubarriendo = opciones.contratoSubarriendo;
-            const shouldDownloadContrato = contratoSubarriendo?.habilitado;
-
-            if (!shouldDownloadContrato) {
-                await Swal.fire({
-                    title: 'Éxito',
-                    text: data.message,
-                    icon: 'success',
-                });
-                handleClose();
-                return true;
-            }
-
-            const result = await Swal.fire({
-                title: 'Vehículo guardado',
-                text: '¿Deseas descargar el contrato de subarriendo?',
+            Swal.fire({
+                title: 'Éxito',
+                text: data.message,
                 icon: 'success',
-                showCancelButton: true,
-                confirmButtonText: 'Descargar contrato',
-                cancelButtonText: 'Cerrar',
-                customClass: {
-                    confirmButton: 'confirmarBoton',
-                    cancelButton: 'cancelBoton',
-                },
+            }).then(() => {
+                handleClose();
             });
-
-            if (result.isConfirmed) {
-                await descargarContratoSubarriendo({
-                    vehiculoId: vehiculoCreado?.id,
-                    vehiculoPayload: {
-                        nombreVehiculo: vehiculoCreado?.nombreVehiculo ?? nuevoVehiculo.nombreVehiculo,
-                        placa: vehiculoCreado?.placa ?? nuevoVehiculo.placa,
-                        fechaInicio: contratoSubarriendo.fechaInicio,
-                        fechaFin: contratoSubarriendo.fechaFin,
-                    },
-                });
-            }
-
-            handleClose();
-            return true;
 
         } catch (error) {
 
@@ -192,7 +112,6 @@ export const VehiculoProvider = ({ children }) => {
                     icon: 'error',
                 });
             }
-            return false;
         }
     };
 
@@ -309,9 +228,6 @@ export const VehiculoProvider = ({ children }) => {
                 rentas,
                 consultarVehiculos,
                 consultarRentas,
-                descargarContratoSubarriendo,
-                isDownloadingContratoSubarriendo,
-                downloadingVehiculoId,
             }}
         >
             {children}

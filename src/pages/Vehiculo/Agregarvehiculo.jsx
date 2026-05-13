@@ -10,19 +10,14 @@ const initialFormData = {
   transito: '',
   fechaSOAT: '',
   fechaTecno: '',
-  description: '',
-  esSubarriendo: false,
-  fechaInicioSubarriendo: '',
-  fechaFinSubarriendo: ''
+  description: ''
 };
 
 const initialErrors = {
   nombreVehiculo: '',
   placa: '',
   fechaSOAT: '',
-  fechaTecno: '',
-  fechaInicioSubarriendo: '',
-  fechaFinSubarriendo: ''
+  fechaTecno: ''
 };
 
 const toUpperWithoutSpaces = (value) => String(value).replace(/\s+/g, '').toUpperCase();
@@ -41,18 +36,9 @@ const validateField = (name, value) => {
     return '';
   }
 
-  if (name === 'fechaInicioSubarriendo' || name === 'fechaFinSubarriendo') {
-    if (!value) return 'Campo obligatorio para el contrato de subarriendo';
-    return '';
-  }
-
   return '';
 };
 
-const isFechaFinBeforeInicio = (fechaInicio, fechaFin) => {
-  if (!fechaInicio || !fechaFin) return false;
-  return new Date(fechaFin) < new Date(fechaInicio);
-};
 
 const Agregarvehiculo = () => {
   const { loading } = useAuth();
@@ -64,56 +50,26 @@ const Agregarvehiculo = () => {
   if (loading) return 'Cargando...';
 
   const validateRequiredFields = (dataToValidate) => {
-    const nextValidation = {
+    return {
       nombreVehiculo: validateField('nombreVehiculo', dataToValidate.nombreVehiculo),
       placa: validateField('placa', dataToValidate.placa),
       fechaSOAT: validateField('fechaSOAT', dataToValidate.fechaSOAT),
-      fechaTecno: validateField('fechaTecno', dataToValidate.fechaTecno),
-      fechaInicioSubarriendo: dataToValidate.esSubarriendo
-        ? validateField('fechaInicioSubarriendo', dataToValidate.fechaInicioSubarriendo)
-        : '',
-      fechaFinSubarriendo: dataToValidate.esSubarriendo
-        ? validateField('fechaFinSubarriendo', dataToValidate.fechaFinSubarriendo)
-        : ''
+      fechaTecno: validateField('fechaTecno', dataToValidate.fechaTecno)
     };
-
-    if (
-      dataToValidate.esSubarriendo
-      && !nextValidation.fechaInicioSubarriendo
-      && !nextValidation.fechaFinSubarriendo
-      && isFechaFinBeforeInicio(dataToValidate.fechaInicioSubarriendo, dataToValidate.fechaFinSubarriendo)
-    ) {
-      nextValidation.fechaFinSubarriendo = 'La fecha fin no puede ser menor a la fecha de inicio';
-    }
-
-    return nextValidation;
   };
 
   // Valida en tiempo real mientras el usuario escribe.
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    const nextValue = type === 'checkbox' ? checked : value;
-
+    const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: nextValue,
-      ...(name === 'esSubarriendo' && !checked
-        ? { fechaInicioSubarriendo: '', fechaFinSubarriendo: '' }
-        : {})
+      [name]: value
     }));
 
     if (Object.prototype.hasOwnProperty.call(initialErrors, name)) {
       setErrors((prev) => ({
         ...prev,
-        [name]: validateField(name, nextValue)
-      }));
-    }
-
-    if (name === 'esSubarriendo' && !checked) {
-      setErrors((prev) => ({
-        ...prev,
-        fechaInicioSubarriendo: '',
-        fechaFinSubarriendo: ''
+        [name]: validateField(name, value)
       }));
     }
   };
@@ -165,15 +121,6 @@ const Agregarvehiculo = () => {
       () => {
         limpiarFormulario();
         handleClose();
-      },
-      {
-        contratoSubarriendo: formData.esSubarriendo
-          ? {
-            habilitado: true,
-            fechaInicio: formData.fechaInicioSubarriendo,
-            fechaFin: formData.fechaFinSubarriendo
-          }
-          : { habilitado: false }
       }
     );
   };
@@ -280,53 +227,6 @@ const Agregarvehiculo = () => {
                           {errors.fechaTecno && <span className={styles.fieldError}>{errors.fechaTecno}</span>}
                         </label>
                       </div>
-
-                      <div className={styles.subarriendoToggleWrapper}>
-                        <label className={styles.checkboxLabel}>
-                          <input
-                            name="esSubarriendo"
-                            type="checkbox"
-                            checked={formData.esSubarriendo}
-                            onChange={handleChange}
-                          />
-                          <span>Vehículo en subarriendo</span>
-                        </label>
-                        <small>Activa esta opción para generar el contrato; estas fechas no se guardan en la base de datos.</small>
-                      </div>
-
-                      {formData.esSubarriendo && (
-                        <>
-                          <div>
-                            <label className={styles.labelFormu}>
-                              <span className={styles.inputLabel}>Inicio subarriendo</span>
-                              <input
-                                className={`${styles.inputFormu} ${errors.fechaInicioSubarriendo ? styles.inputError : ''}`}
-                                name="fechaInicioSubarriendo"
-                                type="date"
-                                value={formData.fechaInicioSubarriendo}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                              />
-                              {errors.fechaInicioSubarriendo && <span className={styles.fieldError}>{errors.fechaInicioSubarriendo}</span>}
-                            </label>
-                          </div>
-
-                          <div>
-                            <label className={styles.labelFormu}>
-                              <span className={styles.inputLabel}>Fin subarriendo</span>
-                              <input
-                                className={`${styles.inputFormu} ${errors.fechaFinSubarriendo ? styles.inputError : ''}`}
-                                name="fechaFinSubarriendo"
-                                type="date"
-                                value={formData.fechaFinSubarriendo}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                              />
-                              {errors.fechaFinSubarriendo && <span className={styles.fieldError}>{errors.fechaFinSubarriendo}</span>}
-                            </label>
-                          </div>
-                        </>
-                      )}
 
 
                     </div>
