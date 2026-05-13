@@ -231,8 +231,8 @@ const Renta = () => {
     const { clientes } = useCliente();
     const currentYear = new Date().getFullYear();
     const [selectedVehiclePlate, setSelectedVehiclePlate] = useState('');
-    const [selectedIncomeMonth, setSelectedIncomeMonth] = useState(String(new Date().getMonth()));
-    const [selectedIncomeYear, setSelectedIncomeYear] = useState(String(currentYear));
+    const [selectedIncomeMonth, setSelectedIncomeMonth] = useState('');
+    const [selectedIncomeYear, setSelectedIncomeYear] = useState('');
 
 
     const {
@@ -279,12 +279,12 @@ const Renta = () => {
     }, [currentYear, rentas]);
 
     const vehicleIncomeSummary = useMemo(() => {
-        if (!selectedVehiclePlate || selectedIncomeMonth === '') {
+        if (!selectedVehiclePlate) {
             return { total: 0, rentalCount: 0 };
         }
 
-        const selectedMonthNumber = Number(selectedIncomeMonth);
-        const selectedYearNumber = Number(selectedIncomeYear);
+        const selectedMonthNumber = selectedIncomeMonth === '' ? null : Number(selectedIncomeMonth);
+        const selectedYearNumber = selectedIncomeYear === '' ? null : Number(selectedIncomeYear);
 
         return rentas.reduce((summary, renta) => {
             const placa = String(renta.vehiculo?.placa ?? '').trim();
@@ -292,8 +292,8 @@ const Renta = () => {
             if (!fechaEntrega) return summary;
 
             const matchesPlate = placa === selectedVehiclePlate;
-            const matchesMonth = fechaEntrega.getMonth() === selectedMonthNumber;
-            const matchesYear = fechaEntrega.getFullYear() === selectedYearNumber;
+            const matchesMonth = selectedMonthNumber === null || fechaEntrega.getMonth() === selectedMonthNumber;
+            const matchesYear = selectedYearNumber === null || fechaEntrega.getFullYear() === selectedYearNumber;
 
             if (!matchesPlate || !matchesMonth || !matchesYear) return summary;
 
@@ -305,7 +305,10 @@ const Renta = () => {
     }, [rentas, selectedIncomeMonth, selectedIncomeYear, selectedVehiclePlate]);
 
     const selectedVehicleLabel = availableVehicleOptions.find((vehicle) => vehicle.placa === selectedVehiclePlate)?.label ?? 'Selecciona una placa';
-    const selectedMonthLabel = MONTH_FILTER_OPTIONS.find((month) => String(month.value) === selectedIncomeMonth)?.label ?? 'Mes';
+    const selectedMonthLabel = selectedIncomeMonth === ''
+        ? 'Todos los meses'
+        : MONTH_FILTER_OPTIONS.find((month) => String(month.value) === selectedIncomeMonth)?.label ?? 'Mes';
+    const selectedYearLabel = selectedIncomeYear === '' ? 'Todos los años' : selectedIncomeYear;
 
     const rentasFiltradas = !query
         ? rentas
@@ -384,7 +387,7 @@ const Renta = () => {
                     <span className={styles.vehicleIncomeIcon} aria-hidden="true">🚗</span>
                     <div>
                         <h3>Total por carro</h3>
-                        <p>{vehicleIncomeSummary.rentalCount} renta(s) · {selectedMonthLabel} {selectedIncomeYear}</p>
+                        <p>{vehicleIncomeSummary.rentalCount} renta(s) · {selectedMonthLabel} · {selectedYearLabel}</p>
                     </div>
                 </div>
 
@@ -408,6 +411,7 @@ const Renta = () => {
                             value={selectedIncomeMonth}
                             onChange={(event) => setSelectedIncomeMonth(event.target.value)}
                         >
+                            <option value="">Todos los meses</option>
                             {MONTH_FILTER_OPTIONS.map((month) => (
                                 <option key={month.value} value={month.value}>{month.label}</option>
                             ))}
@@ -420,6 +424,7 @@ const Renta = () => {
                             value={selectedIncomeYear}
                             onChange={(event) => setSelectedIncomeYear(event.target.value)}
                         >
+                            <option value="">Todos los años</option>
                             {availableYears.map((year) => (
                                 <option key={year} value={year}>{year}</option>
                             ))}

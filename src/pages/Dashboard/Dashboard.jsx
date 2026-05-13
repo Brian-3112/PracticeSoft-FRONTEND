@@ -2,7 +2,7 @@ import { Navigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import useAuth from '../../hooks/useAuth';
 import useDashboard from '../../hooks/useDashboard';
-import { Line, Doughnut, Bar } from 'react-chartjs-2';
+import { Line, Doughnut } from 'react-chartjs-2';
 import styles from '../Dashboard/Dashboard.module.css';
 import 'chart.js/auto';
 
@@ -249,47 +249,6 @@ const Dashboard = () => {
     ],
   };
 
-  const anioActual = today.getFullYear();
-  const resumenVehiculosPorMes = rentas.reduce((acc, renta) => {
-    const fechaEntrega = parseDateOnly(renta.fechaEntrega);
-    if (!fechaEntrega || fechaEntrega.getFullYear() !== anioActual) return acc;
-
-    const mes = fechaEntrega.getMonth();
-    const vehiculo = renta.vehiculo?.nombreVehiculo || 'Vehículo';
-    const placa = renta.vehiculo?.placa ? ` (${renta.vehiculo.placa})` : '';
-    const nombreVehiculo = `${vehiculo}${placa}`;
-    const key = `${mes}-${nombreVehiculo}`;
-
-    if (!acc[key]) {
-      acc[key] = {
-        mes,
-        mesLabel: labelsMeses[mes],
-        vehiculo: nombreVehiculo,
-        salidas: 0,
-        ingresos: 0,
-      };
-    }
-
-    acc[key].salidas += 1;
-    acc[key].ingresos += Number(renta.valorTotal || 0);
-    return acc;
-  }, {});
-
-  const vehiculosPorMesOrdenados = Object.values(resumenVehiculosPorMes)
-    .sort((a, b) => a.mes - b.mes || b.ingresos - a.ingresos || a.vehiculo.localeCompare(b.vehiculo));
-
-  const dataIngresosVehiculoMes = {
-    labels: vehiculosPorMesOrdenados.map((item) => `${item.mesLabel} · ${item.vehiculo}`),
-    datasets: [
-      {
-        label: 'Total generado por vehículo en el mes',
-        data: vehiculosPorMesOrdenados.map((item) => item.ingresos),
-        backgroundColor: '#173680',
-        borderRadius: 6,
-      },
-    ],
-  };
-
   const handleDescargarReporte = () => {
     const fechaActual = new Date();
     const fechaGeneracion = fechaActual.toLocaleDateString('es-CO', {
@@ -433,54 +392,6 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <div className={styles.vehicleChartContainer}>
-          <h3 className={styles.chartTitle}>Ingresos por carro y mes</h3>
-          <p className={styles.chartSubtitle}>Mes, carros que salieron y total generado por cada carro en {anioActual}</p>
-
-          {vehiculosPorMesOrdenados.length === 0 ? (
-            <p className={styles.emptyMessage}>No hay rentas registradas este año.</p>
-          ) : (
-            <>
-              <div className={styles.vehicleChartWrapper}>
-                <Bar
-                  data={dataIngresosVehiculoMes}
-                  options={{
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                      legend: { display: false },
-                      tooltip: {
-                        callbacks: {
-                          label: (context) => {
-                            const valor = context.parsed.y || 0;
-                            return `Ingresos: ${valor.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}`;
-                          },
-                        },
-                      },
-                    },
-                    scales: {
-                      y: {
-                        beginAtZero: true,
-                        ticks: { callback: (value) => `$ ${Number(value).toLocaleString('es-CO')}` },
-                        grid: { color: 'rgba(79, 99, 141, 0.12)' },
-                      },
-                      x: { ticks: { maxRotation: 18, minRotation: 0 } },
-                    },
-                  }}
-                />
-              </div>
-
-              <ul className={styles.vehicleSummaryList}>
-                {vehiculosPorMesOrdenados.map((item) => (
-                  <li key={`${item.mes}-${item.vehiculo}`}>
-                    <span>{item.mesLabel} · {item.vehiculo}</span>
-                    <strong>{item.salidas} salidas · {item.ingresos.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}</strong>
-                  </li>
-                ))}
-              </ul>
-            </>
-          )}
-        </div>
       </div>
     </div>
   );
