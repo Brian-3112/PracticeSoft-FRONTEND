@@ -599,3 +599,138 @@
   opacity: 0.6;
   cursor: not-allowed;
 }
+
+.vehicleIncomeFilterCard {
+  margin: 0 6% 18px 6%;
+  padding: 18px;
+  background: #fff;
+  border: 1px solid #e5e9f2;
+  border-radius: 15px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+}
+
+.vehicleIncomeFilterHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.vehicleIncomeFilterHeader h3 {
+  margin: 0;
+  color: #0f1e4a;
+  font-size: 1.3rem;
+  font-weight: 800;
+}
+
+.vehicleIncomeFilterHeader p {
+  margin: 4px 0 0;
+  color: #52617a;
+  font-size: 0.9rem;
+}
+
+.vehicleIncomeTotalBox {
+  min-width: 210px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: rgba(40, 160, 135, 0.12);
+  color: #047857;
+  text-align: right;
+}
+
+.vehicleIncomeTotalBox span {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.vehicleIncomeTotalBox strong {
+  display: block;
+  margin-top: 4px;
+  font-size: 1.35rem;
+  font-weight: 900;
+}
+
+.vehicleIncomeFilterGrid {
+  display: grid;
+  grid-template-columns: minmax(220px, 2fr) minmax(160px, 1fr) minmax(130px, 0.7fr);
+  gap: 14px;
+}
+
+.vehicleIncomeFilterLabel {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: #374151;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.vehicleIncomeFilterLabel select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  background: #fff;
+  color: #111827;
+  font-size: 0.95rem;
+  outline: none;
+}
+
+.vehicleIncomeFilterLabel select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(40, 160, 135, 0.14);
+}
+
+.vehicleIncomeResultDetails {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+  color: #52617a;
+  font-size: 0.9rem;
+}
+
+.vehicleIncomeResultDetails span {
+  color: #111827;
+  font-weight: 800;
+}
+
+.vehicleIncomeResultDetails strong {
+  color: var(--primary);
+}
+
+.vehicleIncomeResultDetails small {
+  color: #6b7280;
+}
+
+@media (max-width: 1024px) {
+  .vehicleIncomeFilterCard {
+    margin: 0 2% 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .vehicleIncomeFilterCard {
+    margin: 0 4% 14px;
+    padding: 14px;
+  }
+
+  .vehicleIncomeFilterHeader {
+    flex-direction: column;
+  }
+
+  .vehicleIncomeTotalBox {
+    width: 100%;
+    min-width: 0;
+    text-align: left;
+  }
+
+  .vehicleIncomeFilterGrid {
+    grid-template-columns: 1fr;
+  }
+}

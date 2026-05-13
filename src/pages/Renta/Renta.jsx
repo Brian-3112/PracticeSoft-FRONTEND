@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import useRenta from '../../hooks/useRenta.jsx';
 import styles from '../Renta/renta.module.css';
 import useAuth from '../../hooks/useAuth.jsx';
@@ -69,6 +69,21 @@ const renderCalendarIcon = (className) => (
         <path strokeLinecap="round" strokeLinejoin="round" d="M8 13h.01M12 13h.01M16 13h.01M8 17h.01M12 17h.01" />
     </svg>
 );
+
+const MONTH_FILTER_OPTIONS = [
+    { value: 0, label: 'Enero' },
+    { value: 1, label: 'Febrero' },
+    { value: 2, label: 'Marzo' },
+    { value: 3, label: 'Abril' },
+    { value: 4, label: 'Mayo' },
+    { value: 5, label: 'Junio' },
+    { value: 6, label: 'Julio' },
+    { value: 7, label: 'Agosto' },
+    { value: 8, label: 'Septiembre' },
+    { value: 9, label: 'Octubre' },
+    { value: 10, label: 'Noviembre' },
+    { value: 11, label: 'Diciembre' },
+];
 
 const MONTH_SEARCH_TERMS = [
     { month: 0, terms: ['enero', 'ene'] },
@@ -197,14 +212,14 @@ const isSpecificDateBetweenDates = ({ day, month, year }, startDate, endDate) =>
     return false;
 };
 
-const Renta = () => {
-    const parseDateOnly = (dateValue) => {
-        if (!dateValue) return null;
-        const dateString = String(dateValue).slice(0, 10);
-        const [year, month, day] = dateString.split('-').map(Number);
-        return new Date(year, month - 1, day);
-    };
+const parseDateOnly = (dateValue) => {
+    if (!dateValue) return null;
+    const dateString = String(dateValue).slice(0, 10);
+    const [year, month, day] = dateString.split('-').map(Number);
+    return new Date(year, month - 1, day);
+};
 
+const Renta = () => {
     const formatDateOnly = (dateValue) => {
         if (!dateValue) return '';
         const dateString = String(dateValue).slice(0, 10);
@@ -214,6 +229,10 @@ const Renta = () => {
 
     const { loading } = useAuth();
     const { clientes } = useCliente();
+    const currentYear = new Date().getFullYear();
+    const [selectedVehiclePlate, setSelectedVehiclePlate] = useState('');
+    const [selectedIncomeMonth, setSelectedIncomeMonth] = useState(String(new Date().getMonth()));
+    const [selectedIncomeYear, setSelectedIncomeYear] = useState(String(currentYear));
 
 
     const {
@@ -232,6 +251,61 @@ const Renta = () => {
     const query = normalizeSearchText(searchParams.get('q') ?? '');
     const selectedMonth = getMonthFromQuery(query);
     const searchedDate = getDateFromQuery(query);
+    const availableVehicleOptions = useMemo(() => {
+        const vehiclesByPlate = new Map();
+
+        rentas.forEach((renta) => {
+            const placa = String(renta.vehiculo?.placa ?? '').trim();
+            if (!placa) return;
+
+            const nombreVehiculo = String(renta.vehiculo?.nombreVehiculo ?? 'Vehículo').trim();
+            vehiclesByPlate.set(placa, `${placa} - ${nombreVehiculo}`);
+        });
+
+        return [...vehiclesByPlate.entries()]
+            .map(([placa, label]) => ({ placa, label }))
+            .sort((a, b) => a.label.localeCompare(b.label));
+    }, [rentas]);
+
+    const availableYears = useMemo(() => {
+        const years = new Set([currentYear]);
+
+        rentas.forEach((renta) => {
+            const fechaEntrega = parseDateOnly(renta.fechaEntrega);
+            if (fechaEntrega) years.add(fechaEntrega.getFullYear());
+        });
+
+        return [...years].sort((a, b) => b - a);
+    }, [currentYear, rentas]);
+
+    const vehicleIncomeSummary = useMemo(() => {
+        if (!selectedVehiclePlate || selectedIncomeMonth === '') {
+            return { total: 0, rentalCount: 0 };
+        }
+
+        const selectedMonthNumber = Number(selectedIncomeMonth);
+        const selectedYearNumber = Number(selectedIncomeYear);
+
+        return rentas.reduce((summary, renta) => {
+            const placa = String(renta.vehiculo?.placa ?? '').trim();
+            const fechaEntrega = parseDateOnly(renta.fechaEntrega);
+            if (!fechaEntrega) return summary;
+
+            const matchesPlate = placa === selectedVehiclePlate;
+            const matchesMonth = fechaEntrega.getMonth() === selectedMonthNumber;
+            const matchesYear = fechaEntrega.getFullYear() === selectedYearNumber;
+
+            if (!matchesPlate || !matchesMonth || !matchesYear) return summary;
+
+            return {
+                total: summary.total + Number(renta.valorTotal || 0),
+                rentalCount: summary.rentalCount + 1,
+            };
+        }, { total: 0, rentalCount: 0 });
+    }, [rentas, selectedIncomeMonth, selectedIncomeYear, selectedVehiclePlate]);
+
+    const selectedVehicleLabel = availableVehicleOptions.find((vehicle) => vehicle.placa === selectedVehiclePlate)?.label ?? 'Selecciona una placa';
+    const selectedMonthLabel = MONTH_FILTER_OPTIONS.find((month) => String(month.value) === selectedIncomeMonth)?.label ?? 'Mes';
 
     const rentasFiltradas = !query
         ? rentas
@@ -304,6 +378,71 @@ const Renta = () => {
             <div className={styles.divAddVehiculo}>
                 <Agregarrenta />
             </div>
+
+            <section className={styles.vehicleIncomeFilterCard}>
+                <div className={styles.vehicleIncomeFilterHeader}>
+                    <div>
+                        <h3>Total por vehículo</h3>
+                        <p>Escoge la placa y el mes para ver cuánto dinero hizo ese carro.</p>
+                    </div>
+                    <div className={styles.vehicleIncomeTotalBox}>
+                        <span>Total generado</span>
+                        <strong>
+                            {vehicleIncomeSummary.total.toLocaleString('es-CO', {
+                                style: 'currency',
+                                currency: 'COP',
+                                minimumFractionDigits: 0,
+                                maximumFractionDigits: 0,
+                            })}
+                        </strong>
+                    </div>
+                </div>
+
+                <div className={styles.vehicleIncomeFilterGrid}>
+                    <label className={styles.vehicleIncomeFilterLabel}>
+                        Placa
+                        <select
+                            value={selectedVehiclePlate}
+                            onChange={(event) => setSelectedVehiclePlate(event.target.value)}
+                        >
+                            <option value="">Selecciona una placa</option>
+                            {availableVehicleOptions.map((vehicle) => (
+                                <option key={vehicle.placa} value={vehicle.placa}>{vehicle.label}</option>
+                            ))}
+                        </select>
+                    </label>
+
+                    <label className={styles.vehicleIncomeFilterLabel}>
+                        Mes
+                        <select
+                            value={selectedIncomeMonth}
+                            onChange={(event) => setSelectedIncomeMonth(event.target.value)}
+                        >
+                            {MONTH_FILTER_OPTIONS.map((month) => (
+                                <option key={month.value} value={month.value}>{month.label}</option>
+                            ))}
+                        </select>
+                    </label>
+
+                    <label className={styles.vehicleIncomeFilterLabel}>
+                        Año
+                        <select
+                            value={selectedIncomeYear}
+                            onChange={(event) => setSelectedIncomeYear(event.target.value)}
+                        >
+                            {availableYears.map((year) => (
+                                <option key={year} value={year}>{year}</option>
+                            ))}
+                        </select>
+                    </label>
+                </div>
+
+                <div className={styles.vehicleIncomeResultDetails}>
+                    <span>{selectedVehicleLabel}</span>
+                    <strong>{selectedMonthLabel} {selectedIncomeYear}</strong>
+                    <small>{vehicleIncomeSummary.rentalCount} renta(s) encontradas para este filtro.</small>
+                </div>
+            </section>
 
 
             <div className={styles.tableContainer}>
