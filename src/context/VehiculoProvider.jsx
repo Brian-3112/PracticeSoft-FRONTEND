@@ -7,6 +7,46 @@ import { downloadContratoSubarriendoDocx } from '../services/vehiculoService';
 
 
 
+const VEHICULOS_SUBARRIENDO_STORAGE_KEY = 'vehiculos:subarriendoIds';
+
+const getVehiculoId = (vehiculo) => vehiculo?.id ?? vehiculo?._id;
+
+const getStoredSubarriendoIds = () => {
+    if (typeof window === 'undefined') return [];
+
+    try {
+        const storedValue = window.localStorage.getItem(VEHICULOS_SUBARRIENDO_STORAGE_KEY);
+        const parsedValue = JSON.parse(storedValue ?? '[]');
+        return Array.isArray(parsedValue) ? parsedValue.map(String) : [];
+    } catch {
+        return [];
+    }
+};
+
+const markVehiculoAsSubarriendo = (vehiculoId) => {
+    if (typeof window === 'undefined' || !vehiculoId) return;
+
+    const storedIds = new Set(getStoredSubarriendoIds());
+    storedIds.add(String(vehiculoId));
+    window.localStorage.setItem(VEHICULOS_SUBARRIENDO_STORAGE_KEY, JSON.stringify([...storedIds]));
+};
+
+const isVehiculoSubarriendo = (vehiculo) => {
+    const vehiculoId = getVehiculoId(vehiculo);
+    return Boolean(
+        vehiculo?.esSubarriendo
+        ?? vehiculo?.subarriendo
+        ?? vehiculo?.esSubarrendado
+        ?? vehiculo?.contratoSubarriendo
+        ?? (vehiculoId && getStoredSubarriendoIds().includes(String(vehiculoId)))
+    );
+};
+
+const normalizeVehiculoSubarriendo = (vehiculo) => ({
+    ...vehiculo,
+    esSubarriendo: isVehiculoSubarriendo(vehiculo),
+});
+
 const vehiculoContextDefaultValue = {
     vehiculos: [],
     agregarVehiculo: async () => false,
@@ -62,7 +102,7 @@ export const VehiculoProvider = ({ children }) => {
             if (!token) return;
 
             const { data } = await clienteAxios.get('/vehiculos', config);
-            setVehiculos(data.reverse());
+            setVehiculos(data.reverse().map(normalizeVehiculoSubarriendo));
 
         } catch (error) {
             console.error('Error al consultar vehículos:', error);
@@ -131,11 +171,16 @@ export const VehiculoProvider = ({ children }) => {
             if (!token) return false;
 
             const { data } = await clienteAxios.post('/vehiculos', nuevoVehiculo, config);
-            const vehiculoCreado = data.vehiculo;
-            setVehiculos(prev => [vehiculoCreado, ...prev]);
-
             const contratoSubarriendo = opciones.contratoSubarriendo;
             const shouldDownloadContrato = contratoSubarriendo?.habilitado;
+            const vehiculoCreado = {
+                ...data.vehiculo,
+                esSubarriendo: shouldDownloadContrato || isVehiculoSubarriendo(data.vehiculo),
+            };
+
+            if (shouldDownloadContrato) markVehiculoAsSubarriendo(getVehiculoId(vehiculoCreado));
+
+            setVehiculos(prev => [vehiculoCreado, ...prev]);
 
             if (!shouldDownloadContrato) {
                 await Swal.fire({

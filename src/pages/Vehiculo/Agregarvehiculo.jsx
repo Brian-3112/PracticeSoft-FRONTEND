@@ -160,7 +160,8 @@ const Agregarvehiculo = () => {
         transito: formData.transito.trim(),
         fechaSOAT: formData.fechaSOAT,
         fechaTecno: formData.fechaTecno,
-        description: formData.description.trim()
+        description: formData.description.trim(),
+        esSubarriendo: formData.esSubarriendo
       },
       () => {
         limpiarFormulario();
