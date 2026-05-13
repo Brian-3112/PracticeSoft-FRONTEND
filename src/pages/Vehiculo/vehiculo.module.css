@@ -441,16 +441,28 @@
   grid-column: 1 / -1;
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  padding: 10px 12px;
+  gap: 12px;
+  padding: 12px;
   border: 1px solid rgba(40, 160, 135, 0.24);
-  border-radius: 8px;
+  border-radius: 10px;
   background: rgba(40, 160, 135, 0.08);
+}
+
+.subarriendoHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .subarriendoToggleWrapper small {
   color: #4b5563;
   font-size: 0.78rem;
+}
+
+.subarriendoDatesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
 }
 
 .checkboxLabel {
