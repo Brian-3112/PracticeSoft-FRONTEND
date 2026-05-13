@@ -7,18 +7,18 @@ export const downloadContratoSubarriendoDocx = async ({
     vehiculoPayload,
     config,
 }) => {
-    if (!vehiculoId) {
-        throw new Error('No se recibió el vehículo para descargar el contrato de subarriendo.');
+    if (!vehiculoPayload) {
+        throw new Error('No se recibió información para descargar el contrato de subarriendo.');
     }
 
-    const response = await clienteAxios.post(
-        `/vehiculos/${vehiculoId}/${SUBARRIENDO_CONTRATO_ENDPOINT}`,
-        vehiculoPayload,
-        {
-            ...config,
-            responseType: 'blob',
-        }
-    );
+    const endpoint = vehiculoId
+        ? `/vehiculos/${vehiculoId}/${SUBARRIENDO_CONTRATO_ENDPOINT}`
+        : `/vehiculos/${SUBARRIENDO_CONTRATO_ENDPOINT}`;
+
+    const response = await clienteAxios.post(endpoint, vehiculoPayload, {
+        ...config,
+        responseType: 'blob',
+    });
 
     return response.data;
 };

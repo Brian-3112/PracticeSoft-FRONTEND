@@ -160,8 +160,7 @@ const Agregarvehiculo = () => {
         transito: formData.transito.trim(),
         fechaSOAT: formData.fechaSOAT,
         fechaTecno: formData.fechaTecno,
-        description: formData.description.trim(),
-        esSubarriendo: formData.esSubarriendo
+        description: formData.description.trim()
       },
       () => {
         limpiarFormulario();
@@ -282,55 +281,52 @@ const Agregarvehiculo = () => {
                         </label>
                       </div>
 
-                      <section className={styles.subarriendoToggleWrapper}>
-                        <div className={styles.subarriendoHeader}>
-                          <label className={styles.checkboxLabel} htmlFor="esSubarriendo">
-                            <input
-                              id="esSubarriendo"
-                              name="esSubarriendo"
-                              type="checkbox"
-                              checked={formData.esSubarriendo}
-                              onChange={handleChange}
-                            />
-                            <span>Subarriendo</span>
-                          </label>
-                          <small>Chulea esta opción si el vehículo es de subarriendo.</small>
-                        </div>
+                      <div className={styles.subarriendoToggleWrapper}>
+                        <label className={styles.checkboxLabel}>
+                          <input
+                            name="esSubarriendo"
+                            type="checkbox"
+                            checked={formData.esSubarriendo}
+                            onChange={handleChange}
+                          />
+                          <span>Vehículo en subarriendo</span>
+                        </label>
+                        <small>Activa esta opción para generar el contrato; estas fechas no se guardan en la base de datos.</small>
+                      </div>
 
-                        {formData.esSubarriendo && (
-                          <div className={styles.subarriendoDatesGrid}>
-                            <div>
-                              <label className={styles.labelFormu}>
-                                <span className={styles.inputLabel}>Fecha inicio</span>
-                                <input
-                                  className={`${styles.inputFormu} ${errors.fechaInicioSubarriendo ? styles.inputError : ''}`}
-                                  name="fechaInicioSubarriendo"
-                                  type="date"
-                                  value={formData.fechaInicioSubarriendo}
-                                  onChange={handleChange}
-                                  onBlur={handleBlur}
-                                />
-                                {errors.fechaInicioSubarriendo && <span className={styles.fieldError}>{errors.fechaInicioSubarriendo}</span>}
-                              </label>
-                            </div>
-
-                            <div>
-                              <label className={styles.labelFormu}>
-                                <span className={styles.inputLabel}>Fecha fin</span>
-                                <input
-                                  className={`${styles.inputFormu} ${errors.fechaFinSubarriendo ? styles.inputError : ''}`}
-                                  name="fechaFinSubarriendo"
-                                  type="date"
-                                  value={formData.fechaFinSubarriendo}
-                                  onChange={handleChange}
-                                  onBlur={handleBlur}
-                                />
-                                {errors.fechaFinSubarriendo && <span className={styles.fieldError}>{errors.fechaFinSubarriendo}</span>}
-                              </label>
-                            </div>
+                      {formData.esSubarriendo && (
+                        <>
+                          <div>
+                            <label className={styles.labelFormu}>
+                              <span className={styles.inputLabel}>Inicio subarriendo</span>
+                              <input
+                                className={`${styles.inputFormu} ${errors.fechaInicioSubarriendo ? styles.inputError : ''}`}
+                                name="fechaInicioSubarriendo"
+                                type="date"
+                                value={formData.fechaInicioSubarriendo}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                              />
+                              {errors.fechaInicioSubarriendo && <span className={styles.fieldError}>{errors.fechaInicioSubarriendo}</span>}
+                            </label>
                           </div>
-                        )}
-                      </section>
+
+                          <div>
+                            <label className={styles.labelFormu}>
+                              <span className={styles.inputLabel}>Fin subarriendo</span>
+                              <input
+                                className={`${styles.inputFormu} ${errors.fechaFinSubarriendo ? styles.inputError : ''}`}
+                                name="fechaFinSubarriendo"
+                                type="date"
+                                value={formData.fechaFinSubarriendo}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                              />
+                              {errors.fechaFinSubarriendo && <span className={styles.fieldError}>{errors.fechaFinSubarriendo}</span>}
+                            </label>
+                          </div>
+                        </>
+                      )}
 
 
                     </div>

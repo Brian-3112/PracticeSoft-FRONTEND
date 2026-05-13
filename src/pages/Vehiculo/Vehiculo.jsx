@@ -57,13 +57,6 @@ const renderValidityDate = (dateValue, styles) => {
   );
 };
 
-const isVehiculoSubarriendo = (vehiculo) => Boolean(
-  vehiculo?.esSubarriendo
-  ?? vehiculo?.subarriendo
-  ?? vehiculo?.esSubarrendado
-  ?? vehiculo?.contratoSubarriendo
-);
-
 const Vehiculo = () => {
   const { loading } = useAuth();
   const {
@@ -206,21 +199,19 @@ const Vehiculo = () => {
                   </button></td>
                   <td>
                     <div className={styles.actionsCell}>
-                      {isVehiculoSubarriendo(vehiculo) && (
-                        <button
-                          type="button"
-                          className={styles.downloadButton}
-                          onClick={() => handleDownloadContratoSubarriendo(vehiculo)}
-                          disabled={isDownloadingContratoSubarriendo}
-                          aria-label={`Descargar contrato de subarriendo del vehículo ${vehiculo.id}`}
-                          title="Contrato de subarriendo"
-                        >
-                          <span aria-hidden="true">📄</span>
-                          {isDownloadingContratoSubarriendo && downloadingVehiculoId === vehiculo.id
-                            ? 'Descargando...'
-                            : 'Subarriendo'}
-                        </button>
-                      )}
+                      <button
+                        type="button"
+                        className={styles.downloadButton}
+                        onClick={() => handleDownloadContratoSubarriendo(vehiculo)}
+                        disabled={isDownloadingContratoSubarriendo}
+                        aria-label={`Descargar contrato de subarriendo del vehículo ${vehiculo.id}`}
+                        title="Contrato de subarriendo"
+                      >
+                        <span aria-hidden="true">📄</span>
+                        {isDownloadingContratoSubarriendo && downloadingVehiculoId === vehiculo.id
+                          ? 'Descargando...'
+                          : 'Subarriendo'}
+                      </button>
 
                       <button onClick={() => setEditingVehiculo(vehiculo)} className={styles.iconOnlyButton} >
                         <svg className={`${styles.iconButton} ${styles.editar}`} xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
