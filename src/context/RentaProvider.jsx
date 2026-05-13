@@ -3,13 +3,33 @@ import PropTypes from 'prop-types';
 import clienteAxios from '../config/axios';
 import useAuth from '../hooks/useAuth';
 import Swal from 'sweetalert2';
-import { createRenta, deleteRentaById, downloadContratoDocx } from '../services/rentaService';
+import { createRenta, deleteRentaById, downloadContratoDocx, TIPOS_CONTRATO_RENTA } from '../services/rentaService';
 import { VehiculoContext } from './VehiculoProvider';
 import { DashboardContext } from './DashboardProvider';
 
 
 
 export const RentaContext = createContext();
+
+const CONTRATO_DOWNLOAD_OPTIONS = {
+    [TIPOS_CONTRATO_RENTA.RENTA]: {
+        filePrefix: 'contrato-renta',
+        errorMessage: 'No se pudo descargar el contrato',
+    },
+    [TIPOS_CONTRATO_RENTA.RESPONSABILIDAD]: {
+        filePrefix: 'contrato-responsabilidad-renta',
+        errorMessage: 'No se pudo descargar el contrato de responsabilidad. Verifica que el backend tenga habilitado este documento con los datos de cliente, vehículo y fechas.',
+    },
+    [TIPOS_CONTRATO_RENTA.VACIO]: {
+        filePrefix: 'contrato-vacio-renta',
+        errorMessage: 'No se pudo descargar el contrato vacío. Verifica que el backend tenga habilitado el documento sin cliente, vehículo, fechas ni valores.',
+    },
+};
+
+const getSelectedTipoContrato = ({ tipoContrato, contratoVacio }) => {
+    if (contratoVacio) return TIPOS_CONTRATO_RENTA.VACIO;
+    return CONTRATO_DOWNLOAD_OPTIONS[tipoContrato] ? tipoContrato : TIPOS_CONTRATO_RENTA.RENTA;
+};
 
 export const RentaProvider = ({ children }) => {
     const { auth, config } = useAuth();
@@ -151,7 +171,15 @@ export const RentaProvider = ({ children }) => {
     };
 
 
-    const descargarContrato = async ({ rentaId, rentaPayload, contratoVacio = false } = {}) => {
+    const descargarContrato = async ({
+        rentaId,
+        rentaPayload,
+        contratoVacio = false,
+        tipoContrato = TIPOS_CONTRATO_RENTA.RENTA,
+    } = {}) => {
+        const selectedTipoContrato = getSelectedTipoContrato({ tipoContrato, contratoVacio });
+        const selectedContratoOptions = CONTRATO_DOWNLOAD_OPTIONS[selectedTipoContrato];
+
         setIsDownloadingContrato(true);
         setDownloadingRentaId(rentaId || rentaPayload?.id || null);
         try {
@@ -160,6 +188,7 @@ export const RentaProvider = ({ children }) => {
                 rentaPayload,
                 config,
                 contratoVacio,
+                tipoContrato: selectedTipoContrato,
             });
 
             const rentaIdFromPayload = rentaPayload?.id || rentaId || lastCreatedRentaId || 'sin-id';
@@ -171,8 +200,7 @@ export const RentaProvider = ({ children }) => {
             const url = window.URL.createObjectURL(blob);
             const link = document.createElement('a');
             link.href = url;
-            const filePrefix = contratoVacio ? 'contrato-vacio-renta' : 'contrato-renta';
-            link.setAttribute('download', `${filePrefix}-${rentaIdFromPayload}.docx`);
+            link.setAttribute('download', `${selectedContratoOptions.filePrefix}-${rentaIdFromPayload}.docx`);
             document.body.appendChild(link);
             link.click();
             link.remove();
@@ -185,9 +213,7 @@ export const RentaProvider = ({ children }) => {
                 title: 'Advertencia',
                 text: selectedRentaId && selectedRentaId === lastCreatedRentaId
                     ? 'Renta creada, pero no se pudo descargar el contrato'
-                    : contratoVacio
-                        ? 'No se pudo descargar el contrato vacío. Verifica que el backend tenga habilitado el documento sin cliente, vehículo, fechas ni valores.'
-                        : 'No se pudo descargar el contrato',
+                    : selectedContratoOptions.errorMessage,
                 icon: 'warning',
             });
             return false;

@@ -6,8 +6,15 @@ import useCliente from '../../hooks/useCliente.jsx';
 import Agregarrenta from '../Renta/Agregarrenta.jsx';
 import { useSearchParams } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import { TIPOS_CONTRATO_RENTA } from '../../services/rentaService.js';
 
 
+
+const CONTRATOS_RENTA_SELECT_OPTIONS = {
+    [TIPOS_CONTRATO_RENTA.RENTA]: 'Contrato de renta',
+    [TIPOS_CONTRATO_RENTA.RESPONSABILIDAD]: 'Contrato de responsabilidad',
+    [TIPOS_CONTRATO_RENTA.VACIO]: 'Contrato vacío',
+};
 
 const normalizeSearchText = (value = '') => String(value)
     .normalize('NFD')
@@ -251,11 +258,13 @@ const Renta = () => {
     const handleDownloadContrato = async (rentaId) => {
         const result = await Swal.fire({
             title: '¿Qué contrato deseas descargar?',
+            text: 'Elige el documento que quieres generar para esta renta.',
             icon: 'question',
-            showDenyButton: true,
+            input: 'select',
+            inputOptions: CONTRATOS_RENTA_SELECT_OPTIONS,
+            inputValue: TIPOS_CONTRATO_RENTA.RENTA,
             showCancelButton: true,
-            confirmButtonText: 'Contrato de renta',
-            denyButtonText: 'Contrato vacío',
+            confirmButtonText: 'Descargar',
             cancelButtonText: 'Cancelar',
             customClass: {
                 confirmButton: 'confirmarBoton',
@@ -263,12 +272,13 @@ const Renta = () => {
             },
         });
 
-        if (result.isConfirmed) {
-            await descargarContrato({ rentaId });
-            return;
-        }
+        if (!result.isConfirmed) return;
 
-        if (result.isDenied) await descargarContrato({ rentaId, contratoVacio: true });
+        await descargarContrato({
+            rentaId,
+            tipoContrato: result.value,
+            contratoVacio: result.value === TIPOS_CONTRATO_RENTA.VACIO,
+        });
     };
 
     const handleDeleteRenta = async (rentaId) => {
