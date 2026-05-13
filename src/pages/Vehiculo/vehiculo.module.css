@@ -251,7 +251,9 @@
   padding: 20px;
   border-radius: 15px;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-  overflow-x: auto;
+  overflow: auto;
+  max-height: 430px;
+  scrollbar-gutter: stable;
   margin: 0px 11% 0px 9%;
 }
 
