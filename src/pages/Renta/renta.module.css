@@ -18,7 +18,7 @@
   padding: 0 2px;
   box-sizing: border-box;
   position: relative;
-  padding-top: 0;
+  padding-top: 12px;
   /* border: 3px solid rgb(0, 0, 0); */
 
 }
@@ -82,8 +82,8 @@
   padding: 0%;
   position: relative;
   left: 10%;
-  margin-bottom: 8px;
-  margin-top: -10px;
+  margin-bottom: 12px;
+  margin-top: 12px;
   /* border:  1px solid black; */
 }
 
@@ -285,7 +285,7 @@
   border-radius: 15px;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
   overflow: auto;
-  max-height: calc(100vh - 305px);
+  max-height: calc(100vh - 330px);
   scrollbar-gutter: stable;
   margin: 0 6%;
 }
@@ -474,7 +474,7 @@
 
   .divAddVehiculo {
     left: 0;
-    margin: -6px 10px 8px 10px;
+    margin: 12px 10px 12px 10px;
   }
 
   .buttonContainer {
@@ -508,7 +508,7 @@
 
   .divAddVehiculo {
     left: 0;
-    margin: -6px 4% 8px;
+    margin: 12px 4% 12px;
   }
 }
 
@@ -607,7 +607,7 @@
   grid-template-columns: minmax(180px, 0.9fr) minmax(360px, 2fr) minmax(170px, auto);
   align-items: center;
   gap: 12px;
-  margin: 0 6% 10px 6%;
+  margin: 0 6% 12px 6%;
   padding: 10px 12px;
   background: linear-gradient(135deg, #ffffff 0%, #f8fffc 100%);
   border: 1px solid rgba(40, 160, 135, 0.18);
@@ -722,7 +722,7 @@
 @media (max-width: 1100px) {
   .vehicleIncomeFilterBar {
     grid-template-columns: 1fr;
-    margin: 0 2% 10px;
+    margin: 0 2% 12px;
   }
 
   .vehicleIncomeResultPill {
@@ -733,7 +733,7 @@
 
 @media (max-width: 768px) {
   .vehicleIncomeFilterBar {
-    margin: -6px 4% 8px;
+    margin: 12px 4% 12px;
     padding: 12px;
   }
 
