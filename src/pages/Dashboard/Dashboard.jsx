@@ -1,5 +1,5 @@
 import { Navigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import useAuth from '../../hooks/useAuth';
 import useDashboard from '../../hooks/useDashboard';
 import { Line, Doughnut, Bar } from 'react-chartjs-2';
@@ -7,6 +7,15 @@ import styles from '../Dashboard/Dashboard.module.css';
 import 'chart.js/auto';
 
 const textEncoder = new TextEncoder();
+
+const INGRESOS_MES_VISIBILITY_KEY = 'dashboard:mostrarIngresosMes';
+const INGRESOS_ANUAL_VISIBILITY_KEY = 'dashboard:mostrarIngresosAnual';
+
+const getStoredVisibility = (key) => {
+  if (typeof window === 'undefined') return true;
+  return window.localStorage.getItem(key) !== 'false';
+};
+
 
 const parseDateOnly = (dateValue) => {
   if (!dateValue) return null;
@@ -176,8 +185,16 @@ const createExecutiveReportDocx = (lines) => {
 const Dashboard = () => {
   const { auth, loading } = useAuth();
   const { ingresosMes, clientesTotal, ingresosPorMes, rentas, ingresosAnual } = useDashboard();
-  const [mostrarIngresosMes, setMostrarIngresosMes] = useState(true);
-  const [mostrarIngresosAnual, setMostrarIngresosAnual] = useState(true);
+  const [mostrarIngresosMes, setMostrarIngresosMes] = useState(() => getStoredVisibility(INGRESOS_MES_VISIBILITY_KEY));
+  const [mostrarIngresosAnual, setMostrarIngresosAnual] = useState(() => getStoredVisibility(INGRESOS_ANUAL_VISIBILITY_KEY));
+
+  useEffect(() => {
+    window.localStorage.setItem(INGRESOS_MES_VISIBILITY_KEY, String(mostrarIngresosMes));
+  }, [mostrarIngresosMes]);
+
+  useEffect(() => {
+    window.localStorage.setItem(INGRESOS_ANUAL_VISIBILITY_KEY, String(mostrarIngresosAnual));
+  }, [mostrarIngresosAnual]);
 
   if (loading) return 'Cargando...';
   if (!auth) return <Navigate to="/login" />;
@@ -232,20 +249,25 @@ const Dashboard = () => {
     ],
   };
 
-  const mesActual = today.getMonth();
   const anioActual = today.getFullYear();
-  const rentasMesActual = rentas.filter((renta) => {
+  const resumenVehiculosPorMes = rentas.reduce((acc, renta) => {
     const fechaEntrega = parseDateOnly(renta.fechaEntrega);
-    return fechaEntrega?.getMonth() === mesActual && fechaEntrega.getFullYear() === anioActual;
-  });
+    if (!fechaEntrega || fechaEntrega.getFullYear() !== anioActual) return acc;
 
-  const resumenVehiculosMes = rentasMesActual.reduce((acc, renta) => {
+    const mes = fechaEntrega.getMonth();
     const vehiculo = renta.vehiculo?.nombreVehiculo || 'Vehículo';
     const placa = renta.vehiculo?.placa ? ` (${renta.vehiculo.placa})` : '';
-    const key = `${vehiculo}${placa}`;
+    const nombreVehiculo = `${vehiculo}${placa}`;
+    const key = `${mes}-${nombreVehiculo}`;
 
     if (!acc[key]) {
-      acc[key] = { salidas: 0, ingresos: 0 };
+      acc[key] = {
+        mes,
+        mesLabel: labelsMeses[mes],
+        vehiculo: nombreVehiculo,
+        salidas: 0,
+        ingresos: 0,
+      };
     }
 
     acc[key].salidas += 1;
@@ -253,16 +275,15 @@ const Dashboard = () => {
     return acc;
   }, {});
 
-  const vehiculosOrdenados = Object.entries(resumenVehiculosMes)
-    .sort(([, a], [, b]) => b.ingresos - a.ingresos)
-    .slice(0, 8);
+  const vehiculosPorMesOrdenados = Object.values(resumenVehiculosPorMes)
+    .sort((a, b) => a.mes - b.mes || b.ingresos - a.ingresos || a.vehiculo.localeCompare(b.vehiculo));
 
   const dataIngresosVehiculoMes = {
-    labels: vehiculosOrdenados.map(([nombre]) => nombre),
+    labels: vehiculosPorMesOrdenados.map((item) => `${item.mesLabel} · ${item.vehiculo}`),
     datasets: [
       {
-        label: 'Ingresos por vehículo',
-        data: vehiculosOrdenados.map(([, valores]) => valores.ingresos),
+        label: 'Total generado por vehículo en el mes',
+        data: vehiculosPorMesOrdenados.map((item) => item.ingresos),
         backgroundColor: '#173680',
         borderRadius: 6,
       },
@@ -331,7 +352,7 @@ const Dashboard = () => {
                   {mostrarIngresosMes ? ingresosMes.toLocaleString('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0, maximumFractionDigits: 0 }) : '••••••••'}
                 </p>
                 <button type="button" className={styles.eyeButton} onClick={() => setMostrarIngresosMes((prev) => !prev)} aria-label={mostrarIngresosMes ? 'Ocultar ingresos del mes' : 'Mostrar ingresos del mes'}>
-                  {mostrarIngresosMes ? '🙈' : '👁️'}
+                  👁️
                 </button>
               </div>
             </div>
@@ -346,7 +367,7 @@ const Dashboard = () => {
                   {mostrarIngresosAnual ? ingresosAnual.toLocaleString('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0, maximumFractionDigits: 0 }) : '••••••••'}
                 </p>
                 <button type="button" className={styles.eyeButton} onClick={() => setMostrarIngresosAnual((prev) => !prev)} aria-label={mostrarIngresosAnual ? 'Ocultar ingresos anuales' : 'Mostrar ingresos anuales'}>
-                  {mostrarIngresosAnual ? '🙈' : '👁️'}
+                  👁️
                 </button>
               </div>
             </div>
@@ -413,11 +434,11 @@ const Dashboard = () => {
         </div>
 
         <div className={styles.vehicleChartContainer}>
-          <h3 className={styles.chartTitle}>Carros que salieron en el mes</h3>
-          <p className={styles.chartSubtitle}>Salidas y generación de ingresos del mes actual</p>
+          <h3 className={styles.chartTitle}>Ingresos por carro y mes</h3>
+          <p className={styles.chartSubtitle}>Mes, carros que salieron y total generado por cada carro en {anioActual}</p>
 
-          {vehiculosOrdenados.length === 0 ? (
-            <p className={styles.emptyMessage}>No hay rentas registradas este mes.</p>
+          {vehiculosPorMesOrdenados.length === 0 ? (
+            <p className={styles.emptyMessage}>No hay rentas registradas este año.</p>
           ) : (
             <>
               <div className={styles.vehicleChartWrapper}>
@@ -450,10 +471,10 @@ const Dashboard = () => {
               </div>
 
               <ul className={styles.vehicleSummaryList}>
-                {vehiculosOrdenados.map(([nombre, valores]) => (
-                  <li key={nombre}>
-                    <span>{nombre}</span>
-                    <strong>{valores.salidas} salidas · {valores.ingresos.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}</strong>
+                {vehiculosPorMesOrdenados.map((item) => (
+                  <li key={`${item.mes}-${item.vehiculo}`}>
+                    <span>{item.mesLabel} · {item.vehiculo}</span>
+                    <strong>{item.salidas} salidas · {item.ingresos.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}</strong>
                   </li>
                 ))}
               </ul>

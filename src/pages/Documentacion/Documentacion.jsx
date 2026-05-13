@@ -55,6 +55,25 @@ const getSyncedDocumentoCliente = (documento, clientesById) => {
     return clientesById.get(String(clienteId)) ?? documento?.cliente ?? null;
 };
 
+const getDocumentoClientSearchText = (documento, clientesById) => {
+    const clienteActualizado = getSyncedDocumentoCliente(documento, clientesById);
+    const nombreCliente = clienteActualizado?.nombre
+        ?? documento?.nombreCliente
+        ?? documento?.cliente?.nombre
+        ?? documento?.clienteNombre
+        ?? documento?.nombre
+        ?? '';
+    const cedulaCliente = clienteActualizado?.identificacion
+        ?? documento?.cedula
+        ?? documento?.cliente?.identificacion
+        ?? documento?.identificacion
+        ?? documento?.identificacionCliente
+        ?? documento?.cedulaCliente
+        ?? '';
+
+    return normalizeSearchText(`${nombreCliente} ${cedulaCliente}`);
+};
+
 const getArchivoNombre = (documento) => documento?.archivoNombre
     ?? documento?.nombreArchivo
     ?? documento?.fileName
@@ -98,15 +117,11 @@ const Documentacion = () => {
 
     const documentosFiltrados = useMemo(() => {
         if (!query) return documentos;
+        const queryTerms = query.split(/\s+/).filter(Boolean);
 
         return documentos.filter((documento) => {
-            const clienteActualizado = getSyncedDocumentoCliente(documento, clientesById);
-            const nombreCliente = normalizeSearchText(clienteActualizado?.nombre ?? documento.nombreCliente ?? documento.cliente?.nombre ?? '');
-            const cedula = normalizeSearchText(clienteActualizado?.identificacion ?? documento.cedula ?? documento.cliente?.identificacion ?? '');
-            const fechaContrato = normalizeSearchText(documento.fechaContrato ?? '');
-            return nombreCliente.includes(query)
-                || cedula.includes(query)
-                || fechaContrato.includes(query);
+            const searchableClientText = getDocumentoClientSearchText(documento, clientesById);
+            return queryTerms.every((term) => searchableClientText.includes(term));
         });
     }, [clientesById, documentos, query]);
 
