@@ -436,3 +436,74 @@
     gap: 0.75rem;
   }
 }
+
+.subarriendoToggleWrapper {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px 12px;
+  border: 1px solid rgba(40, 160, 135, 0.24);
+  border-radius: 8px;
+  background: rgba(40, 160, 135, 0.08);
+}
+
+.subarriendoToggleWrapper small {
+  color: #4b5563;
+  font-size: 0.78rem;
+}
+
+.checkboxLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #111827;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.checkboxLabel input {
+  width: 16px;
+  height: 16px;
+  accent-color: #28A087;
+}
+
+.inputLabel {
+  color: #374151;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.actionsCell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.downloadButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 7px 10px;
+  border: none;
+  border-radius: 999px;
+  background: rgba(40, 160, 135, 0.14);
+  color: #047857;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.downloadButton:hover:not(:disabled) {
+  background: rgba(40, 160, 135, 0.24);
+  transform: translateY(-1px);
+}
+
+.downloadButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
