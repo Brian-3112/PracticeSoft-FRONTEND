@@ -18,7 +18,7 @@
   padding: 0 2px;
   box-sizing: border-box;
   position: relative;
-  padding-top: 16px;
+  padding-top: 0;
   /* border: 3px solid rgb(0, 0, 0); */
 
 }
@@ -82,8 +82,8 @@
   padding: 0%;
   position: relative;
   left: 10%;
-  margin-bottom: 2%;
-  margin-top: 0;
+  margin-bottom: 8px;
+  margin-top: -10px;
   /* border:  1px solid black; */
 }
 
@@ -285,9 +285,9 @@
   border-radius: 15px;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
   overflow: auto;
-  max-height: 430px;
+  max-height: calc(100vh - 305px);
   scrollbar-gutter: stable;
-  margin: 0px 6% 0px 6%;
+  margin: 0 6%;
 }
 
 
@@ -334,8 +334,8 @@
 }
 
 .clientAvatar {
-  width: 38px;
-  height: 38px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
   display: inline-flex;
   align-items: center;
@@ -474,7 +474,7 @@
 
   .divAddVehiculo {
     left: 0;
-    margin: 0 10px 16px 10px;
+    margin: -6px 10px 8px 10px;
   }
 
   .buttonContainer {
@@ -483,7 +483,7 @@
 
   .tableContainer {
     padding: 12px;
-    margin: 10px 4%;
+    margin: 0 4%;
   }
 
   .table {
@@ -508,7 +508,7 @@
 
   .divAddVehiculo {
     left: 0;
-    margin: 0 4% 14px;
+    margin: -6px 4% 8px;
   }
 }
 
@@ -606,9 +606,9 @@
   display: grid;
   grid-template-columns: minmax(180px, 0.9fr) minmax(360px, 2fr) minmax(170px, auto);
   align-items: center;
-  gap: 14px;
-  margin: 0 6% 14px 6%;
-  padding: 12px 14px;
+  gap: 12px;
+  margin: 0 6% 10px 6%;
+  padding: 10px 12px;
   background: linear-gradient(135deg, #ffffff 0%, #f8fffc 100%);
   border: 1px solid rgba(40, 160, 135, 0.18);
   border-radius: 14px;
@@ -623,8 +623,8 @@
 }
 
 .vehicleIncomeIcon {
-  width: 38px;
-  height: 38px;
+  width: 34px;
+  height: 34px;
   border-radius: 12px;
   display: inline-grid;
   place-items: center;
@@ -694,7 +694,7 @@
 .vehicleIncomeResultPill {
   justify-self: end;
   min-width: 170px;
-  padding: 9px 12px;
+  padding: 8px 12px;
   border-radius: 12px;
   background: var(--primary);
   color: #fff;
@@ -722,7 +722,7 @@
 @media (max-width: 1100px) {
   .vehicleIncomeFilterBar {
     grid-template-columns: 1fr;
-    margin: 0 2% 14px;
+    margin: 0 2% 10px;
   }
 
   .vehicleIncomeResultPill {
@@ -733,7 +733,7 @@
 
 @media (max-width: 768px) {
   .vehicleIncomeFilterBar {
-    margin: 0 4% 14px;
+    margin: -6px 4% 8px;
     padding: 12px;
   }
 
