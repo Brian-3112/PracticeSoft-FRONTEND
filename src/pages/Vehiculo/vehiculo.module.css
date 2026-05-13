@@ -13,6 +13,14 @@
   /* border: 3px solid rgb(0, 0, 0); */
 }
 
+.wrapper {
+  width: 100%;
+  padding: 0 2px;
+  box-sizing: border-box;
+  position: relative;
+  padding-top: 16px;
+}
+
 /* ===== ACCIONES DE LA TABLA (VER / EDITAR / ELIMINAR) ===== */
 .iconOnlyButton {
   background: none;
