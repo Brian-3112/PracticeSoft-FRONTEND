@@ -42,15 +42,16 @@ const AuthProvider = ({ children }) => {
                 const { data } = await clienteAxios.get('/usuarios', config);
                 setAuth(data);
             } catch (error) {
-                if (error.response?.data?.message === "Token no valido") {
-                    cerrarSesion();
+                if (error.response?.status === 401 || error.response?.data?.message === "Token no valido") {
+                    localStorage.removeItem('token');
+                    navigate('/login');
                 }
                 setAuth({});
             }
             setLoading(false);
         };
         autenticarUsuario();
-    }, []);
+    }, [navigate]);
 
 
     const cerrarSesion = () => {

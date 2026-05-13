@@ -78,9 +78,16 @@ export const DashboardProvider = ({ children }) => {
 
     };
     useEffect(() => {
-        if (auth) {
+        if (auth?.id) {
             calcularDashboard();
+            return;
         }
+
+        setIngresosMes(0);
+        setClientesTotal(0);
+        setIngresosPorMes([]);
+        setRentas([]);
+        setIngresosAnual(0);
     }, [auth]);
 
 

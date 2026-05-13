@@ -35,9 +35,12 @@ export const ClienteProvider = ({ children }) => {
     };
     useEffect(() => {
         // Carga inicial cuando el usuario ya esta autenticado.
-        if (auth) {
+        if (auth?.id) {
             consultarClientes();
+            return;
         }
+
+        setClientes([]);
     }, [auth]);
 
 

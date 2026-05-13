@@ -9,7 +9,20 @@ import { DashboardContext } from './DashboardProvider';
 
 
 
-export const RentaContext = createContext();
+const rentaContextDefaultValue = {
+    rentas: [],
+    agregarRenta: async () => false,
+    descargarContrato: async () => false,
+    isCreatingRenta: false,
+    isDownloadingContrato: false,
+    downloadingRentaId: null,
+    lastCreatedRentaId: null,
+    eliminarRenta: async () => false,
+    isDeletingRenta: false,
+    deletingRentaId: null,
+};
+
+export const RentaContext = createContext(rentaContextDefaultValue);
 
 const CONTRATO_DOWNLOAD_OPTIONS = {
     [TIPOS_CONTRATO_RENTA.RENTA]: {
@@ -63,9 +76,12 @@ export const RentaProvider = ({ children }) => {
         }
     };
     useEffect(() => {
-        if (auth) {
+        if (auth?.id) {
             consultarRentas();
+            return;
         }
+
+        setRentas([]);
     }, [auth]);
 
 

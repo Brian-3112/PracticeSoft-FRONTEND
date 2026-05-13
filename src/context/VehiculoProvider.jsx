@@ -27,9 +27,12 @@ export const VehiculoProvider = ({ children }) => {
     };
 
     useEffect(() => {
-        if (auth) {
+        if (auth?.id) {
             consultarRentas();
+            return;
         }
+
+        setRentas([]);
     }, [auth]);
 
 
@@ -55,9 +58,12 @@ export const VehiculoProvider = ({ children }) => {
         }
     };
     useEffect(() => {
-        if (auth) {
+        if (auth?.id) {
             consultarVehiculos();
+            return;
         }
+
+        setVehiculos([]);
     }, [auth]);
 
 
