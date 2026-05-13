@@ -600,137 +600,148 @@
   cursor: not-allowed;
 }
 
-.vehicleIncomeFilterCard {
-  margin: 0 6% 18px 6%;
-  padding: 18px;
-  background: #fff;
-  border: 1px solid #e5e9f2;
-  border-radius: 15px;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
-}
-
-.vehicleIncomeFilterHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 16px;
-  margin-bottom: 16px;
-}
-
-.vehicleIncomeFilterHeader h3 {
-  margin: 0;
-  color: #0f1e4a;
-  font-size: 1.3rem;
-  font-weight: 800;
-}
-
-.vehicleIncomeFilterHeader p {
-  margin: 4px 0 0;
-  color: #52617a;
-  font-size: 0.9rem;
-}
-
-.vehicleIncomeTotalBox {
-  min-width: 210px;
-  padding: 12px 14px;
-  border-radius: 12px;
-  background: rgba(40, 160, 135, 0.12);
-  color: #047857;
-  text-align: right;
-}
-
-.vehicleIncomeTotalBox span {
-  display: block;
-  font-size: 0.78rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-}
-
-.vehicleIncomeTotalBox strong {
-  display: block;
-  margin-top: 4px;
-  font-size: 1.35rem;
-  font-weight: 900;
-}
-
-.vehicleIncomeFilterGrid {
+.vehicleIncomeFilterBar {
   display: grid;
-  grid-template-columns: minmax(220px, 2fr) minmax(160px, 1fr) minmax(130px, 0.7fr);
+  grid-template-columns: minmax(180px, 0.9fr) minmax(360px, 2fr) minmax(170px, auto);
+  align-items: center;
   gap: 14px;
+  margin: 0 6% 14px 6%;
+  padding: 12px 14px;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fffc 100%);
+  border: 1px solid rgba(40, 160, 135, 0.18);
+  border-radius: 14px;
+  box-shadow: 0 6px 18px rgba(15, 30, 74, 0.08);
 }
 
-.vehicleIncomeFilterLabel {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  color: #374151;
-  font-size: 0.85rem;
-  font-weight: 700;
-}
-
-.vehicleIncomeFilterLabel select {
-  width: 100%;
-  padding: 10px 12px;
-  border: 1px solid #d1d5db;
-  border-radius: 10px;
-  background: #fff;
-  color: #111827;
-  font-size: 0.95rem;
-  outline: none;
-}
-
-.vehicleIncomeFilterLabel select:focus {
-  border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(40, 160, 135, 0.14);
-}
-
-.vehicleIncomeResultDetails {
+.vehicleIncomeFilterTitle {
   display: flex;
   align-items: center;
   gap: 10px;
-  flex-wrap: wrap;
-  margin-top: 14px;
-  color: #52617a;
-  font-size: 0.9rem;
+  min-width: 0;
 }
 
-.vehicleIncomeResultDetails span {
-  color: #111827;
+.vehicleIncomeIcon {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  display: inline-grid;
+  place-items: center;
+  background: rgba(40, 160, 135, 0.12);
+  font-size: 1.2rem;
+  flex: 0 0 auto;
+}
+
+.vehicleIncomeFilterTitle h3 {
+  margin: 0;
+  color: #0f1e4a;
+  font-size: 1rem;
   font-weight: 800;
+  line-height: 1.1;
 }
 
-.vehicleIncomeResultDetails strong {
-  color: var(--primary);
+.vehicleIncomeFilterTitle p {
+  margin: 3px 0 0;
+  color: #64748b;
+  font-size: 0.78rem;
+  font-weight: 600;
+  line-height: 1.1;
 }
 
-.vehicleIncomeResultDetails small {
-  color: #6b7280;
+.vehicleIncomeControls {
+  display: grid;
+  grid-template-columns: minmax(180px, 1.6fr) minmax(120px, 0.8fr) minmax(95px, 0.6fr);
+  gap: 10px;
 }
 
-@media (max-width: 1024px) {
-  .vehicleIncomeFilterCard {
-    margin: 0 2% 16px;
+.vehicleIncomeSelectLabel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  padding: 6px 8px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  background: #fff;
+}
+
+.vehicleIncomeSelectLabel span {
+  color: #64748b;
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  flex: 0 0 auto;
+}
+
+.vehicleIncomeSelectLabel select {
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  color: #111827;
+  font-size: 0.88rem;
+  font-weight: 700;
+  outline: none;
+}
+
+.vehicleIncomeSelectLabel:focus-within {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(40, 160, 135, 0.12);
+}
+
+.vehicleIncomeResultPill {
+  justify-self: end;
+  min-width: 170px;
+  padding: 9px 12px;
+  border-radius: 12px;
+  background: var(--primary);
+  color: #fff;
+  text-align: right;
+  box-shadow: 0 8px 18px rgba(40, 160, 135, 0.24);
+}
+
+.vehicleIncomeResultPill span {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  opacity: 0.82;
+}
+
+.vehicleIncomeResultPill strong {
+  display: block;
+  margin-top: 2px;
+  font-size: 1.05rem;
+  font-weight: 900;
+  line-height: 1.15;
+}
+
+@media (max-width: 1100px) {
+  .vehicleIncomeFilterBar {
+    grid-template-columns: 1fr;
+    margin: 0 2% 14px;
+  }
+
+  .vehicleIncomeResultPill {
+    justify-self: stretch;
+    text-align: left;
   }
 }
 
 @media (max-width: 768px) {
-  .vehicleIncomeFilterCard {
+  .vehicleIncomeFilterBar {
     margin: 0 4% 14px;
-    padding: 14px;
+    padding: 12px;
   }
 
-  .vehicleIncomeFilterHeader {
-    flex-direction: column;
-  }
-
-  .vehicleIncomeTotalBox {
-    width: 100%;
-    min-width: 0;
-    text-align: left;
-  }
-
-  .vehicleIncomeFilterGrid {
+  .vehicleIncomeControls {
     grid-template-columns: 1fr;
+  }
+
+  .vehicleIncomeSelectLabel {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 4px;
   }
 }

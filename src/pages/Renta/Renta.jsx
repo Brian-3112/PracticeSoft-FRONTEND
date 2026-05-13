@@ -379,28 +379,18 @@ const Renta = () => {
                 <Agregarrenta />
             </div>
 
-            <section className={styles.vehicleIncomeFilterCard}>
-                <div className={styles.vehicleIncomeFilterHeader}>
+            <section className={styles.vehicleIncomeFilterBar}>
+                <div className={styles.vehicleIncomeFilterTitle}>
+                    <span className={styles.vehicleIncomeIcon} aria-hidden="true">🚗</span>
                     <div>
-                        <h3>Total por vehículo</h3>
-                        <p>Escoge la placa y el mes para ver cuánto dinero hizo ese carro.</p>
-                    </div>
-                    <div className={styles.vehicleIncomeTotalBox}>
-                        <span>Total generado</span>
-                        <strong>
-                            {vehicleIncomeSummary.total.toLocaleString('es-CO', {
-                                style: 'currency',
-                                currency: 'COP',
-                                minimumFractionDigits: 0,
-                                maximumFractionDigits: 0,
-                            })}
-                        </strong>
+                        <h3>Total por carro</h3>
+                        <p>{vehicleIncomeSummary.rentalCount} renta(s) · {selectedMonthLabel} {selectedIncomeYear}</p>
                     </div>
                 </div>
 
-                <div className={styles.vehicleIncomeFilterGrid}>
-                    <label className={styles.vehicleIncomeFilterLabel}>
-                        Placa
+                <div className={styles.vehicleIncomeControls}>
+                    <label className={styles.vehicleIncomeSelectLabel}>
+                        <span>Placa</span>
                         <select
                             value={selectedVehiclePlate}
                             onChange={(event) => setSelectedVehiclePlate(event.target.value)}
@@ -412,8 +402,8 @@ const Renta = () => {
                         </select>
                     </label>
 
-                    <label className={styles.vehicleIncomeFilterLabel}>
-                        Mes
+                    <label className={styles.vehicleIncomeSelectLabel}>
+                        <span>Mes</span>
                         <select
                             value={selectedIncomeMonth}
                             onChange={(event) => setSelectedIncomeMonth(event.target.value)}
@@ -424,8 +414,8 @@ const Renta = () => {
                         </select>
                     </label>
 
-                    <label className={styles.vehicleIncomeFilterLabel}>
-                        Año
+                    <label className={styles.vehicleIncomeSelectLabel}>
+                        <span>Año</span>
                         <select
                             value={selectedIncomeYear}
                             onChange={(event) => setSelectedIncomeYear(event.target.value)}
@@ -437,10 +427,16 @@ const Renta = () => {
                     </label>
                 </div>
 
-                <div className={styles.vehicleIncomeResultDetails}>
-                    <span>{selectedVehicleLabel}</span>
-                    <strong>{selectedMonthLabel} {selectedIncomeYear}</strong>
-                    <small>{vehicleIncomeSummary.rentalCount} renta(s) encontradas para este filtro.</small>
+                <div className={styles.vehicleIncomeResultPill} title={selectedVehicleLabel}>
+                    <span>Total</span>
+                    <strong>
+                        {vehicleIncomeSummary.total.toLocaleString('es-CO', {
+                            style: 'currency',
+                            currency: 'COP',
+                            minimumFractionDigits: 0,
+                            maximumFractionDigits: 0,
+                        })}
+                    </strong>
                 </div>
             </section>
 
