@@ -253,12 +253,53 @@
   line-height: 1.2;
 }
 
-.totalPreviewContainer {
+.calendarBillingContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px 12px;
+  border: 1px solid #d7eadb;
+  border-radius: 8px;
+  background: #f6fff8;
+}
+
+.checkboxLabel {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #1f4d2b;
+  cursor: pointer;
+}
+
+.checkboxInput {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--primary);
+  cursor: pointer;
+}
+
+.billingHelpText {
+  color: #55705d;
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.totalPreviewContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
   min-height: 100%;
   padding-top: 12px;
+  gap: 6px;
+}
+
+.totalPreviewLabel {
+  font-size: 12px;
+  font-weight: 600;
+  color: #555;
 }
 
 .totalPreviewInline {

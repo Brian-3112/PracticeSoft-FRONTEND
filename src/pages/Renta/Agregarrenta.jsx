@@ -13,7 +13,8 @@ const initialFormData = {
     horaEntrega: '',
     fechaDevolucion: '',
     horaDevolucion: '',
-    valorDia: ''
+    valorDia: '',
+    cobroDiaCalendario: false
 };
 
 const initialErrors = {
@@ -25,6 +26,8 @@ const initialErrors = {
     horaDevolucion: '',
     valorDia: ''
 };
+
+const MS_PER_DAY = 1000 * 60 * 60 * 24;
 
 // Reglas de validacion para campos obligatorios de la renta.
 const validateField = (name, value) => {
@@ -46,7 +49,6 @@ const Agregarrenta = () => {
     const { agregarRenta, isCreatingRenta, rentas } = useRenta();
     const { clientes } = useCliente();
     const { vehiculos } = useVehiculo();
-    if (loading) return 'Cargando...';
 
     /// Funcionalidad para cerrar el modal
     const [show, setShow] = useState(false);
@@ -91,29 +93,61 @@ const Agregarrenta = () => {
         });
     };
 
-    const calcularTotalEstimado = () => {
-        const valorDia = Number(formData.valorDia);
+    const getDateOnlyUtc = (date) => {
+        if (!date) return null;
+
+        const [year, month, day] = date.split('-').map(Number);
+        if (!year || !month || !day) return null;
+
+        return Date.UTC(year, month - 1, day);
+    };
+
+    const calcularDiasRenta = () => {
         const fechaEntrega = combineDateAndTime(formData.fechaEntrega, formData.horaEntrega);
         const fechaDevolucion = combineDateAndTime(formData.fechaDevolucion, formData.horaDevolucion);
 
-        if (!valorDia || !fechaEntrega || !fechaDevolucion || fechaDevolucion <= fechaEntrega) {
+        if (!fechaEntrega || !fechaDevolucion || fechaDevolucion <= fechaEntrega) {
             return 0;
         }
 
+        if (formData.cobroDiaCalendario) {
+            const fechaEntregaUtc = getDateOnlyUtc(formData.fechaEntrega);
+            const fechaDevolucionUtc = getDateOnlyUtc(formData.fechaDevolucion);
+
+            if (fechaEntregaUtc === null || fechaDevolucionUtc === null || fechaDevolucionUtc < fechaEntregaUtc) {
+                return 0;
+            }
+
+            return Math.floor((fechaDevolucionUtc - fechaEntregaUtc) / MS_PER_DAY) + 1;
+        }
+
         const diffMs = fechaDevolucion.getTime() - fechaEntrega.getTime();
-        const dias = Math.max(1, Math.ceil(diffMs / (1000 * 60 * 60 * 24)));
+        return Math.max(1, Math.ceil(diffMs / MS_PER_DAY));
+    };
+
+    const calcularTotalEstimado = () => {
+        const valorDia = Number(formData.valorDia);
+        const dias = calcularDiasRenta();
+
+        if (!valorDia || !dias) {
+            return 0;
+        }
+
         return dias * valorDia;
     };
 
+    const diasCobrados = calcularDiasRenta();
     const totalEstimado = calcularTotalEstimado();
+
+    if (loading) return 'Cargando...';
 
     // Valida en tiempo real mientras el usuario escribe.
     const handleChange = (e) => {
-        const { name, value } = e.target;
+        const { name, value, type, checked } = e.target;
 
         setFormData((prev) => ({
             ...prev,
-            [name]: value
+            [name]: type === 'checkbox' ? checked : value
         }));
 
         if (Object.prototype.hasOwnProperty.call(initialErrors, name)) {
@@ -180,7 +214,11 @@ const Agregarrenta = () => {
                 horaEntrega: formData.horaEntrega.trim(),
                 fechaDevolucion: formData.fechaDevolucion.trim(),
                 horaDevolucion: formData.horaDevolucion.trim(),
-                valorDia: parseFloat(formData.valorDia)
+                valorDia: parseFloat(formData.valorDia),
+                valorTotal: totalEstimado,
+                diasCobrados,
+                cobroDiaCalendario: formData.cobroDiaCalendario,
+                tipoCalculoRenta: formData.cobroDiaCalendario ? 'dia_calendario' : 'periodo_24_horas'
             },
             () => {
                 limpiarFormulario();
@@ -324,7 +362,26 @@ const Agregarrenta = () => {
                                                 </label>
                                             </div>
 
+                                            <div className={styles.calendarBillingContainer}>
+                                                <label className={styles.checkboxLabel}>
+                                                    <input
+                                                        className={styles.checkboxInput}
+                                                        name="cobroDiaCalendario"
+                                                        type="checkbox"
+                                                        checked={formData.cobroDiaCalendario}
+                                                        onChange={handleChange}
+                                                    />
+                                                    <span>Cobrar por día calendario</span>
+                                                </label>
+                                                <small className={styles.billingHelpText}>
+                                                    Actívalo cuando el día de entrega y el de devolución también se cobran completos.
+                                                </small>
+                                            </div>
+
                                             <div className={styles.totalPreviewContainer}>
+                                                <span className={styles.totalPreviewLabel}>
+                                                    {diasCobrados || 0} día(s) a cobrar
+                                                </span>
                                                 <span className={styles.totalPreviewInline}>
                                                     {totalEstimado.toLocaleString('es-CO', {
                                                         style: 'currency',
