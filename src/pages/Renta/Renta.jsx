@@ -33,12 +33,6 @@ const getSyncedCliente = (renta, clientesById) => {
     return clientesById.get(String(clienteId)) ?? renta?.cliente ?? {};
 };
 
-const getClientInitials = (name = '') => {
-    const nameParts = String(name).trim().split(/\s+/).filter(Boolean);
-    const initials = nameParts.slice(0, 2).map((part) => part.charAt(0)).join('');
-    return initials.toUpperCase() || 'CL';
-};
-
 const formatTimeOnly = (timeValue) => {
     if (!timeValue) return '';
 
@@ -484,9 +478,6 @@ const Renta = () => {
                                         <>
                                 <td>
                                     <div className={styles.clientCell}>
-                                        <span className={`${styles.clientAvatar} ${estadoClase}`}>
-                                            {getClientInitials(clienteActualizado?.nombre)}
-                                        </span>
                                         <div className={styles.clientInfo}>
                                             <span className={styles.clientName}>{clienteActualizado?.nombre}</span>
                                             <span className={styles.clientId}>CC {clienteActualizado?.identificacion ?? 'Sin identificar'}</span>
