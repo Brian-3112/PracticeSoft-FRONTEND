@@ -300,3 +300,213 @@ html, body {
 [class*="pageContent"] [class*="emptyCell"] {
   border-color: rgba(255, 122, 0, 0.16) !important;
 }
+
+/* ===== COBERTURA SPORT EXTENDIDA PARA TODOS LOS MODULOS ADMIN ===== */
+[class*="appLayout"]::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(115deg, transparent 0 68%, rgba(255, 122, 0, 0.10) 68% 69%, transparent 69% 100%),
+    linear-gradient(115deg, transparent 0 74%, rgba(255, 45, 45, 0.08) 74% 75%, transparent 75% 100%);
+  mix-blend-mode: screen;
+  z-index: 0;
+}
+
+[class*="sidebar"],
+[class*="contentArea"],
+[class*="topbar"],
+[class*="pageContent"] {
+  position: relative;
+  z-index: 1;
+}
+
+[class*="pageContent"] {
+  background:
+    radial-gradient(circle at 12% 12%, rgba(255, 122, 0, 0.12), transparent 28%),
+    radial-gradient(circle at 88% 18%, rgba(255, 45, 45, 0.10), transparent 24%);
+}
+
+[class*="pageContent"] h1,
+[class*="pageContent"] h2,
+[class*="pageContent"] h3,
+[class*="pageContent"] h4,
+[class*="pageContent"] h5,
+[class*="pageContent"] h6,
+[class*="pageContent"] [class*="heading"],
+[class*="pageContent"] [class*="sectionTitle"],
+[class*="pageContent"] [class*="chartTitle"],
+[class*="pageContent"] [class*="vehicleIncomeFilterTitle"],
+[class*="pageContent"] [class*="modalTitle"],
+[class*="pageContent"] [class*="modalTitle2"] {
+  color: #fff !important;
+  letter-spacing: 0.045em;
+  text-transform: uppercase;
+  text-shadow: 0 0 18px rgba(255, 122, 0, 0.32);
+}
+
+[class*="pageContent"] p,
+[class*="pageContent"] small,
+[class*="pageContent"] label,
+[class*="pageContent"] [class*="sectionText"],
+[class*="pageContent"] [class*="helpText"],
+[class*="pageContent"] [class*="chartSubtitle"],
+[class*="pageContent"] [class*="profileSubtitle"],
+[class*="pageContent"] [class*="validityStatusText"] {
+  color: var(--sport-muted) !important;
+}
+
+[class*="pageContent"] [class*="statCard"],
+[class*="pageContent"] [class*="chartWrapper"],
+[class*="pageContent"] [class*="chartContainer"],
+[class*="pageContent"] [class*="donutContainer"],
+[class*="pageContent"] [class*="donutWrapper"],
+[class*="pageContent"] [class*="passwordCard"],
+[class*="pageContent"] [class*="profileHeader"],
+[class*="pageContent"] [class*="vehicleIncomeControls"],
+[class*="pageContent"] [class*="vehicleIncomeFilterBar"],
+[class*="pageContent"] [class*="vehicleIncomeResultPill"],
+[class*="pageContent"] [class*="toolbar"],
+[class*="pageContent"] [class*="legend"],
+[class*="pageContent"] [class*="monthNav"],
+[class*="pageContent"] [class*="weekHeader"],
+[class*="pageContent"] [class*="grid"] {
+  background: rgba(255, 255, 255, 0.055) !important;
+  border: 1px solid rgba(255, 122, 0, 0.16) !important;
+  border-radius: 18px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 16px 34px rgba(0, 0, 0, 0.20);
+}
+
+[class*="pageContent"] [class*="toolbar"],
+[class*="pageContent"] [class*="legend"],
+[class*="pageContent"] [class*="monthNav"],
+[class*="pageContent"] [class*="weekHeader"],
+[class*="pageContent"] [class*="grid"] {
+  padding: 10px;
+}
+
+[class*="pageContent"] [class*="statIcon"],
+[class*="pageContent"] [class*="securityIcon"],
+[class*="pageContent"] [class*="avatar"],
+[class*="pageContent"] [class*="clientAvatar"],
+[class*="pageContent"] [class*="vehicleIncomeIcon"] {
+  background: linear-gradient(135deg, rgba(255, 45, 45, 0.95), rgba(255, 122, 0, 0.95)) !important;
+  color: #fff !important;
+  box-shadow: 0 0 24px rgba(255, 74, 0, 0.32);
+  border: 1px solid rgba(255, 230, 0, 0.24);
+}
+
+[class*="pageContent"] [class*="statTitle"],
+[class*="pageContent"] [class*="legendList"],
+[class*="pageContent"] [class*="monthTitle"],
+[class*="pageContent"] [class*="vehicleIncomeSelectLabel"],
+[class*="pageContent"] [class*="totalPreviewLabel"],
+[class*="pageContent"] [class*="validityDateText"] {
+  color: var(--sport-muted) !important;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+[class*="pageContent"] [class*="statValue"],
+[class*="pageContent"] [class*="profileName"],
+[class*="pageContent"] [class*="securityTitle"],
+[class*="pageContent"] [class*="totalValueCell"] {
+  color: #fff !important;
+  text-shadow: 0 0 16px rgba(255, 122, 0, 0.20);
+}
+
+[class*="pageContent"] [class*="modalBackdrop"] {
+  background:
+    radial-gradient(circle at 50% 35%, rgba(255, 122, 0, 0.18), transparent 28%),
+    rgba(0, 0, 0, 0.76) !important;
+  backdrop-filter: blur(5px);
+}
+
+[class*="pageContent"] [class*="modalHeader"],
+[class*="pageContent"] [class*="modalFooter"],
+[class*="pageContent"] [class*="cardHeader"] {
+  border-color: rgba(255, 122, 0, 0.22) !important;
+  background: rgba(255, 255, 255, 0.035) !important;
+}
+
+[class*="pageContent"] [class*="modalBody"] {
+  background:
+    linear-gradient(135deg, rgba(255, 122, 0, 0.035), transparent 45%),
+    transparent;
+}
+
+[class*="pageContent"] [class*="btnClose"] {
+  color: #fff !important;
+  background: rgba(255, 45, 45, 0.20) !important;
+  border: 1px solid rgba(255, 45, 45, 0.35) !important;
+  border-radius: 50%;
+  width: 34px;
+  height: 34px;
+}
+
+[class*="pageContent"] [class*="inputFormu"],
+[class*="pageContent"] [class*="input"],
+[class*="pageContent"] [class*="searchInput"] {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 8px 22px rgba(0, 0, 0, 0.14) !important;
+}
+
+[class*="pageContent"] [class*="fieldError"],
+[class*="pageContent"] [class*="inputError"] {
+  color: #ff9b9b !important;
+  border-color: rgba(255, 45, 45, 0.60) !important;
+}
+
+[class*="pageContent"] [class*="monthBtn"],
+[class*="pageContent"] [class*="eyeButton"],
+[class*="pageContent"] [class*="iconOnlyButton"] {
+  background: rgba(255, 255, 255, 0.07) !important;
+  border: 1px solid rgba(255, 122, 0, 0.24) !important;
+  color: #fff !important;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
+}
+
+[class*="pageContent"] [class*="monthBtn"]:hover,
+[class*="pageContent"] [class*="eyeButton"]:hover,
+[class*="pageContent"] [class*="iconOnlyButton"]:hover {
+  background: linear-gradient(135deg, rgba(255, 45, 45, 0.28), rgba(255, 122, 0, 0.22)) !important;
+  border-color: rgba(255, 122, 0, 0.55) !important;
+}
+
+[class*="pageContent"] [class*="dot"],
+[class*="pageContent"] [class*="legendDot"] {
+  box-shadow: 0 0 16px currentColor;
+}
+
+[class*="pageContent"] [class*="downloadIcon"],
+[class*="pageContent"] [class*="calendarIcon"],
+[class*="pageContent"] [class*="contractDateIcon"],
+[class*="pageContent"] [class*="validityCalendarIcon"] {
+  color: var(--sport-orange) !important;
+  filter: drop-shadow(0 0 8px rgba(255, 122, 0, 0.45));
+}
+
+[class*="pageContent"] [class*="emptyCell"] {
+  background: rgba(255, 255, 255, 0.035) !important;
+  color: rgba(248, 250, 252, 0.35) !important;
+}
+
+[class*="pageContent"] [class*="chartTableWrapper"],
+[class*="pageContent"] [class*="tableContainer"],
+[class*="pageContent"] [class*="modalBody"] {
+  scrollbar-color: var(--sport-orange) rgba(255, 255, 255, 0.06);
+}
+
+[class*="pageContent"] [class*="chartTableWrapper"]::-webkit-scrollbar,
+[class*="pageContent"] [class*="tableContainer"]::-webkit-scrollbar,
+[class*="pageContent"] [class*="modalBody"]::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+[class*="pageContent"] [class*="chartTableWrapper"]::-webkit-scrollbar-thumb,
+[class*="pageContent"] [class*="tableContainer"]::-webkit-scrollbar-thumb,
+[class*="pageContent"] [class*="modalBody"]::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, var(--sport-red), var(--sport-orange));
+  border-radius: 999px;
+}
