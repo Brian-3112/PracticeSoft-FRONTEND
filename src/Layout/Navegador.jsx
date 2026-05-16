@@ -28,13 +28,26 @@ const IconConfiguracion = () => (
 );
 
 const menuItems = [
-  { to: '/admin/disponibilidad', label: 'Disponibilidad', icon: IconDisponibilidad },
-  { to: '/admin/dashboard', label: 'Dashboard', icon: IconDashboard },
-  { to: '/admin/clientes', label: 'Clientes', icon: IconClientes },
-  { to: '/admin/vehiculos', label: 'Vehículos', icon: IconVehiculos },
-  { to: '/admin/rentas', label: 'Rentas', icon: IconRentas },
-  { to: '/admin/documentacion', label: 'Documentación', icon: IconDocumentacion },
+  { to: '/admin/disponibilidad', label: 'Disponibilidad', icon: IconDisponibilidad, key: 'disponibilidad' },
+  { to: '/admin/dashboard', label: 'Dashboard', icon: IconDashboard, key: 'dashboard' },
+  { to: '/admin/clientes', label: 'Clientes', icon: IconClientes, key: 'clientes' },
+  { to: '/admin/vehiculos', label: 'Vehículos', icon: IconVehiculos, key: 'vehiculos' },
+  { to: '/admin/rentas', label: 'Rentas', icon: IconRentas, key: 'rentas' },
+  { to: '/admin/documentacion', label: 'Documentación', icon: IconDocumentacion, key: 'documentacion' },
 ];
+const TEMPORAL_VISIBLE_MODULES = ['disponibilidad', 'clientes', 'vehiculos', 'rentas'];
+
+const getAllowedMenuItems = (auth = {}) => {
+  if (auth?.role === 'admin') return menuItems;
+  if (auth?.role === 'temporal') return menuItems.filter((item) => TEMPORAL_VISIBLE_MODULES.includes(item.key));
+
+  if (Array.isArray(auth?.allowedModules) && auth.allowedModules.length) {
+    const normalizedModules = auth.allowedModules.map((module) => String(module).toLowerCase());
+    return menuItems.filter((item) => normalizedModules.includes(item.key));
+  }
+
+  return menuItems;
+};
 
 const getPageTitle = (pathname) => {
   if (pathname.includes('/clientes')) return 'Clientes';
@@ -92,6 +105,8 @@ const Navegador = () => {
 
   if (loading) return 'Cargando...';
   const query = searchParams.get('q') ?? '';
+  const allowedMenuItems = getAllowedMenuItems(auth);
+  const isAdmin = auth?.role === 'admin';
 
   const userDisplayName = getUserDisplayName(auth);
   const userInitials = getInitials(userDisplayName);
@@ -124,7 +139,7 @@ const Navegador = () => {
 
         <nav className={styles.menuNav}>
           <p className={styles.menuLabel}>Módulos</p>
-          {menuItems.map((item) => {
+          {allowedMenuItems.map((item) => {
             const Icon = item.icon;
             return (
               <Link
@@ -141,14 +156,16 @@ const Navegador = () => {
         </nav>
 
         <div className={styles.sidebarBottom}>
-          <Link
-            to="/admin/configuracion"
-            onClick={() => setMenuOpen(false)}
-            className={`${styles.settingsLink} ${location.pathname === '/admin/configuracion' ? styles.settingsLinkActive : ''}`}
-          >
-            <IconConfiguracion />
-            <span>Configuración</span>
-          </Link>
+          {isAdmin && (
+            <Link
+              to="/admin/configuracion"
+              onClick={() => setMenuOpen(false)}
+              className={`${styles.settingsLink} ${location.pathname === '/admin/configuracion' ? styles.settingsLinkActive : ''}`}
+            >
+              <IconConfiguracion />
+              <span>Configuración</span>
+            </Link>
+          )}
           <button type="button" onClick={cerrarSesion} className={styles.logoutButton}>
             <svg className={styles.logoutIcon} xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" aria-hidden="true">
               <path d="M232-172q-26 0-43-17t-17-43v-114h28v114q0 12 10 22t22 10h496q12 0 22-10t10-22v-496q0-12-10-22t-22-10H232q-12 0-22 10t-10 22v114h-28v-114q0-26 17-43t43-17h496q26 0 43 17t17 43v496q0 26-17 43t-43 17H232Zm206-164-20-20 110-110H172v-28h356L418-604l20-20 144 144-144 144Z"/>

@@ -2,6 +2,12 @@ import { useState } from 'react';
 import Swal from 'sweetalert2';
 import useAuth from '../../hooks/useAuth.jsx';
 import { changeUserPassword } from '../../services/userSettingsService.js';
+import {
+  createTemporaryUser,
+  getTemporaryUsers,
+  updateTemporaryUserPassword,
+  updateTemporaryUserStatus,
+} from '../../services/temporaryUserService.js';
 import styles from './Configuracion.module.css';
 
 const getUserFromAuth = (auth = {}) => {
@@ -26,11 +32,18 @@ const getInitials = (nombre = '', apellido = '') => {
 
 const Configuracion = () => {
   const { auth, config } = useAuth();
+  const isAdmin = auth?.role === 'admin';
   const user = getUserFromAuth(auth);
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [temporaryUsers, setTemporaryUsers] = useState([]);
+  const [tempName, setTempName] = useState('');
+  const [tempEmail, setTempEmail] = useState('');
+  const [tempPassword, setTempPassword] = useState('');
+  const [tempPasswordUserId, setTempPasswordUserId] = useState('');
+  const [tempNewPassword, setTempNewPassword] = useState('');
 
   const nombre = user?.nombre ?? user?.name ?? '';
   const apellido = user?.apellido ?? user?.lastName ?? user?.lastname ?? '';
@@ -67,6 +80,26 @@ const Configuracion = () => {
       console.error('Error cambiar-password:', error);
     } finally {
       setIsSubmitting(false);
+    }
+  };
+
+  const handleCreateTemporaryUser = async (e) => {
+    e.preventDefault();
+    try {
+      await createTemporaryUser({ nombre: tempName, correo: tempEmail, password: tempPassword }, config);
+      setTempName(''); setTempEmail(''); setTempPassword('');
+      Swal.fire({ title: 'Usuario temporal creado', icon: 'success' });
+    } catch (error) {
+      Swal.fire({ title: 'Error', text: error?.response?.data?.message || 'No se pudo crear el usuario temporal.', icon: 'error' });
+    }
+  };
+
+  const handleLoadTemporaryUsers = async () => {
+    try {
+      const data = await getTemporaryUsers(config);
+      setTemporaryUsers(Array.isArray(data) ? data : (data?.usuarios || data?.data || []));
+    } catch (error) {
+      Swal.fire({ title: 'Error', text: error?.response?.data?.message || 'No se pudieron consultar usuarios temporales.', icon: 'error' });
     }
   };
 
@@ -161,6 +194,30 @@ const Configuracion = () => {
           </button>
         </form>
       </article>
+
+      {isAdmin && (
+        <article className={styles.passwordCard}>
+          <h4 className={styles.sectionTitle}>Gestión de usuarios temporales</h4>
+          <form className={styles.passwordForm} onSubmit={handleCreateTemporaryUser}>
+            <label className={styles.formGroup}><span className={styles.formLabel}>Nombre</span><input className={styles.input} value={tempName} onChange={(e) => setTempName(e.target.value)} required /></label>
+            <label className={styles.formGroup}><span className={styles.formLabel}>Correo</span><input className={styles.input} type="email" value={tempEmail} onChange={(e) => setTempEmail(e.target.value)} required /></label>
+            <label className={styles.formGroup}><span className={styles.formLabel}>Contraseña inicial</span><input className={styles.input} type="password" value={tempPassword} onChange={(e) => setTempPassword(e.target.value)} required /></label>
+            <button className={styles.submitButton} type="submit">Crear usuario temporal</button>
+          </form>
+          <button className={styles.submitButton} type="button" onClick={handleLoadTemporaryUsers}>Listar usuarios temporales</button>
+          {temporaryUsers.map((tempUser) => (
+            <div key={tempUser.id || tempUser._id} className={styles.infoItem}>
+              <p className={styles.infoValue}>{tempUser.nombre || tempUser.email || tempUser.correo}</p>
+              <button className={styles.submitButton} type="button" onClick={() => updateTemporaryUserStatus(tempUser.id || tempUser._id, { isActive: !(tempUser.isActive ?? tempUser.activo) }, config)}>Activar/Desactivar usuario temporal</button>
+            </div>
+          ))}
+          <form className={styles.passwordForm} onSubmit={async (e) => { e.preventDefault(); await updateTemporaryUserPassword(tempPasswordUserId, { password: tempNewPassword }, config); Swal.fire({ title: 'Contraseña actualizada', icon: 'success' }); }}>
+            <label className={styles.formGroup}><span className={styles.formLabel}>ID usuario temporal</span><input className={styles.input} value={tempPasswordUserId} onChange={(e) => setTempPasswordUserId(e.target.value)} required /></label>
+            <label className={styles.formGroup}><span className={styles.formLabel}>Nueva contraseña</span><input className={styles.input} type="password" value={tempNewPassword} onChange={(e) => setTempNewPassword(e.target.value)} required /></label>
+            <button className={styles.submitButton} type="submit">Cambiar contraseña a usuario temporal</button>
+          </form>
+        </article>
+      )}
     </section>
   );
 };
