@@ -38,8 +38,12 @@ const menuItems = [
 const TEMPORAL_VISIBLE_MODULES = ['disponibilidad', 'clientes', 'vehiculos', 'rentas'];
 
 const getAllowedMenuItems = (auth = {}) => {
-  if (auth?.role === 'admin') return menuItems;
-  if (auth?.role === 'temporal') return menuItems.filter((item) => TEMPORAL_VISIBLE_MODULES.includes(item.key));
+  const user = getUserFromAuth(auth);
+  const role = user?.role ?? auth?.role;
+  const isTemporary = user?.isTemporary ?? auth?.isTemporary;
+
+  if (role === 'admin') return menuItems;
+  if (role === 'temporal' || isTemporary) return menuItems.filter((item) => TEMPORAL_VISIBLE_MODULES.includes(item.key));
 
   if (Array.isArray(auth?.allowedModules) && auth.allowedModules.length) {
     const normalizedModules = auth.allowedModules.map((module) => String(module).toLowerCase());
@@ -106,7 +110,8 @@ const Navegador = () => {
   if (loading) return 'Cargando...';
   const query = searchParams.get('q') ?? '';
   const allowedMenuItems = getAllowedMenuItems(auth);
-  const isAdmin = auth?.role === 'admin';
+  const currentUser = getUserFromAuth(auth);
+  const isAdmin = (currentUser?.role ?? auth?.role) === 'admin';
 
   const userDisplayName = getUserDisplayName(auth);
   const userInitials = getInitials(userDisplayName);
@@ -176,7 +181,7 @@ const Navegador = () => {
             <div className={styles.userBadge}>{userInitials}</div>
             <div>
               <p className={styles.userName}>{userDisplayName}</p>
-              <p className={styles.userRole}>Administrador</p>
+              <p className={styles.userRole}>{isAdmin ? 'Administrador' : 'Usuario temporal'}</p>
             </div>
           </div>
         </div>
