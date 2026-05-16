@@ -54,6 +54,42 @@
   stroke: rgb(255, 0, 0);
 }
 
+
+.actionButton {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: transparent;
+  font-size: 1.2rem;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.editActionButton {
+  border: 1px solid var(--primary);
+  color: var(--primary);
+  margin-right: 8px;
+}
+
+.editActionButton:hover {
+  background-color: var(--primary);
+  color: #fff;
+}
+
+.deleteActionButton {
+  border: 1px solid #d93025;
+  color: #d93025;
+}
+
+.deleteActionButton:hover {
+  background-color: #d93025;
+  color: #fff;
+}
+
 .ver .colorimgg {
   fill: #28A087;
   stroke: #28A087;
