@@ -28,3 +28,275 @@ html, body {
   background-color: var(--gray-light);
   color: var(--dark);
 }
+
+/* ===== CONCEPTO VISUAL SPORT PARA EL AREA ADMIN (NO LOGIN) ===== */
+[class*="appLayout"] {
+  --sport-bg: #070b13;
+  --sport-panel: rgba(14, 20, 33, 0.94);
+  --sport-panel-soft: rgba(255, 255, 255, 0.06);
+  --sport-line: rgba(255, 255, 255, 0.12);
+  --sport-red: #ff2d2d;
+  --sport-orange: #ff7a00;
+  --sport-yellow: #ffe600;
+  --sport-text: #f8fafc;
+  --sport-muted: #9aa4b2;
+  --primary: var(--sport-orange);
+  --primary-light: #ffb000;
+  --primary-dark: #cc2600;
+  --second: var(--sport-yellow);
+  --shadow: rgba(255, 74, 0, 0.28);
+  background:
+    radial-gradient(circle at 18% 5%, rgba(255, 122, 0, 0.28), transparent 34%),
+    radial-gradient(circle at 100% 18%, rgba(255, 45, 45, 0.22), transparent 30%),
+    linear-gradient(135deg, #070b13 0%, #0e1421 48%, #05070c 100%);
+  color: var(--sport-text);
+}
+
+[class*="sidebar"] {
+  background:
+    linear-gradient(160deg, rgba(7, 11, 19, 0.98), rgba(18, 24, 38, 0.96)),
+    repeating-linear-gradient(-35deg, transparent 0 16px, rgba(255, 255, 255, 0.05) 16px 18px);
+  border-right: 1px solid rgba(255, 122, 0, 0.26);
+  box-shadow: 18px 0 45px rgba(0, 0, 0, 0.32);
+}
+
+[class*="logoSection"] {
+  border-bottom: 1px solid rgba(255, 122, 0, 0.24);
+}
+
+[class*="brandTitle"],
+[class*="topbarTitle"] {
+  letter-spacing: 0.04em;
+  text-shadow: 0 0 18px rgba(255, 122, 0, 0.35);
+}
+
+[class*="menuLink"],
+[class*="settingsLink"],
+[class*="logoutButton"] {
+  border: 1px solid transparent;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 800;
+}
+
+[class*="menuLink"]:hover,
+[class*="settingsLink"]:hover,
+[class*="logoutButton"]:hover,
+[class*="menuLinkActive"],
+[class*="settingsLinkActive"] {
+  background: linear-gradient(90deg, rgba(255, 45, 45, 0.24), rgba(255, 122, 0, 0.18));
+  border-color: rgba(255, 122, 0, 0.42);
+  box-shadow: inset 3px 0 0 var(--sport-orange), 0 10px 24px rgba(255, 74, 0, 0.14);
+}
+
+[class*="userBadge"] {
+  background: linear-gradient(135deg, var(--sport-red), var(--sport-orange));
+  box-shadow: 0 0 22px rgba(255, 74, 0, 0.35);
+}
+
+[class*="contentArea"] {
+  background:
+    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px),
+    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size: 42px 42px;
+}
+
+[class*="topbar"] {
+  background: rgba(7, 11, 19, 0.86);
+  border-bottom: 1px solid rgba(255, 122, 0, 0.22);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 16px 42px rgba(0, 0, 0, 0.24);
+}
+
+[class*="topbarSubtitle"] {
+  color: var(--sport-muted);
+}
+
+[class*="searchInput"] {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 122, 0, 0.22);
+  color: var(--sport-text);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02);
+}
+
+[class*="searchInput"]::placeholder {
+  color: rgba(248, 250, 252, 0.58);
+}
+
+[class*="searchInput"]:focus {
+  border-color: var(--sport-orange);
+  box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.18), 0 0 26px rgba(255, 74, 0, 0.16);
+}
+
+[class*="pageContent"] [class*="wrapper"] {
+  color: var(--sport-text);
+}
+
+[class*="pageContent"] [class*="tableContainer"],
+[class*="pageContent"] [class*="card"],
+[class*="pageContent"] [class*="vehicleCard"],
+[class*="pageContent"] [class*="modalContent"],
+[class*="pageContent"] [class*="securityBox"] {
+  background:
+    linear-gradient(150deg, rgba(18, 24, 38, 0.97), rgba(9, 13, 22, 0.96)),
+    repeating-linear-gradient(135deg, rgba(255,255,255,0.035) 0 1px, transparent 1px 12px);
+  border: 1px solid rgba(255, 122, 0, 0.20);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.30), 0 0 28px rgba(255, 74, 0, 0.08);
+}
+
+[class*="pageContent"] [class*="table"] th {
+  background: linear-gradient(90deg, rgba(255, 45, 45, 0.22), rgba(255, 122, 0, 0.16));
+  color: #fff;
+  border-bottom: 1px solid rgba(255, 122, 0, 0.25);
+  text-transform: uppercase;
+  letter-spacing: 0.045em;
+}
+
+[class*="pageContent"] [class*="table"] td {
+  color: #edf2f7;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+[class*="pageContent"] [class*="table"] tr:hover {
+  background: rgba(255, 122, 0, 0.075);
+}
+
+[class*="pageContent"] input,
+[class*="pageContent"] select,
+[class*="pageContent"] textarea {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border-color: rgba(255, 122, 0, 0.28) !important;
+  color: var(--sport-text) !important;
+}
+
+[class*="pageContent"] input::placeholder,
+[class*="pageContent"] textarea::placeholder {
+  color: rgba(248, 250, 252, 0.56) !important;
+}
+
+[class*="pageContent"] select option {
+  background: #101827;
+  color: var(--sport-text);
+}
+
+[class*="pageContent"] input:focus,
+[class*="pageContent"] select:focus,
+[class*="pageContent"] textarea:focus {
+  border-color: var(--sport-orange) !important;
+  box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.18) !important;
+}
+
+[class*="pageContent"] button:not([class*="btnClose"]):not([class*="delete"]):not([class*="monthBtn"]),
+[class*="pageContent"] [class*="btnPrimary"],
+[class*="pageContent"] [class*="downloadButton"],
+[class*="pageContent"] [class*="reportButton"],
+[class*="pageContent"] [class*="submitButton"] {
+  border-radius: 999px !important;
+  font-weight: 900 !important;
+  letter-spacing: 0.035em;
+  text-transform: uppercase;
+}
+
+[class*="pageContent"] [class*="btnPrimary"],
+[class*="pageContent"] [class*="downloadButton"],
+[class*="pageContent"] [class*="reportButton"],
+[class*="pageContent"] [class*="submitButton"] {
+  background: linear-gradient(135deg, var(--sport-red), var(--sport-orange)) !important;
+  border-color: rgba(255, 122, 0, 0.75) !important;
+  color: #fff !important;
+  box-shadow: 0 12px 28px rgba(255, 74, 0, 0.25);
+}
+
+[class*="pageContent"] [class*="btnSecondary"] {
+  background: transparent !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  color: #f8fafc !important;
+}
+
+[class*="pageContent"] [class*="actionButton"],
+[class*="pageContent"] [class*="deleteButton"] {
+  background: rgba(255, 255, 255, 0.06) !important;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.22);
+}
+
+[class*="pageContent"] [class*="editActionButton"] {
+  border-color: var(--sport-yellow) !important;
+  color: var(--sport-yellow) !important;
+}
+
+[class*="pageContent"] [class*="editActionButton"]:hover {
+  background: var(--sport-yellow) !important;
+  color: #070b13 !important;
+}
+
+[class*="pageContent"] [class*="deleteActionButton"],
+[class*="pageContent"] [class*="deleteButton"] {
+  border-color: var(--sport-red) !important;
+  color: var(--sport-red) !important;
+}
+
+[class*="pageContent"] [class*="deleteActionButton"]:hover,
+[class*="pageContent"] [class*="deleteButton"]:hover:not(:disabled) {
+  background: var(--sport-red) !important;
+  color: #fff !important;
+}
+
+[class*="pageContent"] [class*="status"],
+[class*="pageContent"] [class*="estadoBadge"],
+[class*="pageContent"] [class*="totalPreviewContainer"],
+[class*="pageContent"] [class*="calendarBillingContainer"],
+[class*="pageContent"] [class*="validityDateCell"],
+[class*="pageContent"] [class*="infoItem"] {
+  background: rgba(255, 255, 255, 0.07) !important;
+  border: 1px solid rgba(255, 122, 0, 0.18) !important;
+  color: var(--sport-text) !important;
+}
+
+[class*="pageContent"] [class*="totalPreviewInline"],
+[class*="pageContent"] [class*="clientName"],
+[class*="pageContent"] [class*="dateText"],
+[class*="pageContent"] [class*="infoValue"],
+[class*="pageContent"] [class*="vehicleHead"] h3,
+[class*="pageContent"] [class*="cardHeader"] h3 {
+  color: #fff !important;
+}
+
+[class*="pageContent"] [class*="clientId"],
+[class*="pageContent"] [class*="timeText"],
+[class*="pageContent"] [class*="clientLabel"],
+[class*="pageContent"] [class*="infoLabel"],
+[class*="pageContent"] [class*="vehicleHead"] p,
+[class*="pageContent"] [class*="cardHeader"] p,
+[class*="pageContent"] [class*="billingHelpText"] {
+  color: var(--sport-muted) !important;
+}
+
+[class*="pageContent"] [class*="disponible"],
+[class*="pageContent"] [class*="active"],
+[class*="pageContent"] [class*="estadoDisponible"],
+[class*="pageContent"] [class*="validDate"] {
+  background: rgba(34, 197, 94, 0.18) !important;
+  color: #86efac !important;
+  border-color: rgba(34, 197, 94, 0.35) !important;
+}
+
+[class*="pageContent"] [class*="rentado"],
+[class*="pageContent"] [class*="finished"],
+[class*="pageContent"] [class*="estadoRentado"],
+[class*="pageContent"] [class*="expiredDate"] {
+  background: rgba(255, 45, 45, 0.18) !important;
+  color: #ffb4b4 !important;
+  border-color: rgba(255, 45, 45, 0.35) !important;
+}
+
+[class*="pageContent"] [class*="pending"] {
+  background: rgba(255, 230, 0, 0.16) !important;
+  color: #fff08a !important;
+  border-color: rgba(255, 230, 0, 0.35) !important;
+}
+
+[class*="pageContent"] [class*="calendarMini"],
+[class*="pageContent"] [class*="dayCell"],
+[class*="pageContent"] [class*="emptyCell"] {
+  border-color: rgba(255, 122, 0, 0.16) !important;
+}
