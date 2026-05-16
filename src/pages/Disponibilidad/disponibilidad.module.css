@@ -1,4 +1,4 @@
-.wrapper { display:flex; flex-direction:column; gap:12px; max-width:1200px; margin:0 auto; }
+.wrapper { display:flex; flex-direction:column; gap:12px; max-width:1440px; margin:0 auto; }
 .toolbar { display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; }
 .toolbar h2 { font-size:1.2rem; margin:0; }
 .monthNav { display:flex; align-items:center; gap:10px; }
@@ -8,7 +8,7 @@
 .dot { width:10px; height:10px; border-radius:999px; display:inline-block; margin-right:6px; }
 .dotRed { background:#d33; }
 .dotGreen { background:#28A087; }
-.vehicleGrid { display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:12px; }
+.vehicleGrid { display:grid; grid-template-columns:repeat(4, minmax(0, 1fr)); gap:12px; }
 .vehicleCard { border:1px solid #e5e9f2; background:#fff; border-radius:12px; padding:10px; }
 .vehicleHead h3 { font-size:.95rem; margin:0; }
 .vehicleHead p { color:#657089; font-size:.78rem; margin-bottom:6px; }
@@ -18,6 +18,10 @@
 .dayCell, .emptyCell { height:26px; display:grid; place-items:center; border-radius:6px; font-size:.76rem; }
 .rentado { background:#ffd8d8; color:#9b1c1c; }
 .disponible { background:#dcfce7; color:#166534; }
+@media (max-width: 1180px){
+  .vehicleGrid { grid-template-columns:repeat(3, minmax(0, 1fr)); }
+}
+
 @media (max-width: 900px){
   .vehicleGrid { grid-template-columns:repeat(2, minmax(0, 1fr)); }
 }

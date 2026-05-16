@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import PropTypes from 'prop-types';
 import useVehiculo from '../../hooks/useVehiculo';
 import styles from './disponibilidad.module.css';
 
@@ -45,6 +46,11 @@ const MiniCalendar = ({ monthDate, occupiedDates }) => {
       </div>
     </div>
   );
+};
+
+MiniCalendar.propTypes = {
+  monthDate: PropTypes.instanceOf(Date).isRequired,
+  occupiedDates: PropTypes.instanceOf(Set).isRequired,
 };
 
 const Disponibilidad = () => {
