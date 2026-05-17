@@ -136,8 +136,8 @@ const Login = () => {
                 || normalizedBackendMessage.includes('inactivo')
                 || statusCode === 423;
             Swal.fire({
-                title: isDisabledUser ? "Usuario deshabilitado" : "Error",
-                text: isDisabledUser ? backendMessage || 'Tu usuario está deshabilitado. Contacta al administrador.' : "Credenciales incorrectas",
+                title: isDisabledUser ? "Acceso denegado" : "Error",
+                text: isDisabledUser ? "Usuario deshabilitado" : "Credenciales incorrectas",
                 icon: "error",
                 customClass: {
                     confirmButton: "confirmarBoton"
