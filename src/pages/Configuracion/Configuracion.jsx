@@ -46,6 +46,8 @@ const Configuracion = () => {
   const [tempPassword, setTempPassword] = useState('');
   const [tempPasswordUserId, setTempPasswordUserId] = useState('');
   const [tempNewPassword, setTempNewPassword] = useState('');
+  const [showUsersList, setShowUsersList] = useState(false);
+  const [showPasswordForm, setShowPasswordForm] = useState(false);
 
   const nombre = user?.nombre ?? user?.name ?? '';
   const apellido = user?.apellido ?? user?.lastName ?? user?.lastname ?? '';
@@ -106,6 +108,7 @@ const Configuracion = () => {
     try {
       const data = await getTemporaryUsers(config);
       setTemporaryUsers(Array.isArray(data) ? data : (data?.usuarios || data?.data || []));
+      setShowUsersList(true);
     } catch (error) {
       Swal.fire({ title: 'Error', text: error?.response?.data?.message || 'No se pudieron consultar usuarios temporales.', icon: 'error' });
     }
@@ -233,31 +236,38 @@ const Configuracion = () => {
           {showTemporaryUserManager && (
             <div className={styles.temporaryManagerContent}>
               <h4 className={styles.sectionTitle}>Gestión de usuarios temporales</h4>
-              <div className={styles.temporaryFormsGrid}>
-                <form className={`${styles.passwordForm} ${styles.managerPanel}`} onSubmit={handleCreateTemporaryUser}>
-                  <p className={styles.managerPanelTitle}>Crear usuario temporal</p>
-                  <label className={styles.formGroup}><span className={styles.formLabel}>Nombre</span><input className={styles.input} value={tempName} onChange={(e) => setTempName(e.target.value)} required /></label>
-                  <label className={styles.formGroup}><span className={styles.formLabel}>Apellido</span><input className={styles.input} value={tempLastName} onChange={(e) => setTempLastName(e.target.value)} required /></label>
-                  <label className={styles.formGroup}><span className={styles.formLabel}>Correo</span><input className={styles.input} type="email" value={tempEmail} onChange={(e) => setTempEmail(e.target.value)} required /></label>
-                  <label className={styles.formGroup}><span className={styles.formLabel}>Contraseña inicial</span><input className={styles.input} type="password" value={tempPassword} onChange={(e) => setTempPassword(e.target.value)} required /></label>
-                  <button className={`${styles.submitButton} ${styles.primaryButton}`} type="submit">Crear usuario temporal</button>
-                </form>
+              <form className={`${styles.passwordForm} ${styles.managerPanel}`} onSubmit={handleCreateTemporaryUser}>
+                <p className={styles.managerPanelTitle}>Crear usuario temporal</p>
+                <label className={styles.formGroup}><span className={styles.formLabel}>Nombre</span><input className={styles.input} value={tempName} onChange={(e) => setTempName(e.target.value)} required /></label>
+                <label className={styles.formGroup}><span className={styles.formLabel}>Apellido</span><input className={styles.input} value={tempLastName} onChange={(e) => setTempLastName(e.target.value)} required /></label>
+                <label className={styles.formGroup}><span className={styles.formLabel}>Correo</span><input className={styles.input} type="email" value={tempEmail} onChange={(e) => setTempEmail(e.target.value)} required /></label>
+                <label className={styles.formGroup}><span className={styles.formLabel}>Contraseña inicial</span><input className={styles.input} type="password" value={tempPassword} onChange={(e) => setTempPassword(e.target.value)} required /></label>
+                <button className={`${styles.submitButton} ${styles.primaryButton}`} type="submit">Crear usuario temporal</button>
+              </form>
+              <button className={`${styles.submitButton} ${styles.secondaryAction} ${styles.outlineButton}`} type="button" onClick={handleLoadTemporaryUsers}>Listar usuarios temporales</button>
+              {showUsersList && (
+                <>
+                  <div className={styles.temporaryUsersList}>
+                    {temporaryUsers.map((tempUser) => (
+                      <div key={tempUser.id || tempUser._id} className={styles.infoItem}>
+                        <p className={styles.infoValue}>{tempUser.nombre || tempUser.email || tempUser.correo}</p>
+                        <button className={`${styles.submitButton} ${styles.darkButton}`} type="button" onClick={() => handleUpdateTemporaryStatus(tempUser)}>Activar/Desactivar usuario temporal</button>
+                      </div>
+                    ))}
+                  </div>
+                  <button className={`${styles.submitButton} ${styles.darkButton}`} type="button" onClick={() => setShowPasswordForm((prev) => !prev)}>
+                    {showPasswordForm ? 'Ocultar formulario de contraseña' : 'Abrir formulario de cambiar contraseña'}
+                  </button>
+                </>
+              )}
+              {showPasswordForm && (
                 <form className={`${styles.passwordForm} ${styles.temporaryPasswordForm} ${styles.managerPanel}`} onSubmit={handleUpdateTemporaryPassword}>
                   <p className={styles.managerPanelTitle}>Actualizar contraseña temporal</p>
                   <label className={styles.formGroup}><span className={styles.formLabel}>ID usuario temporal</span><input className={styles.input} value={tempPasswordUserId} onChange={(e) => setTempPasswordUserId(e.target.value)} required /></label>
                   <label className={styles.formGroup}><span className={styles.formLabel}>Nueva contraseña</span><input className={styles.input} type="password" value={tempNewPassword} onChange={(e) => setTempNewPassword(e.target.value)} required /></label>
                   <button className={`${styles.submitButton} ${styles.darkButton}`} type="submit">Cambiar contraseña a usuario temporal</button>
                 </form>
-              </div>
-              <button className={`${styles.submitButton} ${styles.secondaryAction} ${styles.outlineButton}`} type="button" onClick={handleLoadTemporaryUsers}>Listar usuarios temporales</button>
-              <div className={styles.temporaryUsersList}>
-                {temporaryUsers.map((tempUser) => (
-                  <div key={tempUser.id || tempUser._id} className={styles.infoItem}>
-                    <p className={styles.infoValue}>{tempUser.nombre || tempUser.email || tempUser.correo}</p>
-                    <button className={`${styles.submitButton} ${styles.darkButton}`} type="button" onClick={() => handleUpdateTemporaryStatus(tempUser)}>Activar/Desactivar usuario temporal</button>
-                  </div>
-                ))}
-              </div>
+              )}
             </div>
           )}
         </article>
