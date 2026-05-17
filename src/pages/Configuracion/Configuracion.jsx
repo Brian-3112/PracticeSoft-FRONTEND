@@ -254,7 +254,7 @@ const Configuracion = () => {
                 <div className={styles.managerPanel}>
                   <h4 className={styles.sectionTitle}>Gestión de usuarios temporales</h4>
                   <form className={styles.passwordForm} onSubmit={handleCreateTemporaryUser}>
-                    <p className={styles.managerPanelTitle}>Crear usuario temporal</p>
+                    <p className={styles.sectionText}>Crear usuario temporal</p>
                     <div className={styles.inlineFields}>
                       <label className={styles.formGroup}><span className={styles.formLabel}>Nombre</span><input className={styles.input} value={tempName} onChange={(e) => setTempName(e.target.value)} required /></label>
                       <label className={styles.formGroup}><span className={styles.formLabel}>Apellido</span><input className={styles.input} value={tempLastName} onChange={(e) => setTempLastName(e.target.value)} required /></label>
