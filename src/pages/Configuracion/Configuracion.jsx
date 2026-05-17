@@ -274,7 +274,7 @@ const Configuracion = () => {
               <>
                 <div className={styles.temporaryUsersList}>
                   {temporaryUsers.map((tempUser) => (
-                    <div key={tempUser.id || tempUser._id} className={styles.infoItem}>
+                    <div key={tempUser.id || tempUser._id} className={styles.temporaryUserRow}>
                       <p className={styles.infoValue}>
                         {`${tempUser.nombre ?? ''} ${tempUser.apellido ?? ''}`.trim() || tempUser.email || tempUser.correo}
                       </p>
