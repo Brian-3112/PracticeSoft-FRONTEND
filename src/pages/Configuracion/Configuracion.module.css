@@ -140,6 +140,12 @@
   margin-top: 16px;
 }
 
+.temporaryFormsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
 .managerPanel {
   background: linear-gradient(180deg, #f9fbff 0%, #f3f7ff 100%);
   border: 1px solid #d9e4f7;
@@ -249,6 +255,10 @@
 
   .passwordCard {
     max-width: none;
+  }
+
+  .temporaryFormsGrid {
+    grid-template-columns: 1fr;
   }
 }
 
