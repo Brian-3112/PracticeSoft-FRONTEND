@@ -125,9 +125,16 @@ const Login = () => {
             // Redirige al módulo principal de disponibilidad.
             navigate(getFirstAllowedAdminRoute(authPayload));
         } catch (error) {
-            const backendMessage = error?.response?.data?.message || error?.response?.data?.msg || '';
-            const isDisabledUser = String(backendMessage).toLowerCase().includes('deshabilitado')
-                || String(backendMessage).toLowerCase().includes('inhabilitado');
+            const backendMessage = error?.response?.data?.message
+                || error?.response?.data?.msg
+                || error?.response?.data?.error
+                || '';
+            const statusCode = error?.response?.status;
+            const normalizedBackendMessage = String(backendMessage).toLowerCase();
+            const isDisabledUser = normalizedBackendMessage.includes('deshabilitado')
+                || normalizedBackendMessage.includes('inhabilitado')
+                || normalizedBackendMessage.includes('inactivo')
+                || statusCode === 423;
             Swal.fire({
                 title: isDisabledUser ? "Usuario deshabilitado" : "Error",
                 text: isDisabledUser ? backendMessage || 'Tu usuario está deshabilitado. Contacta al administrador.' : "Credenciales incorrectas",
