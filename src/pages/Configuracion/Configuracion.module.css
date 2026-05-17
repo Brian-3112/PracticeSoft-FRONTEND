@@ -130,6 +130,30 @@
   max-width: 720px;
 }
 
+.managerToggle {
+  margin-bottom: 8px;
+}
+
+.temporaryManagerContent {
+  display: grid;
+  gap: 22px;
+  margin-top: 16px;
+}
+
+.secondaryAction {
+  margin-top: 6px;
+}
+
+.temporaryUsersList {
+  display: grid;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.temporaryPasswordForm {
+  margin-top: 8px;
+}
+
 .passwordForm {
   display: grid;
   gap: 16px;
