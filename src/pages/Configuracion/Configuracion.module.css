@@ -140,6 +140,20 @@
   margin-top: 16px;
 }
 
+.managerPanel {
+  background: linear-gradient(180deg, #f9fbff 0%, #f3f7ff 100%);
+  border: 1px solid #d9e4f7;
+  border-radius: 14px;
+  padding: 18px;
+}
+
+.managerPanelTitle {
+  margin: 0 0 4px;
+  color: #0f1e4a;
+  font-size: 0.95rem;
+  font-weight: 800;
+}
+
 .secondaryAction {
   margin-top: 6px;
 }
@@ -207,6 +221,25 @@
 .submitButton:disabled {
   cursor: not-allowed;
   opacity: 0.65;
+}
+
+.primaryButton {
+  background: linear-gradient(135deg, #28a087, #20866f);
+}
+
+.outlineButton {
+  background: #fff;
+  border: 1px solid #2d63d6;
+  color: #2d63d6;
+}
+
+.warningButton {
+  margin-top: 10px;
+  background: #f59e0b;
+}
+
+.darkButton {
+  background: #27324d;
 }
 
 @media (max-width: 980px) {
