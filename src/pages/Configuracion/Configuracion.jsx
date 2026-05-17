@@ -46,11 +46,11 @@ const Configuracion = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [temporaryUsers, setTemporaryUsers] = useState([]);
-  const [showTemporaryUserManager, setShowTemporaryUserManager] = useState(false);
   const [tempName, setTempName] = useState('');
   const [tempLastName, setTempLastName] = useState('');
   const [tempEmail, setTempEmail] = useState('');
   const [tempPassword, setTempPassword] = useState('');
+  const [tempAllowedModules, setTempAllowedModules] = useState(['disponibilidad', 'clientes', 'vehiculos', 'rentas']);
   const [tempPasswordUserId, setTempPasswordUserId] = useState('');
   const [tempNewPassword, setTempNewPassword] = useState('');
   const [showUsersList, setShowUsersList] = useState(false);
@@ -103,12 +103,19 @@ const Configuracion = () => {
         correo: tempEmail,
         password: tempPassword,
         role: 'empleado',
+        allowedModules: tempAllowedModules,
       }, config);
       setTempName(''); setTempLastName(''); setTempEmail(''); setTempPassword('');
+      setTempAllowedModules(['disponibilidad', 'clientes', 'vehiculos', 'rentas']);
       Swal.fire({ title: 'Usuario temporal creado', icon: 'success' });
     } catch (error) {
       Swal.fire({ title: 'Error', text: error?.response?.data?.message || 'No se pudo crear el usuario temporal.', icon: 'error' });
     }
+  };
+  const handleToggleTempModule = (moduleKey) => {
+    setTempAllowedModules((prev) => (
+      prev.includes(moduleKey) ? prev.filter((module) => module !== moduleKey) : [...prev, moduleKey]
+    ));
   };
 
   const handleLoadTemporaryUsers = async () => {
@@ -243,11 +250,6 @@ const Configuracion = () => {
       {isAdmin && (
         <div className={styles.temporarySection}>
           <article className={`${styles.passwordCard} ${styles.temporaryManagerCard}`}>
-            <button className={`${styles.submitButton} ${styles.managerToggle}`} type="button" onClick={() => setShowTemporaryUserManager((prev) => !prev)}>
-              {showTemporaryUserManager ? 'Ocultar gestión de usuario temporal' : 'Gestión de usuario temporal'}
-            </button>
-
-            {showTemporaryUserManager && (
               <div className={styles.temporaryManagerContent}>
                 <div className={styles.managerPanel}>
                   <h4 className={styles.sectionTitle}>Gestión de usuarios temporales</h4>
@@ -261,11 +263,33 @@ const Configuracion = () => {
                       <label className={styles.formGroup}><span className={styles.formLabel}>Correo</span><input className={styles.input} type="email" value={tempEmail} onChange={(e) => setTempEmail(e.target.value)} required /></label>
                       <label className={styles.formGroup}><span className={styles.formLabel}>Contraseña inicial</span><input className={styles.input} type="password" value={tempPassword} onChange={(e) => setTempPassword(e.target.value)} required /></label>
                     </div>
+                    <div className={styles.modulesBox}>
+                      <p className={styles.modulesTitle}>Módulos permitidos</p>
+                      <div className={styles.modulesGrid}>
+                        {[
+                          { key: 'disponibilidad', label: 'Disponibilidad' },
+                          { key: 'dashboard', label: 'Dashboard' },
+                          { key: 'clientes', label: 'Clientes' },
+                          { key: 'vehiculos', label: 'Vehículos' },
+                          { key: 'rentas', label: 'Rentas' },
+                          { key: 'documentacion', label: 'Documentación' },
+                          { key: 'configuracion', label: 'Configuración' },
+                        ].map((module) => (
+                          <label key={module.key} className={styles.moduleOption}>
+                            <input
+                              type="checkbox"
+                              checked={tempAllowedModules.includes(module.key)}
+                              onChange={() => handleToggleTempModule(module.key)}
+                            />
+                            <span>{module.label}</span>
+                          </label>
+                        ))}
+                      </div>
+                    </div>
                     <button className={`${styles.submitButton} ${styles.primaryButton}`} type="submit">Crear usuario temporal</button>
                   </form>
                 </div>
               </div>
-            )}
           </article>
 
           <aside className={styles.listPanel}>

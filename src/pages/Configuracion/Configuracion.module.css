@@ -229,6 +229,33 @@
   color: #fff;
 }
 
+.modulesBox {
+  background: #eef3fb;
+  border: 1px solid #d9e4f7;
+  border-radius: 12px;
+  padding: 12px;
+}
+
+.modulesTitle {
+  margin: 0 0 8px;
+  color: #0f1e4a;
+  font-weight: 700;
+}
+
+.modulesGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px 12px;
+}
+
+.moduleOption {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #21335d;
+  font-size: 0.95rem;
+}
+
 .formGroup {
   display: flex;
   flex-direction: column;
@@ -358,6 +385,9 @@
   }
 
   .inlineFields {
+    grid-template-columns: 1fr;
+  }
+  .modulesGrid {
     grid-template-columns: 1fr;
   }
 }
