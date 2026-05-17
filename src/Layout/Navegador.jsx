@@ -45,8 +45,9 @@ const getAllowedMenuItems = (auth = {}) => {
   if (role === 'admin') return menuItems;
   if (role === 'temporal' || isTemporary) return menuItems.filter((item) => TEMPORAL_VISIBLE_MODULES.includes(item.key));
 
-  if (Array.isArray(auth?.allowedModules) && auth.allowedModules.length) {
-    const normalizedModules = auth.allowedModules.map((module) => String(module).toLowerCase());
+  const allowedModules = user?.allowedModules ?? auth?.allowedModules;
+  if (Array.isArray(allowedModules) && allowedModules.length) {
+    const normalizedModules = allowedModules.map((module) => String(module).toLowerCase());
     return menuItems.filter((item) => normalizedModules.includes(item.key));
   }
 
