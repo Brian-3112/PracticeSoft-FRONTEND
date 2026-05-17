@@ -134,6 +134,13 @@
   margin-top: 28px;
 }
 
+.temporarySection {
+  display: grid;
+  grid-template-columns: 1.3fr 0.7fr;
+  gap: 16px;
+  align-items: start;
+}
+
 .managerToggle {
   margin-bottom: 8px;
 }
@@ -142,12 +149,6 @@
   display: grid;
   gap: 22px;
   margin-top: 16px;
-}
-
-.temporaryTopGrid {
-  display: grid;
-  grid-template-columns: 1.3fr 0.7fr;
-  gap: 16px;
 }
 
 .managerPanel {
@@ -298,7 +299,7 @@
   .passwordCard {
     max-width: none;
   }
-  .temporaryTopGrid {
+  .temporarySection {
     grid-template-columns: 1fr;
   }
 
