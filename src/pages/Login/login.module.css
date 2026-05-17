@@ -1,322 +1,168 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;700;800;900&display=swap');
 
-/* ===== ESTRUCTURA GENERAL DEL MODULO LOGIN ===== */
 .loginBody {
     margin: 0;
-    padding: 0;
     min-height: 100vh;
-    font-family: 'Poppins', sans-serif;
-    overflow: hidden;
-    /* Fondo con imagen de Antiocar + oscurecido suave para resaltar la tarjeta */
+    font-family: 'Nunito', sans-serif;
     background:
-        linear-gradient(to bottom right, rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.65)),
-        url('/antiocar3.png') center 60%/cover no-repeat fixed;
-}
-
-/* ===== CAPA DECORATIVA DEL FONDO ===== */
-.loginBody::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background: radial-gradient(circle at 10% 10%, rgba(255, 255, 255, 0.18) 0%, transparent 55%);
-    opacity: 0.7;
-    z-index: 0;
-    pointer-events: none;
-    animation: float 22s ease-in-out infinite alternate;
-}
-
-@keyframes float {
-
-    0%,
-    100% {
-        transform: rotate(0deg) translate(0, 0);
-    }
-
-    33% {
-        transform: rotate(120deg) translate(-20px, -20px);
-    }
-
-    66% {
-        transform: rotate(240deg) translate(20px, -10px);
-    }
+        radial-gradient(circle at 15% 15%, rgba(255, 200, 87, 0.35), transparent 45%),
+        radial-gradient(circle at 80% 20%, rgba(255, 123, 172, 0.28), transparent 40%),
+        linear-gradient(135deg, #2f2049 0%, #4b2e83 45%, #7a3eb1 100%);
 }
 
 .main {
-    display: flex;
-    justify-content: center;
-    align-items: center;
     min-height: 100vh;
-    padding: 20px;
-    position: relative;
-    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
 }
 
-/* ===== CONTENEDOR LEGADO NO UTILIZADO ===== */
-.card1 {
-    display: none;
+.layout {
+    width: min(1040px, 100%);
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 18px;
+    align-items: stretch;
+}
+
+.welcomePanel,
+.card {
+    border-radius: 28px;
+    box-shadow: 0 24px 55px rgba(12, 8, 25, 0.35);
+}
+
+.welcomePanel {
+    color: #fff;
+    padding: 2.4rem;
+    background: linear-gradient(165deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.04));
+    backdrop-filter: blur(7px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.badge {
+    width: fit-content;
+    margin: 0 0 1rem;
+    background: #ffd166;
+    color: #4b2e00;
+    border-radius: 999px;
+    padding: 0.3rem 0.85rem;
+    font-weight: 800;
+}
+
+.welcomeTitle {
+    margin: 0;
+    font-size: clamp(2rem, 3vw, 2.8rem);
+    line-height: 1.05;
+}
+
+.welcomeText {
+    margin: 1rem 0 1.2rem;
+    font-size: 1.03rem;
+    opacity: 0.95;
+}
+
+.featureList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 0.55rem;
+    font-weight: 700;
 }
 
 .card {
-    background: var(--white);
-    border-radius: 24px;
-    padding: 3rem 2.5rem;
-    width: 100%;
-    max-width: 420px;
-    box-shadow:
-        0 25px 50px var(--shadow),
-        0 0 0 1px rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(10px);
-    position: relative;
-    overflow: hidden;
-    transform: translateY(0);
-    transition: all 0.3s ease;
+    background: #fffaf2;
+    padding: 2.2rem 2rem;
 }
 
-.card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, var(--primary) 0%, var(--primary-light) 100%);
-}
-
-.card:hover {
-    transform: translateY(-5px);
-    box-shadow:
-        0 35px 70px var(--shadow),
-        0 0 0 1px rgba(255, 255, 255, 0.1);
-}
-
-/* ===== CABECERA VISUAL (LOGO Y MARCA) ===== */
 .brandSection {
     text-align: center;
-    margin-bottom: 2rem;
-    position: relative;
 }
 
-
 .brandLogo {
-    width: min(100%, 170px);
-    height: auto;
+    width: 145px;
+    margin: 0 auto 0.7rem;
     display: block;
-    margin: 0 auto 1rem;
-    transform: translateX(-18px);
-    object-fit: contain;
 }
 
 .title {
-    font-size: 2.5rem;
-    font-weight: 800;
-    color: var(--dark);
     margin: 0;
-    letter-spacing: -1px;
-    background: linear-gradient(135deg, var(--dark) 0%, var(--primary-dark) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    font-size: 2.1rem;
+    letter-spacing: 0.6px;
+    color: #5f269d;
 }
 
 .subtitle {
-    color: #666;
-    margin: 0.5rem 0 0;
-    font-size: 1rem;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    margin: 0.45rem 0 0;
+    color: #7d5a99;
+    font-weight: 700;
 }
 
-/* ===== FORMULARIO DE INICIO DE SESION ===== */
-.field {
-    position: relative;
-    margin: 1.5rem 0;
-    width: 100%;
-}
+.field { position: relative; margin-top: 1rem; }
 
 .inputField {
     width: 100%;
-    padding: 1rem 1rem 1rem 3.5rem;
-    border: 2px solid #e1e5e9;
-    border-radius: 16px;
-    background: #f8f9fa;
-    font-size: 1rem;
-    font-weight: 500;
-    color: var(--dark);
-    transition: all 0.3s ease;
     box-sizing: border-box;
+    border: 2px solid #f0d7ff;
+    background: #fff;
+    border-radius: 16px;
+    padding: 0.95rem 1rem 0.95rem 3rem;
+    font-size: 1rem;
+    color: #2b1744;
+    transition: all 0.2s ease;
 }
 
 .inputField:focus {
     outline: none;
-    border-color: var(--primary);
-    background: var(--white);
-    box-shadow: 0 0 0 3px var(--shadow);
-    transform: translateY(-2px);
-}
-
-.inputField::placeholder {
-    color: #999;
-    font-weight: 400;
+    border-color: #a93cf3;
+    box-shadow: 0 0 0 4px rgba(169, 60, 243, 0.14);
 }
 
 .inputIcon {
     position: absolute;
-    left: 1.2rem;
+    left: 1rem;
     top: 50%;
+    width: 1rem;
+    height: 1rem;
     transform: translateY(-50%);
-    width: 1.2rem;
-    height: 1.2rem;
-    fill: #999;
-    transition: fill 0.3s ease;
-    z-index: 2;
+    fill: #a778cd;
 }
 
-.field:focus-within .inputIcon {
-    fill: var(--primary);
-}
-
-/* ===== EFECTO VISUAL DE INPUT ACTIVO ===== */
-.hasValue .inputField,
-.field:focus-within .inputField {
-    padding-top: 1.5rem;
-    padding-bottom: 0.5rem;
-}
-
-/* ===== BOTON PRINCIPAL DE LOGIN ===== */
 .btn {
     width: 100%;
-    padding: 1rem;
     border: none;
-    border-radius: 16px;
-    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-    color: var(--white);
-    font-size: 1.1rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    border-radius: 15px;
+    margin-top: 1.35rem;
+    padding: 0.95rem;
     cursor: pointer;
-    transition: all 0.3s ease;
-    margin: 2rem 0 1rem;
-    box-shadow: 0 8px 25px var(--shadow);
-    position: relative;
-    overflow: hidden;
+    font-weight: 900;
+    font-size: 1rem;
+    color: #fff;
+    background: linear-gradient(90deg, #ff7ab2, #ff4f87 45%, #f73c6b);
 }
 
-.btn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-    transition: left 0.5s ease;
-}
+.btn:hover { filter: brightness(1.05); }
 
-.btn:hover::before {
-    left: 100%;
-}
-
-.btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 15px 35px var(--shadow);
-}
-
-.btn:active {
-    transform: translateY(0);
-}
-
-
-.resetHelp {
-    margin: 0.5rem 0 0;
-    text-align: center;
-    color: #666;
-    font-size: 0.85rem;
-}
-/* ===== ENLACE SECUNDARIO DEL FORMULARIO ===== */
 .btnLink {
+    margin-top: 0.85rem;
     display: block;
     text-align: center;
-    color: var(--primary);
-    font-size: 0.9rem;
-    font-weight: 500;
+    color: #7f37bf;
+    font-weight: 700;
     text-decoration: none;
-    transition: all 0.3s ease;
-    padding: 0.5rem;
-    border-radius: 8px;
 }
 
-.btnLink:hover {
-    color: var(--primary-dark);
-    background: rgba(40, 160, 135, 0.05);
-    text-decoration: underline;
-}
+.btnLink:hover { text-decoration: underline; }
 
-/* ===== AJUSTES RESPONSIVE DEL MODULO LOGIN ===== */
-@media (max-width: 480px) {
-    .card {
-        padding: 2rem 1.5rem;
-        border-radius: 16px;
-        margin: 0 10px;
-    }
+.alertaCompacta { padding: 0.5rem 0.7rem !important; }
+.alertaCompactaTitulo { font-size: 0.82rem !important; margin: 0 0 0.2rem 0 !important; }
+.alertaCompactaTexto { font-size: 0.7rem !important; line-height: 1.2 !important; }
 
-    .title {
-        font-size: 2rem;
-    }
-
-    .logoIcon {
-        width: 60px;
-        height: 60px;
-    }
-
-    .logoIcon::before {
-        font-size: 1.5rem;
-    }
-
-    .inputField {
-        padding: 0.9rem 0.9rem 0.9rem 3rem;
-    }
-
-    .inputIcon {
-        left: 1rem;
-        width: 1rem;
-        height: 1rem;
-    }
-}
-
-@media (max-height: 700px) {
-    .main {
-        padding: 10px;
-    }
-
-    .card {
-        padding: 2rem 2.5rem;
-    }
-
-    .brandSection {
-        margin-bottom: 1.5rem;
-    }
-
-    .logoIcon {
-        width: 60px;
-        height: 60px;
-        margin-bottom: 0.5rem;
-    }
-}
-
-
-
-.alertaCompacta {
-    padding: 0.5rem 0.7rem !important;
-}
-
-.alertaCompactaTitulo {
-    font-size: 0.82rem !important;
-    margin: 0 0 0.2rem 0 !important;
-}
-
-.alertaCompactaTexto {
-    font-size: 0.7rem !important;
-    line-height: 1.2 !important;
+@media (max-width: 900px) {
+    .layout { grid-template-columns: 1fr; }
+    .welcomePanel { order: 2; }
 }
