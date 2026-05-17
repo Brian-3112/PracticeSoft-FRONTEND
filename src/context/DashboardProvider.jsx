@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import clienteAxios from '../config/axios';
 import useAuth from '../hooks/useAuth';
 import Swal from 'sweetalert2';
+import { hasModuleAccess } from '../utils/moduleAccess';
 
 
 export const DashboardContext = createContext();
@@ -79,6 +80,15 @@ export const DashboardProvider = ({ children }) => {
     };
     useEffect(() => {
         if (auth?.id) {
+            if (!hasModuleAccess('dashboard', auth)) {
+                console.debug('[Permisos] fetch dashboard bloqueado');
+                setIngresosMes(0);
+                setClientesTotal(0);
+                setIngresosPorMes([]);
+                setRentas([]);
+                setIngresosAnual(0);
+                return;
+            }
             calcularDashboard();
             return;
         }

@@ -35,23 +35,11 @@ const menuItems = [
   { to: '/admin/rentas', label: 'Rentas', icon: IconRentas, key: 'rentas' },
   { to: '/admin/documentacion', label: 'Documentación', icon: IconDocumentacion, key: 'documentacion' },
 ];
-const TEMPORAL_VISIBLE_MODULES = ['disponibilidad', 'clientes', 'vehiculos', 'rentas'];
+import { hasModuleAccess, getUserFromAuthPayload } from '../utils/moduleAccess';
 
 const getAllowedMenuItems = (auth = {}) => {
-  const user = getUserFromAuth(auth);
-  const role = user?.role ?? auth?.role;
-  const isTemporary = user?.isTemporary ?? auth?.isTemporary;
-
-  if (role === 'admin') return menuItems;
-  if (role === 'temporal' || isTemporary) return menuItems.filter((item) => TEMPORAL_VISIBLE_MODULES.includes(item.key));
-
-  const allowedModules = user?.allowedModules ?? auth?.allowedModules;
-  if (Array.isArray(allowedModules) && allowedModules.length) {
-    const normalizedModules = allowedModules.map((module) => String(module).toLowerCase());
-    return menuItems.filter((item) => normalizedModules.includes(item.key));
-  }
-
-  return menuItems;
+  const user = getUserFromAuthPayload(auth);
+  return menuItems.filter((item) => hasModuleAccess(item.key, user));
 };
 
 const getPageTitle = (pathname) => {
@@ -111,7 +99,7 @@ const Navegador = () => {
   if (loading) return 'Cargando...';
   const query = searchParams.get('q') ?? '';
   const allowedMenuItems = getAllowedMenuItems(auth);
-  const currentUser = getUserFromAuth(auth);
+  const currentUser = getUserFromAuthPayload(auth);
   const isAdmin = (currentUser?.role ?? auth?.role) === 'admin';
 
   const userDisplayName = getUserDisplayName(auth);

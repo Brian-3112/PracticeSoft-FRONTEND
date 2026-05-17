@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import clienteAxios from '../config/axios';
 import useAuth from '../hooks/useAuth';
 import Swal from 'sweetalert2';
+import { hasModuleAccess } from '../utils/moduleAccess';
 
 
 
@@ -36,6 +37,11 @@ export const ClienteProvider = ({ children }) => {
     useEffect(() => {
         // Carga inicial cuando el usuario ya esta autenticado.
         if (auth?.id) {
+            if (!hasModuleAccess('clientes', auth)) {
+                console.debug('[Permisos] fetch clientes bloqueado');
+                setClientes([]);
+                return;
+            }
             consultarClientes();
             return;
         }

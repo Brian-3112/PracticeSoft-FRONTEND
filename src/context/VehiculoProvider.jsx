@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import clienteAxios from '../config/axios';
 import useAuth from '../hooks/useAuth';
 import Swal from 'sweetalert2';
+import { hasModuleAccess } from '../utils/moduleAccess';
 
 
 
@@ -38,6 +39,11 @@ export const VehiculoProvider = ({ children }) => {
 
     useEffect(() => {
         if (auth?.id) {
+            if (!hasModuleAccess('rentas', auth)) {
+                console.debug('[Permisos] fetch rentas (vehiculo provider) bloqueado');
+                setRentas([]);
+                return;
+            }
             consultarRentas();
             return;
         }
@@ -69,6 +75,11 @@ export const VehiculoProvider = ({ children }) => {
     };
     useEffect(() => {
         if (auth?.id) {
+            if (!hasModuleAccess('vehiculos', auth)) {
+                console.debug('[Permisos] fetch vehiculos bloqueado');
+                setVehiculos([]);
+                return;
+            }
             consultarVehiculos();
             return;
         }

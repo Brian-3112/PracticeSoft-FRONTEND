@@ -1,21 +1,30 @@
-// src/components/ProtectedRoute.jsx
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
+import { hasModuleAccess, getFirstAllowedAdminRoute } from '../utils/moduleAccess';
+
+const routeModuleMap = {
+  '/admin/disponibilidad': 'disponibilidad',
+  '/admin/dashboard': 'dashboard',
+  '/admin/clientes': 'clientes',
+  '/admin/vehiculos': 'vehiculos',
+  '/admin/rentas': 'rentas',
+  '/admin/documentacion': 'documentacion',
+  '/admin/configuracion': 'configuracion',
+};
 
 const ProtectedRoute = () => {
-    const { auth, loading } = useAuth();
-    const location = useLocation();
-    const temporalBlockedRoutes = ['/admin/dashboard', '/admin/documentacion', '/admin/configuracion'];
-    const user = auth?.usuario ?? auth?.user ?? auth?.data?.usuario ?? auth?.data ?? auth ?? {};
-    const role = user?.role ?? auth?.role;
-    const isTemporary = user?.isTemporary ?? auth?.isTemporary;
+  const { auth, loading } = useAuth();
+  const location = useLocation();
 
-    if (loading) return <p>Cargando...</p>;
-    if ((role === 'temporal' || isTemporary) && temporalBlockedRoutes.includes(location.pathname)) {
-        return <Navigate to="/admin/disponibilidad" replace />;
-    }
-    //si hay usuario autenticado entra a las rutas de lo contario  redirige al usuario al login
-    return auth?.id ? <Outlet /> : <Navigate to="/login" />;
+  if (loading) return <p>Cargando...</p>;
+  if (!auth?.id) return <Navigate to="/login" />;
+
+  const moduleKey = routeModuleMap[location.pathname];
+  if (moduleKey && !hasModuleAccess(moduleKey, auth)) {
+    return <Navigate to={getFirstAllowedAdminRoute(auth)} replace />;
+  }
+
+  return <Outlet />;
 };
 
 export default ProtectedRoute;

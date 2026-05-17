@@ -4,6 +4,7 @@ import useAuth from '../../hooks/useAuth';
 import clienteAxios from "../../config/axios.jsx";
 import Swal from "sweetalert2";
 import styles from '../Login/login.module.css';
+import { getUserFromAuthPayload, getNormalizedAllowedModules, getFirstAllowedAdminRoute, hasModuleAccess } from '../../utils/moduleAccess';
 
 const getUserFromPayload = (payload = {}) => {
     if (payload?.usuario && typeof payload.usuario === 'object') return payload.usuario;
@@ -53,6 +54,7 @@ const Login = () => {
             //Envía correo y contraseña al backend.
             const { data } = await clienteAxios.post("/usuarios/login", { email, password });
             // Guarda el token en localStorage.
+            localStorage.clear();
             localStorage.setItem("token", data.token);
             // Obtiene el perfil del usuario autenticado para tener nombre y apellido disponibles en UI.
             const config = {
@@ -71,9 +73,12 @@ const Login = () => {
             }
 
             // Guarda la info del usuario con setAuth (normalizada al objeto usuario).
-            setAuth(getUserFromPayload(authPayload));
+            const normalizedUser = getUserFromAuthPayload(authPayload);
+            console.debug('[Login]', { role: normalizedUser?.role, isTemporary: normalizedUser?.isTemporary, allowedModules: getNormalizedAllowedModules(normalizedUser) });
+            setAuth(normalizedUser);
 
             try {
+                if (hasModuleAccess('vehiculos', authPayload)) {
                 const { data: vehiculos } = await clienteAxios.get('/vehiculos', config);
                 const porVencer = (Array.isArray(vehiculos) ? vehiculos : []).flatMap((vehiculo) => {
                     const alertas = [];
@@ -112,12 +117,13 @@ const Login = () => {
                         },
                     });
                 }
+            }
             } catch (_error) {
                 // Si falla esta consulta, no bloqueamos el ingreso al sistema.
             }
 
             // Redirige al módulo principal de disponibilidad.
-            navigate("/admin/disponibilidad");
+            navigate(getFirstAllowedAdminRoute(authPayload));
         } catch (error) {
             Swal.fire({
                 title: "Error",

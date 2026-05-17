@@ -4,6 +4,7 @@ import clienteAxios from '../config/axios';
 import { useNavigate } from 'react-router-dom';
 import '../styles/generalCss.css';
 import Swal from 'sweetalert2';
+import { getUserFromAuthPayload, getNormalizedAllowedModules } from '../utils/moduleAccess';
 
 const AuthContext = createContext();
 
@@ -40,7 +41,9 @@ const AuthProvider = ({ children }) => {
             };
             try {
                 const { data } = await clienteAxios.get('/usuarios', config);
-                setAuth(data);
+                const normalizedUser = getUserFromAuthPayload(data);
+                console.debug('[Auth Init]', { role: normalizedUser?.role, isTemporary: normalizedUser?.isTemporary, allowedModules: getNormalizedAllowedModules(normalizedUser) });
+                setAuth(normalizedUser);
             } catch (error) {
                 if (error.response?.status === 401 || error.response?.data?.message === "Token no valido") {
                     localStorage.removeItem('token');

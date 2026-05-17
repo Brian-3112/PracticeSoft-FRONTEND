@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import clienteAxios from '../config/axios';
 import useAuth from '../hooks/useAuth';
 import Swal from 'sweetalert2';
+import { hasModuleAccess } from '../utils/moduleAccess';
 import { createRenta, deleteRentaById, downloadContratoDocx, TIPOS_CONTRATO_RENTA } from '../services/rentaService';
 import { VehiculoContext } from './VehiculoProvider';
 import { DashboardContext } from './DashboardProvider';
@@ -77,6 +78,11 @@ export const RentaProvider = ({ children }) => {
     };
     useEffect(() => {
         if (auth?.id) {
+            if (!hasModuleAccess('rentas', auth)) {
+                console.debug('[Permisos] fetch rentas bloqueado');
+                setRentas([]);
+                return;
+            }
             consultarRentas();
             return;
         }
