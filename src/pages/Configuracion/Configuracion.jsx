@@ -29,6 +29,13 @@ const getInitials = (nombre = '', apellido = '') => {
   if (!words.length) return 'US';
   return words.slice(0, 2).map((word) => word[0].toUpperCase()).join('');
 };
+const capitalizeWords = (value = '') => String(value)
+  .trim()
+  .toLowerCase()
+  .split(/\s+/)
+  .filter(Boolean)
+  .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+  .join(' ');
 
 const Configuracion = () => {
   const { auth, config } = useAuth();
@@ -91,8 +98,8 @@ const Configuracion = () => {
     e.preventDefault();
     try {
       await createTemporaryUser({
-        nombre: tempName,
-        apellido: tempLastName,
+        nombre: capitalizeWords(tempName),
+        apellido: capitalizeWords(tempLastName),
         correo: tempEmail,
         password: tempPassword,
         role: 'empleado',
@@ -105,6 +112,11 @@ const Configuracion = () => {
   };
 
   const handleLoadTemporaryUsers = async () => {
+    if (showUsersList) {
+      setShowUsersList(false);
+      setShowPasswordForm(false);
+      return;
+    }
     try {
       const data = await getTemporaryUsers(config);
       setTemporaryUsers(Array.isArray(data) ? data : (data?.usuarios || data?.data || []));
@@ -228,7 +240,7 @@ const Configuracion = () => {
       </article>
 
       {isAdmin && (
-        <article className={styles.passwordCard}>
+        <article className={`${styles.passwordCard} ${styles.temporaryManagerCard}`}>
           <button className={`${styles.submitButton} ${styles.managerToggle}`} type="button" onClick={() => setShowTemporaryUserManager((prev) => !prev)}>
             {showTemporaryUserManager ? 'Ocultar gestión de usuario temporal' : 'Gestión de usuario temporal'}
           </button>
@@ -244,14 +256,22 @@ const Configuracion = () => {
                 <label className={styles.formGroup}><span className={styles.formLabel}>Contraseña inicial</span><input className={styles.input} type="password" value={tempPassword} onChange={(e) => setTempPassword(e.target.value)} required /></label>
                 <button className={`${styles.submitButton} ${styles.primaryButton}`} type="submit">Crear usuario temporal</button>
               </form>
-              <button className={`${styles.submitButton} ${styles.secondaryAction} ${styles.outlineButton}`} type="button" onClick={handleLoadTemporaryUsers}>Listar usuarios temporales</button>
+              <button className={`${styles.submitButton} ${styles.secondaryAction} ${styles.outlineButton}`} type="button" onClick={handleLoadTemporaryUsers}>
+                {showUsersList ? 'Ocultar usuarios temporales' : 'Listar usuarios temporales'}
+              </button>
               {showUsersList && (
                 <>
                   <div className={styles.temporaryUsersList}>
                     {temporaryUsers.map((tempUser) => (
                       <div key={tempUser.id || tempUser._id} className={styles.infoItem}>
-                        <p className={styles.infoValue}>{tempUser.nombre || tempUser.email || tempUser.correo}</p>
-                        <button className={`${styles.submitButton} ${styles.darkButton}`} type="button" onClick={() => handleUpdateTemporaryStatus(tempUser)}>Activar/Desactivar usuario temporal</button>
+                        <p className={styles.infoValue}>
+                          {`${tempUser.nombre ?? ''} ${tempUser.apellido ?? ''}`.trim() || tempUser.email || tempUser.correo}
+                        </p>
+                        <button className={styles.statusIconButton} type="button" onClick={() => handleUpdateTemporaryStatus(tempUser)} title="Activar/Desactivar usuario temporal" aria-label="Activar o desactivar usuario temporal">
+                          {(tempUser.isActive ?? tempUser.activo)
+                            ? <span aria-hidden="true">✅</span>
+                            : <span aria-hidden="true">⛔</span>}
+                        </button>
                       </div>
                     ))}
                   </div>
