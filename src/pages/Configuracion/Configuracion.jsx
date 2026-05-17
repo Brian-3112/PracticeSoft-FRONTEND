@@ -260,33 +260,6 @@ const Configuracion = () => {
                     <button className={`${styles.submitButton} ${styles.primaryButton}`} type="submit">Crear usuario temporal</button>
                   </form>
                 </div>
-                {showUsersList && (
-                  <>
-                    <div className={styles.temporaryUsersList}>
-                      {temporaryUsers.map((tempUser) => (
-                        <div key={tempUser.id || tempUser._id} className={styles.infoItem}>
-                          <p className={styles.infoValue}>
-                            {`${tempUser.nombre ?? ''} ${tempUser.apellido ?? ''}`.trim() || tempUser.email || tempUser.correo}
-                          </p>
-                          <button className={styles.statusIconButton} type="button" onClick={() => handleUpdateTemporaryStatus(tempUser)} title="Activar/Desactivar usuario temporal" aria-label="Activar o desactivar usuario temporal">
-                            {(tempUser.isActive ?? tempUser.activo) ? <span aria-hidden="true">✅</span> : <span aria-hidden="true">⛔</span>}
-                          </button>
-                        </div>
-                      ))}
-                    </div>
-                    <button className={`${styles.submitButton} ${styles.darkButton}`} type="button" onClick={() => setShowPasswordForm((prev) => !prev)}>
-                      {showPasswordForm ? 'Ocultar formulario de contraseña' : 'Abrir formulario de cambiar contraseña'}
-                    </button>
-                  </>
-                )}
-                {showPasswordForm && (
-                  <form className={`${styles.passwordForm} ${styles.temporaryPasswordForm} ${styles.managerPanel}`} onSubmit={handleUpdateTemporaryPassword}>
-                    <p className={styles.managerPanelTitle}>Actualizar contraseña temporal</p>
-                    <label className={styles.formGroup}><span className={styles.formLabel}>ID usuario temporal</span><input className={styles.input} value={tempPasswordUserId} onChange={(e) => setTempPasswordUserId(e.target.value)} required /></label>
-                    <label className={styles.formGroup}><span className={styles.formLabel}>Nueva contraseña</span><input className={styles.input} type="password" value={tempNewPassword} onChange={(e) => setTempNewPassword(e.target.value)} required /></label>
-                    <button className={`${styles.submitButton} ${styles.darkButton}`} type="submit">Cambiar contraseña a usuario temporal</button>
-                  </form>
-                )}
               </div>
             )}
           </article>
@@ -297,6 +270,33 @@ const Configuracion = () => {
             <button className={`${styles.submitButton} ${styles.secondaryAction} ${styles.outlineButton}`} type="button" onClick={handleLoadTemporaryUsers}>
               {showUsersList ? 'Ocultar usuarios temporales' : 'Listar usuarios temporales'}
             </button>
+            {showUsersList && (
+              <>
+                <div className={styles.temporaryUsersList}>
+                  {temporaryUsers.map((tempUser) => (
+                    <div key={tempUser.id || tempUser._id} className={styles.infoItem}>
+                      <p className={styles.infoValue}>
+                        {`${tempUser.nombre ?? ''} ${tempUser.apellido ?? ''}`.trim() || tempUser.email || tempUser.correo}
+                      </p>
+                      <button className={styles.statusIconButton} type="button" onClick={() => handleUpdateTemporaryStatus(tempUser)} title="Activar/Desactivar usuario temporal" aria-label="Activar o desactivar usuario temporal">
+                        {(tempUser.isActive ?? tempUser.activo) ? <span aria-hidden="true">✅</span> : <span aria-hidden="true">⛔</span>}
+                      </button>
+                    </div>
+                  ))}
+                </div>
+                <button className={`${styles.submitButton} ${styles.darkButton}`} type="button" onClick={() => setShowPasswordForm((prev) => !prev)}>
+                  {showPasswordForm ? 'Ocultar formulario de contraseña' : 'Abrir formulario de cambiar contraseña'}
+                </button>
+              </>
+            )}
+            {showPasswordForm && (
+              <form className={`${styles.passwordForm} ${styles.temporaryPasswordForm} ${styles.managerPanel}`} onSubmit={handleUpdateTemporaryPassword}>
+                <p className={styles.managerPanelTitle}>Actualizar contraseña temporal</p>
+                <label className={styles.formGroup}><span className={styles.formLabel}>ID usuario temporal</span><input className={styles.input} value={tempPasswordUserId} onChange={(e) => setTempPasswordUserId(e.target.value)} required /></label>
+                <label className={styles.formGroup}><span className={styles.formLabel}>Nueva contraseña</span><input className={styles.input} type="password" value={tempNewPassword} onChange={(e) => setTempNewPassword(e.target.value)} required /></label>
+                <button className={`${styles.submitButton} ${styles.darkButton}`} type="submit">Cambiar contraseña a usuario temporal</button>
+              </form>
+            )}
           </aside>
         </div>
       )}
