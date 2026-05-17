@@ -134,8 +134,13 @@ const Configuracion = () => {
   };
   const handleUpdateTemporaryStatus = async (tempUser) => {
     try {
-      await updateTemporaryUserStatus(tempUser.id || tempUser._id, { isActive: !(tempUser.isActive ?? tempUser.activo) }, config);
-      Swal.fire({ title: 'Estado actualizado', icon: 'success' });
+      const willBeActive = !(tempUser.isActive ?? tempUser.activo);
+      await updateTemporaryUserStatus(tempUser.id || tempUser._id, { isActive: willBeActive }, config);
+      Swal.fire({
+        title: 'Estado actualizado',
+        text: `Fue ${willBeActive ? 'habilitado' : 'deshabilitado'}.`,
+        icon: 'success',
+      });
       const data = await getTemporaryUsers(config);
       setTemporaryUsers(Array.isArray(data) ? data : (data?.usuarios || data?.data || []));
     } catch (error) {
