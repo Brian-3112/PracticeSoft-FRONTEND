@@ -219,6 +219,16 @@
   gap: 16px;
 }
 
+.inlineFields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.temporaryUserName {
+  color: #fff;
+}
+
 .formGroup {
   display: flex;
   flex-direction: column;
@@ -345,5 +355,9 @@
 
   .submitButton {
     width: 100%;
+  }
+
+  .inlineFields {
+    grid-template-columns: 1fr;
   }
 }
