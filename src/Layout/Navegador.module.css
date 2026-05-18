@@ -170,24 +170,3 @@
     padding: 12px;
   }
 }
-.appLayout { background: radial-gradient(circle at 12% 20%, #edf4ff, #f6f9ff 45%, #eef3ff 100%); }
-.sidebar {
-  background: linear-gradient(180deg, #1b2a4f 0%, #15203e 45%, #121a33 100%);
-  border-right: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 8px 0 30px rgba(17, 28, 56, 0.26);
-}
-.logoSection { background: rgba(255,255,255,.03); }
-.brandTitle { font-weight: 800; letter-spacing: .02em; }
-.menuLink { border: 1px solid transparent; border-radius: 12px; }
-.menuLink:hover { background: rgba(75, 116, 255, 0.26); border-color: rgba(173, 195, 255, .35); }
-.menuLinkActive { background: linear-gradient(90deg, rgba(75,116,255,.35), rgba(53,189,174,.3)); border-left: 0; }
-.topbar {
-  background: rgba(255,255,255,.78);
-  border: 1px solid #e5ebff;
-  margin: 12px 12px 0;
-  border-radius: 16px;
-  box-shadow: 0 10px 24px rgba(37, 51, 85, .08);
-}
-.topbarTitle { text-transform: none; font-weight: 800; }
-.searchInput { background: #f5f8ff; border: 1px solid #dbe5ff; }
-.pageContent { padding: 18px; }

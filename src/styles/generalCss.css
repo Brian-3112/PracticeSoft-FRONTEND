@@ -1,22 +1,15 @@
-:root {
-  --primary: #3f63ff;
+.confirmarBoton{
+
+    background-color: var(--primary);
+    color: white;
+    font-family: 'Poppins', sans-serif;
+
 }
 
-body {
-  background: #eef3ff;
-  color: #26334d;
-}
 
-.confirmarBoton {
-  background: linear-gradient(90deg, #3f63ff, #4e7dff);
-  color: white;
-  font-family: 'Poppins', sans-serif;
-  border-radius: 10px;
-}
 
-.cancelBoton {
-  background: linear-gradient(90deg, #ff6b6b, #f45f8d);
-  color: white;
-  font-family: 'Poppins', sans-serif;
-  border-radius: 10px;
+.cancelBoton{
+    background-color: #ce4e4eec;
+    color: white;
+    font-family: 'Poppins', sans-serif;
 }
