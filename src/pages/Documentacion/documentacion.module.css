@@ -96,6 +96,9 @@
   color: #6b7280;
   text-align: center !important;
   padding: 32px 20px !important;
+  grid-column: 1 / -1;
+  justify-self: center;
+  width: 100%;
 }
 
 .actionsCell {
