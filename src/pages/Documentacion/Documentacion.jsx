@@ -282,71 +282,60 @@ const Documentacion = () => {
                     <h3>{documentosFiltrados.length} documentos</h3>
                 </div>
 
-                <div className={styles.tableContainer}>
-                    <table className={styles.table}>
-                        <thead>
-                            <tr>
-                                <th>Cliente</th>
-                                <th>Cédula</th>
-                                <th>Fecha de contrato</th>
-                                <th>Archivo</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {isLoadingDocumentos ? (
-                                <tr><td colSpan="5" className={styles.emptyCell}>Cargando documentos...</td></tr>
-                            ) : documentosFiltrados.length ? documentosFiltrados.map((documento) => {
-                                const documentoId = getDocumentoId(documento);
-                                const clienteActualizado = getSyncedDocumentoCliente(documento, clientesById);
-                                const nombreCliente = clienteActualizado?.nombre ?? documento.nombreCliente ?? documento.cliente?.nombre;
-                                const cedulaCliente = clienteActualizado?.identificacion ?? documento.cedula ?? documento.cliente?.identificacion;
-                                return (
-                                    <tr key={documentoId}>
-                                        <td>
-                                            <div className={styles.clientCell}>
-                                                <span className={styles.clientAvatar}>{getClientInitials(nombreCliente)}</span>
-                                                <div className={styles.clientInfo}>
-                                                    <span className={styles.clientName}>{nombreCliente}</span>
-                                                    <span className={styles.clientLabel}>Cliente</span>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>{cedulaCliente}</td>
-                                        <td>
-                                            <div className={styles.contractDateCell}>
-                                                {renderCalendarIcon(styles.contractDateIcon)}
-                                                <span>{formatDateOnly(documento.fechaContrato)}</span>
-                                            </div>
-                                        </td>
-                                        <td>{getArchivoNombre(documento)}</td>
-                                        <td className={styles.actionsCell}>
-                                            <button
-                                                type="button"
-                                                className={`${styles.btn} ${styles.btnPrimary}`}
-                                                onClick={() => handleDownload(documento)}
-                                                disabled={downloadingId === documentoId || deletingId === documentoId}
-                                            >
-                                                {downloadingId === documentoId ? 'Descargando...' : 'Descargar'}
-                                            </button>
-                                            <button
-                                                type="button"
-                                                className={styles.deleteButton}
-                                                onClick={() => handleDelete(documento)}
-                                                disabled={deletingId === documentoId || downloadingId === documentoId}
-                                                aria-label={`Eliminar documento de ${nombreCliente ?? 'cliente'}`}
-                                                title="Eliminar documento"
-                                            >
-                                                {deletingId === documentoId ? '...' : '×'}
-                                            </button>
-                                        </td>
-                                    </tr>
-                                );
-                            }) : (
-                                <tr><td colSpan="5" className={styles.emptyCell}>No hay contratos firmados registrados.</td></tr>
-                            )}
-                        </tbody>
-                    </table>
+                <div className={styles.documentsGrid}>
+                    {isLoadingDocumentos ? (
+                        <p className={styles.emptyCell}>Cargando documentos...</p>
+                    ) : documentosFiltrados.length ? documentosFiltrados.map((documento) => {
+                        const documentoId = getDocumentoId(documento);
+                        const clienteActualizado = getSyncedDocumentoCliente(documento, clientesById);
+                        const nombreCliente = clienteActualizado?.nombre ?? documento.nombreCliente ?? documento.cliente?.nombre;
+                        const cedulaCliente = clienteActualizado?.identificacion ?? documento.cedula ?? documento.cliente?.identificacion;
+                        return (
+                            <article key={documentoId} className={styles.documentCard}>
+                                <div className={styles.documentHeader}>
+                                    <span className={styles.clientAvatar}>{getClientInitials(nombreCliente)}</span>
+                                    <div className={styles.clientInfo}>
+                                        <h4 className={styles.clientName}>{nombreCliente}</h4>
+                                        <p className={styles.clientCedula}>C.C. {cedulaCliente}</p>
+                                    </div>
+                                </div>
+
+                                <div className={styles.contractDateCell}>
+                                    {renderCalendarIcon(styles.contractDateIcon)}
+                                    <span>{formatDateOnly(documento.fechaContrato)}</span>
+                                </div>
+
+                                <div className={styles.cardActions}>
+                                    <button
+                                        type="button"
+                                        className={`${styles.iconActionButton} ${styles.downloadIconButton}`}
+                                        onClick={() => handleDownload(documento)}
+                                        disabled={downloadingId === documentoId || deletingId === documentoId}
+                                        aria-label={`Descargar documento de ${nombreCliente ?? 'cliente'}`}
+                                        title="Descargar"
+                                    >
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 3.75v11.5" />
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="m7.5 11.75 4.5 4.5 4.5-4.5" />
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 19.5h15" />
+                                        </svg>
+                                    </button>
+                                    <button
+                                        type="button"
+                                        className={`${styles.iconActionButton} ${styles.deleteButton}`}
+                                        onClick={() => handleDelete(documento)}
+                                        disabled={deletingId === documentoId || downloadingId === documentoId}
+                                        aria-label={`Eliminar documento de ${nombreCliente ?? 'cliente'}`}
+                                        title="Eliminar documento"
+                                    >
+                                        {deletingId === documentoId ? '...' : '×'}
+                                    </button>
+                                </div>
+                            </article>
+                        );
+                    }) : (
+                        <p className={styles.emptyCell}>No hay contratos firmados registrados.</p>
+                    )}
                 </div>
             </section>
 

@@ -366,3 +366,70 @@
     margin: 0 4% 14px;
   }
 }
+
+.documentsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 14px;
+  padding: 18px;
+}
+
+.documentCard {
+  border: 1px solid #e5e9f2;
+  border-radius: 12px;
+  padding: 12px;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.documentHeader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.clientName {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.clientCedula {
+  margin: 0;
+  color: #6b7280;
+  font-size: 0.8rem;
+}
+
+.cardActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.iconActionButton {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid transparent;
+  background: transparent;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.iconActionButton svg {
+  width: 18px;
+  height: 18px;
+}
+
+.downloadIconButton {
+  color: var(--primary);
+  border-color: var(--primary);
+}
+
+.downloadIconButton:hover:not(:disabled) {
+  background: var(--primary);
+  color: #fff;
+}
