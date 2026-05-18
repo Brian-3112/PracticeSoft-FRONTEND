@@ -393,3 +393,12 @@
   background: var(--primary);
   color: #fff;
 }
+
+
+.fileNameText {
+  margin: -2px 0 2px;
+  font-size: 0.78rem;
+  color: #4b5563;
+  line-height: 1.25;
+  word-break: break-word;
+}

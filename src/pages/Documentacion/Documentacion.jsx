@@ -304,6 +304,7 @@ const Documentacion = () => {
                                     {renderCalendarIcon(styles.contractDateIcon)}
                                     <span>{formatDateOnly(documento.fechaContrato)}</span>
                                 </div>
+                                <p className={styles.fileNameText}>{getArchivoNombre(documento)}</p>
 
                                 <div className={styles.cardActions}>
                                     <button
