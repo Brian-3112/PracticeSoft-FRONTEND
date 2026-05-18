@@ -142,8 +142,9 @@ const Vehiculo = () => {
                   </td>
                   <td><button onClick={() => setSelectedVehiculo(vehiculo)} className={`${styles.iconOnlyButton} ${styles.infoButton}`}>
                     <svg className={`${styles.iconButton} ${styles.ver}`} xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12s3.75-6.75 9.75-6.75S21.75 12 21.75 12 18 18.75 12 18.75 2.25 12 2.25 12Z" />
-                      <circle cx="12" cy="12" r="3" />
+                      <circle cx="12" cy="12" r="9" />
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 10.5v5.25" />
+                      <circle cx="12" cy="7.75" r=".75" fill="currentColor" stroke="none" />
                     </svg>
                   </button></td>
                   <td>

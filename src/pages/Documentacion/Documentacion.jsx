@@ -277,8 +277,8 @@ const Documentacion = () => {
                 <BotonVerde text="Subir contrato" onClick={() => setShowModal(true)} />
             </div>
 
-            <section className={styles.card}>
-                <div className={styles.cardHeader}>
+            <section className={styles.documentsSection}>
+                <div className={styles.documentsHeader}>
                     <h3>{documentosFiltrados.length} documentos</h3>
                 </div>
 
