@@ -15,10 +15,12 @@ const RestablecerContrasena = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const normalizedEmail = email.trim().toLowerCase();
+    const resetUrl = `${window.location.origin}/reset-password`;
 
     try {
       setIsSubmitting(true);
-      await requestPasswordReset({ email });
+      await requestPasswordReset({ email: normalizedEmail, resetUrl });
       Swal.fire({
         title: "Revisa tu correo",
         text: "Si el correo existe, te enviamos instrucciones para restablecer tu contraseña.",
