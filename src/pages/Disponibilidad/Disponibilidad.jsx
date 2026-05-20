@@ -103,7 +103,9 @@ const Disponibilidad = () => {
       </div>
 
       <div className={styles.vehicleGrid}>
-        {(vehiculos || []).map((vehiculo) => (
+        {(vehiculos || []).length === 0 ? (
+          <p className={styles.emptyStateMessage}>No hay Vehiculos asociados.</p>
+        ) : (vehiculos || []).map((vehiculo) => (
           <article key={vehiculo.id} className={styles.vehicleCard}>
             <div className={styles.vehicleHead}>
               <h3>{vehiculo.nombreVehiculo}</h3>
