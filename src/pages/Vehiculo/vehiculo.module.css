@@ -329,6 +329,13 @@
   background: #f9f9f9;
 }
 
+.emptyStateCell {
+  text-align: center !important;
+  color: #6b7280 !important;
+  font-weight: 600;
+  padding: 24px 12px;
+}
+
 
 .validityDateCell {
   display: inline-flex;

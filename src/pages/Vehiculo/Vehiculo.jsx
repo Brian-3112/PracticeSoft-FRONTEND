@@ -127,7 +127,13 @@ const Vehiculo = () => {
             </tr>
           </thead>
           <tbody>
-            {vehiculosFiltrados.map((vehiculo) => {
+            {vehiculosFiltrados.length === 0 ? (
+              <tr>
+                <td colSpan={7} className={styles.emptyStateCell}>
+                  {query ? 'No hay vehículos que coincidan con la búsqueda.' : 'No hay Vehiculos registrados'}
+                </td>
+              </tr>
+            ) : vehiculosFiltrados.map((vehiculo) => {
               const estado = getEstadoVehiculo(vehiculo.id);
               return (
                 <tr key={vehiculo.id}>

@@ -49,14 +49,19 @@ const postWithFallback = async ({ endpoints, payload, errorTitle }) => {
     throw createPasswordResetError({ error: lastError, endpoint: lastEndpoint, title: errorTitle });
 };
 
-export const requestPasswordReset = ({ email }) => postWithFallback({
+export const requestPasswordReset = ({ email, resetUrl }) => postWithFallback({
     endpoints: [
         '/usuarios/forgot-password',
         '/usuarios/olvide-password',
         '/forgot-password',
         '/olvide-password',
     ],
-    payload: { email },
+    payload: {
+        email,
+        resetUrl,
+        resetPasswordUrl: resetUrl,
+        frontendResetUrl: resetUrl,
+    },
     errorTitle: 'No se pudo enviar el enlace',
 });
 

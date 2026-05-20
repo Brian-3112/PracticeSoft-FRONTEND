@@ -62,6 +62,12 @@ const getPageSubtitle = (pathname) => {
   return 'Resumen general de operaciones';
 };
 
+const shouldShowSearchBar = (pathname) => (
+  !pathname.includes('/disponibilidad')
+  && !pathname.includes('/dashboard')
+  && !pathname.includes('/configuracion')
+);
+
 
 const getUserFromAuth = (auth = {}) => {
   if (auth?.usuario && typeof auth.usuario === 'object') return auth.usuario;
@@ -98,6 +104,7 @@ const Navegador = () => {
 
   if (loading) return 'Cargando...';
   const query = searchParams.get('q') ?? '';
+  const showSearchBar = shouldShowSearchBar(location.pathname);
   const allowedMenuItems = getAllowedMenuItems(auth);
   const currentUser = getUserFromAuthPayload(auth);
   const isAdmin = (currentUser?.role ?? auth?.role) === 'admin';
@@ -187,9 +194,11 @@ const Navegador = () => {
             <p className={styles.topbarSubtitle}>{getPageSubtitle(location.pathname)}</p>
             </div>
           </div>
-          <div className={styles.topbarActions}>
-            <input className={styles.searchInput} placeholder="Buscar..." value={query} onChange={handleSearchChange} />
-          </div>
+          {showSearchBar && (
+            <div className={styles.topbarActions}>
+              <input className={styles.searchInput} placeholder="Buscar..." value={query} onChange={handleSearchChange} />
+            </div>
+          )}
         </header>
         <div className={styles.pageContent}>
           <Outlet />

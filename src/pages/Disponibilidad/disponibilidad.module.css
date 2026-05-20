@@ -9,6 +9,13 @@
 .dotRed { background:#d33; }
 .dotGreen { background:#28A087; }
 .vehicleGrid { display:grid; grid-template-columns:repeat(4, minmax(0, 1fr)); gap:12px; }
+.emptyStateMessage {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: #6b7280;
+  font-weight: 600;
+  margin: 12px 0;
+}
 .vehicleCard { border:1px solid #e5e9f2; background:#fff; border-radius:12px; padding:10px; }
 .vehicleHead h3 { font-size:.95rem; margin:0; }
 .vehicleHead p { color:#657089; font-size:.78rem; margin-bottom:6px; }

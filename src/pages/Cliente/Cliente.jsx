@@ -54,7 +54,13 @@ const Cliente = () => {
             </tr>
           </thead>
           <tbody>
-            {clientesFiltrados.map((cliente) => (
+            {clientesFiltrados.length === 0 ? (
+              <tr>
+                <td colSpan={6} className={styles.emptyStateCell}>
+                  {query ? 'No hay clientes que coincidan con la búsqueda.' : 'No hay Clientes registrados'}
+                </td>
+              </tr>
+            ) : clientesFiltrados.map((cliente) => (
               <tr key={cliente.id}>
                 <td>
                   <div className={styles.clientCell}>
