@@ -63,7 +63,9 @@ const getPageSubtitle = (pathname) => {
 };
 
 const shouldShowSearchBar = (pathname) => (
-  !pathname.includes('/disponibilidad') && !pathname.includes('/dashboard')
+  !pathname.includes('/disponibilidad')
+  && !pathname.includes('/dashboard')
+  && !pathname.includes('/configuracion')
 );
 
 
