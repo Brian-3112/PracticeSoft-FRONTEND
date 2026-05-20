@@ -94,6 +94,7 @@
 
 .emptyCell {
   color: #6b7280;
+  font-weight: 600;
   text-align: center !important;
   padding: 32px 20px !important;
   grid-column: 1 / -1;
