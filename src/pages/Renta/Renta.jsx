@@ -455,7 +455,13 @@ const Renta = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {rentasFiltradas.map((renta) => (
+                        {rentasFiltradas.length === 0 ? (
+                            <tr>
+                                <td colSpan={8} className={styles.emptyStateCell}>
+                                    {query ? 'No hay rentas que coincidan con la búsqueda.' : 'No hay Rentas registradas'}
+                                </td>
+                            </tr>
+                        ) : rentasFiltradas.map((renta) => (
                             <tr key={renta.id}>
                                 {(() => {
                                     const clienteActualizado = getSyncedCliente(renta, clientesById);

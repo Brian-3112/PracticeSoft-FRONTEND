@@ -148,6 +148,13 @@
   background: #f9f9f9;
 }
 
+.emptyStateCell {
+  text-align: center !important;
+  color: #6b7280;
+  font-weight: 600;
+  padding: 24px 12px;
+}
+
 
 .clientCell {
   display: flex;
