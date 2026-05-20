@@ -89,7 +89,6 @@ const Disponibilidad = () => {
   return (
     <div className={styles.wrapper}>
       <div className={styles.toolbar}>
-        <h2>Disponibilidad mensual</h2>
         <div className={styles.monthNav}>
           <button type="button" className={styles.monthBtn} onClick={() => setMonthOffset((prev) => prev - 1)} aria-label="Mes anterior">←</button>
           <p className={styles.monthTitle}>{monthLabel}</p>
