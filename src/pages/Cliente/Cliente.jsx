@@ -22,7 +22,17 @@ const Cliente = () => {
   // Controlan la apertura de modales de ver informacion y editar.
   const [selectedCliente, setSelectedCliente] = useState(null);
   const [editingCliente, setEditingCliente] = useState(null);
+  const [expandedClienteIds, setExpandedClienteIds] = useState(() => new Set());
   const query = (searchParams.get('q') ?? '').trim().toLowerCase();
+
+  const toggleClienteDetails = (clienteId) => {
+    setExpandedClienteIds((currentIds) => {
+      const nextIds = new Set(currentIds);
+      if (nextIds.has(clienteId)) nextIds.delete(clienteId);
+      else nextIds.add(clienteId);
+      return nextIds;
+    });
+  };
 
   if (loading) return 'Cargando...';
 
@@ -54,18 +64,28 @@ const Cliente = () => {
             </tr>
           </thead>
           <tbody>
-            {clientesFiltrados.map((cliente) => (
-              <tr key={cliente.id}>
+            {clientesFiltrados.map((cliente) => {
+              const isExpanded = expandedClienteIds.has(cliente.id);
+              return (
+              <tr key={cliente.id} className={isExpanded ? styles.mobileRowExpanded : ''}>
                 <td>
                   <div className={styles.clientCell}>
                     <span className={styles.clientAvatar}>{getClientInitials(cliente.nombre)}</span>
                     <span>{cliente.nombre}</span>
+                    <button
+                      type="button"
+                      className={styles.mobileMoreButton}
+                      onClick={() => toggleClienteDetails(cliente.id)}
+                      aria-expanded={isExpanded}
+                    >
+                      {isExpanded ? 'Menos info' : 'Más info'}
+                    </button>
                   </div>
                 </td>
                 <td>{cliente.identificacion}</td>
-                <td>{cliente.direccion}</td>
-                <td>{cliente.celular}</td>
-                <td>
+                <td className={styles.mobileDetailsCell} data-label="Dirección">{cliente.direccion}</td>
+                <td className={styles.mobileDetailsCell} data-label="Celular">{cliente.celular}</td>
+                <td className={styles.mobileDetailsCell} data-label="Información">
                   <button
                     onClick={() => setSelectedCliente(cliente)}
                     className={`${styles.iconOnlyButton} ${styles.infoButton}`}
@@ -84,7 +104,7 @@ const Cliente = () => {
                     </svg>
                   </button>
                 </td>
-                <td>
+                <td className={styles.mobileDetailsCell} data-label="Acciones">
                   <button
                     type="button"
                     onClick={() => setEditingCliente(cliente)}
@@ -106,7 +126,8 @@ const Cliente = () => {
                   </button>
                 </td>
               </tr>
-            ))}
+              );
+            })}
           </tbody>
         </table>
       </div>

@@ -66,7 +66,17 @@ const Vehiculo = () => {
   const [searchParams] = useSearchParams();
   const [selectedVehiculo, setSelectedVehiculo] = useState(null);
   const [editingVehiculo, setEditingVehiculo] = useState(null);
+  const [expandedVehiculoIds, setExpandedVehiculoIds] = useState(() => new Set());
   const query = (searchParams.get('q') ?? '').trim().toLowerCase();
+
+  const toggleVehiculoDetails = (vehiculoId) => {
+    setExpandedVehiculoIds((currentIds) => {
+      const nextIds = new Set(currentIds);
+      if (nextIds.has(vehiculoId)) nextIds.delete(vehiculoId);
+      else nextIds.add(vehiculoId);
+      return nextIds;
+    });
+  };
 
   const vehiculosFiltrados = !query
     ? vehiculos
@@ -129,25 +139,36 @@ const Vehiculo = () => {
           <tbody>
             {vehiculosFiltrados.map((vehiculo) => {
               const estado = getEstadoVehiculo(vehiculo.id);
+              const isExpanded = expandedVehiculoIds.has(vehiculo.id);
               return (
-                <tr key={vehiculo.id}>
-                  <td>{vehiculo.nombreVehiculo}</td>
-                  <td>{vehiculo.placa}</td>
-                  <td>{renderValidityDate(vehiculo.fechaSOAT, styles)}</td>
-                  <td>{renderValidityDate(vehiculo.fechaTecno, styles)}</td>
-                  <td>
+                <tr key={vehiculo.id} className={isExpanded ? styles.mobileRowExpanded : ''}>
+                  <td className={styles.vehicleMobileTitleCell}>
+                    <strong>{vehiculo.nombreVehiculo}</strong>
+                    <button
+                      type="button"
+                      className={styles.mobileMoreButton}
+                      onClick={() => toggleVehiculoDetails(vehiculo.id)}
+                      aria-expanded={isExpanded}
+                    >
+                      {isExpanded ? 'Menos info' : 'Más info'}
+                    </button>
+                  </td>
+                  <td data-label="Placa">{vehiculo.placa}</td>
+                  <td className={styles.mobileDetailsCell} data-label="SOAT">{renderValidityDate(vehiculo.fechaSOAT, styles)}</td>
+                  <td className={styles.mobileDetailsCell} data-label="Tecnomecánica">{renderValidityDate(vehiculo.fechaTecno, styles)}</td>
+                  <td className={styles.mobileDetailsCell} data-label="Estado">
                     <span className={`${styles.estadoBadge} ${estado === 'Rentado' ? styles.estadoRentado : styles.estadoDisponible}`}>
                       {estado}
                     </span>
                   </td>
-                  <td><button onClick={() => setSelectedVehiculo(vehiculo)} className={`${styles.iconOnlyButton} ${styles.infoButton}`}>
+                  <td className={styles.mobileDetailsCell} data-label="Información"><button onClick={() => setSelectedVehiculo(vehiculo)} className={`${styles.iconOnlyButton} ${styles.infoButton}`}>
                     <svg className={`${styles.iconButton} ${styles.ver}`} xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24">
                       <rect x="4" y="3.5" width="16" height="17" rx="2.5" />
                       <path strokeLinecap="round" strokeLinejoin="round" d="M8 8.25h8M8 12h5" />
                       <circle cx="16.75" cy="15.75" r="2.25" />
                     </svg>
                   </button></td>
-                  <td>
+                  <td className={styles.mobileDetailsCell} data-label="Acciones">
                     <button
                       type="button"
                       onClick={() => setEditingVehiculo(vehiculo)}
