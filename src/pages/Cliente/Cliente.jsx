@@ -24,6 +24,7 @@ const Cliente = () => {
   const [editingCliente, setEditingCliente] = useState(null);
   const query = (searchParams.get('q') ?? '').trim().toLowerCase();
 
+
   if (loading) return 'Cargando...';
 
   const clientesFiltrados = !query
@@ -63,9 +64,9 @@ const Cliente = () => {
                   </div>
                 </td>
                 <td>{cliente.identificacion}</td>
-                <td>{cliente.direccion}</td>
-                <td>{cliente.celular}</td>
-                <td>
+                <td className={styles.mobileDetailsCell} data-label="Dirección">{cliente.direccion}</td>
+                <td className={styles.mobileDetailsCell} data-label="Celular">{cliente.celular}</td>
+                <td className={styles.mobileDetailsCell} data-label="Información">
                   <button
                     onClick={() => setSelectedCliente(cliente)}
                     className={`${styles.iconOnlyButton} ${styles.infoButton}`}
@@ -84,7 +85,7 @@ const Cliente = () => {
                     </svg>
                   </button>
                 </td>
-                <td>
+                <td className={styles.mobileDetailsCell} data-label="Acciones">
                   <button
                     type="button"
                     onClick={() => setEditingCliente(cliente)}

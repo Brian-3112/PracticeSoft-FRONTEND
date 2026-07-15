@@ -227,6 +227,7 @@ const Renta = () => {
     const [selectedVehiclePlate, setSelectedVehiclePlate] = useState('');
     const [selectedIncomeMonth, setSelectedIncomeMonth] = useState('');
     const [selectedIncomeYear, setSelectedIncomeYear] = useState('');
+    const [expandedRentaIds, setExpandedRentaIds] = useState(() => new Set());
 
 
     const {
@@ -303,6 +304,15 @@ const Renta = () => {
         ? 'Todos los meses'
         : MONTH_FILTER_OPTIONS.find((month) => String(month.value) === selectedIncomeMonth)?.label ?? 'Mes';
     const selectedYearLabel = selectedIncomeYear === '' ? 'Todos los años' : selectedIncomeYear;
+
+    const toggleRentaDetails = (rentaId) => {
+        setExpandedRentaIds((currentIds) => {
+            const nextIds = new Set(currentIds);
+            if (nextIds.has(rentaId)) nextIds.delete(rentaId);
+            else nextIds.add(rentaId);
+            return nextIds;
+        });
+    };
 
     const rentasFiltradas = !query
         ? rentas
@@ -456,7 +466,7 @@ const Renta = () => {
                     </thead>
                     <tbody>
                         {rentasFiltradas.map((renta) => (
-                            <tr key={renta.id}>
+                            <tr key={renta.id} className={expandedRentaIds.has(renta.id) ? styles.mobileRowExpanded : ''}>
                                 {(() => {
                                     const clienteActualizado = getSyncedCliente(renta, clientesById);
                                     const fechaEntrega = parseDateOnly(renta.fechaEntrega);
@@ -481,12 +491,20 @@ const Renta = () => {
                                         <div className={styles.clientInfo}>
                                             <span className={styles.clientName}>{clienteActualizado?.nombre}</span>
                                             <span className={styles.clientId}>CC {clienteActualizado?.identificacion ?? 'Sin identificar'}</span>
+                                            <button
+                                                type="button"
+                                                className={styles.mobileMoreButton}
+                                                onClick={() => toggleRentaDetails(renta.id)}
+                                                aria-expanded={expandedRentaIds.has(renta.id)}
+                                            >
+                                                {expandedRentaIds.has(renta.id) ? 'Menos info' : 'Más info'}
+                                            </button>
                                         </div>
                                     </div>
                                 </td>
-                                <td className={styles.vehicleNameCell}>{renta.vehiculo?.nombreVehiculo}</td>
-                                <td>{renta.vehiculo?.placa}</td>
-                                <td>
+                                <td className={`${styles.vehicleNameCell} ${styles.mobileDetailsCell}`} data-label="Vehículo">{renta.vehiculo?.nombreVehiculo}</td>
+                                <td data-label="Placa">{renta.vehiculo?.placa}</td>
+                                <td className={styles.mobileDetailsCell} data-label="Entrega">
                                     <div className={styles.dateCell}>
                                         {renderCalendarIcon(`${styles.calendarIcon} ${styles.deliveryIcon}`)}
                                         <div className={styles.dateInfo}>
@@ -495,7 +513,7 @@ const Renta = () => {
                                         </div>
                                     </div>
                                 </td>
-                                <td>
+                                <td className={styles.mobileDetailsCell} data-label="Devolución">
                                     <div className={styles.dateCell}>
                                         {renderCalendarIcon(`${styles.calendarIcon} ${styles.returnIcon}`)}
                                         <div className={styles.dateInfo}>
@@ -504,7 +522,7 @@ const Renta = () => {
                                         </div>
                                     </div>
                                 </td>
-                                <td className={styles.totalValueCell}>
+                                <td className={`${styles.totalValueCell} ${styles.mobileDetailsCell}`} data-label="Valor total">
                                     {renta.valorTotal.toLocaleString("es-CO", {
                                         style: "currency",
                                         currency: "COP",
@@ -512,14 +530,14 @@ const Renta = () => {
                                         maximumFractionDigits: 0
                                     })}
                                 </td>
-                                <td>
+                                <td className={styles.mobileDetailsCell} data-label="Estado">
                                     <span
                                         className={`${styles.status} ${estadoClase}`}
                                     >
                                         {estadoTexto}
                                     </span>
                                 </td>
-                                <td className={styles.actionsCell}>
+                                <td className={`${styles.actionsCell} ${styles.mobileDetailsCell}`} data-label="Contrato / Acciones">
                                     <button
                                         type="button"
                                         className={styles.downloadButton}
