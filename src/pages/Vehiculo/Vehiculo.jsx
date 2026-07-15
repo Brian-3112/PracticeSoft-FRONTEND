@@ -66,17 +66,8 @@ const Vehiculo = () => {
   const [searchParams] = useSearchParams();
   const [selectedVehiculo, setSelectedVehiculo] = useState(null);
   const [editingVehiculo, setEditingVehiculo] = useState(null);
-  const [expandedVehiculoIds, setExpandedVehiculoIds] = useState(() => new Set());
   const query = (searchParams.get('q') ?? '').trim().toLowerCase();
 
-  const toggleVehiculoDetails = (vehiculoId) => {
-    setExpandedVehiculoIds((currentIds) => {
-      const nextIds = new Set(currentIds);
-      if (nextIds.has(vehiculoId)) nextIds.delete(vehiculoId);
-      else nextIds.add(vehiculoId);
-      return nextIds;
-    });
-  };
 
   const vehiculosFiltrados = !query
     ? vehiculos
@@ -139,19 +130,10 @@ const Vehiculo = () => {
           <tbody>
             {vehiculosFiltrados.map((vehiculo) => {
               const estado = getEstadoVehiculo(vehiculo.id);
-              const isExpanded = expandedVehiculoIds.has(vehiculo.id);
               return (
-                <tr key={vehiculo.id} className={isExpanded ? styles.mobileRowExpanded : ''}>
+                <tr key={vehiculo.id}>
                   <td className={styles.vehicleMobileTitleCell}>
                     <strong>{vehiculo.nombreVehiculo}</strong>
-                    <button
-                      type="button"
-                      className={styles.mobileMoreButton}
-                      onClick={() => toggleVehiculoDetails(vehiculo.id)}
-                      aria-expanded={isExpanded}
-                    >
-                      {isExpanded ? 'Menos info' : 'Más info'}
-                    </button>
                   </td>
                   <td data-label="Placa">{vehiculo.placa}</td>
                   <td className={styles.mobileDetailsCell} data-label="SOAT">{renderValidityDate(vehiculo.fechaSOAT, styles)}</td>

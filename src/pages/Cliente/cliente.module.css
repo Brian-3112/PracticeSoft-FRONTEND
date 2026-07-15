@@ -172,10 +172,6 @@
 }
 
 
-.mobileMoreButton {
-  display: none;
-}
-
 @media (max-width: 768px) {
   .tableContainer {
     background: transparent;
@@ -187,7 +183,6 @@
 
   .table,
   .table tbody,
-  .table tr,
   .table td {
     display: block;
     width: 100%;
@@ -198,6 +193,10 @@
   }
 
   .table tr {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 14px;
+    row-gap: 8px;
     margin-bottom: 14px;
     padding: 14px;
     border: 1px solid #e8eef4;
@@ -231,8 +230,12 @@
     content: 'Cédula';
   }
 
+  .table td:first-child {
+    grid-column: 1 / -1;
+  }
+
   .clientCell {
-    align-items: flex-start;
+    align-items: center;
     min-width: 0;
   }
 
@@ -243,27 +246,7 @@
     line-height: 1.2;
   }
 
-  .mobileMoreButton {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 8px;
-    width: fit-content;
-    border: 0;
-    border-radius: 999px;
-    background: rgba(40, 160, 135, 0.12);
-    color: var(--primary);
-    padding: 7px 12px;
-    font-size: 0.82rem;
-    font-weight: 800;
-    cursor: pointer;
-  }
-
   .mobileDetailsCell {
-    display: none;
-  }
-
-  .mobileRowExpanded .mobileDetailsCell {
     display: block;
   }
 }
