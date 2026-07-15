@@ -22,6 +22,15 @@ const initialErrors = {
 
 const toUpperWithoutSpaces = (value) => String(value).replace(/\s+/g, '').toUpperCase();
 
+const capitalizeFirstLetter = (value) => String(value).replace(/^(\s*)([a-záéíóúñü])/i, (_, spaces, letter) => `${spaces}${letter.toUpperCase()}`);
+
+const normalizeFieldValue = (name, value) => {
+  if (name === 'nombreVehiculo') return String(value).toUpperCase();
+  if (name === 'placa') return toUpperWithoutSpaces(value);
+  if (name === 'transito' || name === 'description') return capitalizeFirstLetter(value);
+  return value;
+};
+
 // Reglas de validacion para campos obligatorios del vehiculo.
 const validateField = (name, value) => {
   const trimmedValue = String(value).trim();
@@ -61,15 +70,16 @@ const Agregarvehiculo = () => {
   // Valida en tiempo real mientras el usuario escribe.
   const handleChange = (e) => {
     const { name, value } = e.target;
+    const nextValue = normalizeFieldValue(name, value);
     setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: nextValue
     }));
 
     if (Object.prototype.hasOwnProperty.call(initialErrors, name)) {
       setErrors((prev) => ({
         ...prev,
-        [name]: validateField(name, value)
+        [name]: validateField(name, nextValue)
       }));
     }
   };

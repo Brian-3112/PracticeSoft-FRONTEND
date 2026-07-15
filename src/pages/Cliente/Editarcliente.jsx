@@ -77,7 +77,9 @@ const Editarcliente = ({ cliente, onClose }) => {
     // Validacion en tiempo real.
     const handleChange = (e) => {
         const { name, value } = e.target;
-        const nextValue = name === 'nombre' ? toTitleCaseByWords(value) : value;
+        const nextValue = ['nombre', 'nombreFamiliar', 'nombrePersonal'].includes(name)
+            ? toTitleCaseByWords(value)
+            : value;
         setFormData((prev) => ({
             ...prev,
             [name]: nextValue
