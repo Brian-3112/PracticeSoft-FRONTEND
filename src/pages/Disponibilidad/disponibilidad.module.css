@@ -7,7 +7,7 @@
 .legend { display:flex; gap:14px; }
 .dot { width:10px; height:10px; border-radius:999px; display:inline-block; margin-right:6px; }
 .dotRed { background:#d33; }
-.dotGreen { background:#21836F; }
+.dotGreen { background:#33CCAD; }
 .vehicleGrid { display:grid; grid-template-columns:repeat(4, minmax(0, 1fr)); gap:12px; }
 .vehicleCard { border:1px solid #e5e9f2; background:#fff; border-radius:12px; padding:10px; }
 .vehicleHead h3 { font-size:.95rem; margin:0; }
