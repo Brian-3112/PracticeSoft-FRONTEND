@@ -307,7 +307,7 @@
 }
 
 .primaryButton {
-  background: linear-gradient(135deg, #28a087, #20866f);
+  background: linear-gradient(135deg, #28A087, #20866f);
 }
 
 .outlineButton {
@@ -390,4 +390,21 @@
   .modulesGrid {
     grid-template-columns: 1fr;
   }
+}
+
+.temporaryUserActions {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.deleteTempUserButton {
+  border-color: #fecaca;
+  color: #b91c1c;
+}
+
+.deleteTempUserButton:hover {
+  border-color: #f87171;
+  background: #fff1f2;
 }
