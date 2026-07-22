@@ -19,3 +19,9 @@ export const updateTemporaryUserStatus = async (id, payload, config) => {
   const { data } = await clienteAxios.patch(`/usuarios/temporales/${id}/status`, payload, config);
   return data;
 };
+
+
+export const deleteTemporaryUser = async (id, config) => {
+  const { data } = await clienteAxios.delete(`/usuarios/temporales/${id}`, config);
+  return data;
+};

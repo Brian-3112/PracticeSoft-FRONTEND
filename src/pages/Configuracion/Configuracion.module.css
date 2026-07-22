@@ -391,3 +391,13 @@
     grid-template-columns: 1fr;
   }
 }
+
+.deleteTempUserButton {
+  border-color: #fecaca;
+  color: #b91c1c;
+}
+
+.deleteTempUserButton:hover {
+  border-color: #f87171;
+  background: #fff1f2;
+}

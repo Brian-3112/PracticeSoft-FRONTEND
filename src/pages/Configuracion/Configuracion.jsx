@@ -7,6 +7,7 @@ import {
   getTemporaryUsers,
   updateTemporaryUserPassword,
   updateTemporaryUserStatus,
+  deleteTemporaryUser,
 } from '../../services/temporaryUserService.js';
 import styles from './Configuracion.module.css';
 
@@ -36,6 +37,10 @@ const capitalizeWords = (value = '') => String(value)
   .filter(Boolean)
   .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
   .join(' ');
+
+const capitalizeWordsInProgress = (value = '') => String(value)
+  .toLowerCase()
+  .replace(/(^|\s)(\p{L})/gu, (match) => match.toUpperCase());
 
 const Configuracion = () => {
   const { auth, config } = useAuth();
@@ -125,8 +130,7 @@ const Configuracion = () => {
       return;
     }
     try {
-      const data = await getTemporaryUsers(config);
-      setTemporaryUsers(Array.isArray(data) ? data : (data?.usuarios || data?.data || []));
+      await refreshTemporaryUsers();
       setShowUsersList(true);
     } catch (error) {
       Swal.fire({ title: 'Error', text: error?.response?.data?.message || 'No se pudieron consultar usuarios temporales.', icon: 'error' });
@@ -141,10 +145,38 @@ const Configuracion = () => {
         text: `Fue ${willBeActive ? 'habilitado' : 'deshabilitado'}.`,
         icon: 'success',
       });
-      const data = await getTemporaryUsers(config);
-      setTemporaryUsers(Array.isArray(data) ? data : (data?.usuarios || data?.data || []));
+      await refreshTemporaryUsers();
     } catch (error) {
       Swal.fire({ title: 'Error', text: error?.response?.data?.message || 'No se pudo actualizar el estado del usuario temporal.', icon: 'error' });
+    }
+  };
+
+  const refreshTemporaryUsers = async () => {
+    const data = await getTemporaryUsers(config);
+    setTemporaryUsers(Array.isArray(data) ? data : (data?.usuarios || data?.data || []));
+  };
+
+  const handleDeleteTemporaryUser = async (tempUser) => {
+    const tempUserId = tempUser.id || tempUser._id;
+    const tempUserName = `${tempUser.nombre ?? ''} ${tempUser.apellido ?? ''}`.trim() || tempUser.email || tempUser.correo || 'este usuario temporal';
+    const result = await Swal.fire({
+      title: '¿Eliminar usuario temporal?',
+      text: `Esta acción eliminará a ${tempUserName}.`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar',
+      confirmButtonColor: '#dc2626',
+    });
+
+    if (!result.isConfirmed) return;
+
+    try {
+      await deleteTemporaryUser(tempUserId, config);
+      Swal.fire({ title: 'Usuario temporal eliminado', icon: 'success' });
+      await refreshTemporaryUsers();
+    } catch (error) {
+      Swal.fire({ title: 'Error', text: error?.response?.data?.message || 'No se pudo eliminar el usuario temporal.', icon: 'error' });
     }
   };
 
@@ -261,8 +293,8 @@ const Configuracion = () => {
                   <form className={styles.passwordForm} onSubmit={handleCreateTemporaryUser}>
                     <p className={styles.sectionText}>Crear usuario temporal</p>
                     <div className={styles.inlineFields}>
-                      <label className={styles.formGroup}><span className={styles.formLabel}>Nombre</span><input className={styles.input} value={tempName} onChange={(e) => setTempName(e.target.value)} required /></label>
-                      <label className={styles.formGroup}><span className={styles.formLabel}>Apellido</span><input className={styles.input} value={tempLastName} onChange={(e) => setTempLastName(e.target.value)} required /></label>
+                      <label className={styles.formGroup}><span className={styles.formLabel}>Nombre</span><input className={styles.input} value={tempName} onChange={(e) => setTempName(capitalizeWordsInProgress(e.target.value))} required /></label>
+                      <label className={styles.formGroup}><span className={styles.formLabel}>Apellido</span><input className={styles.input} value={tempLastName} onChange={(e) => setTempLastName(capitalizeWordsInProgress(e.target.value))} required /></label>
                     </div>
                     <div className={styles.inlineFields}>
                       <label className={styles.formGroup}><span className={styles.formLabel}>Correo</span><input className={styles.input} type="email" value={tempEmail} onChange={(e) => setTempEmail(e.target.value)} required /></label>
@@ -313,6 +345,9 @@ const Configuracion = () => {
                       </p>
                       <button className={styles.statusIconButton} type="button" onClick={() => handleUpdateTemporaryStatus(tempUser)} title="Activar/Desactivar usuario temporal" aria-label="Activar o desactivar usuario temporal">
                         {(tempUser.isActive ?? tempUser.activo) ? <span aria-hidden="true">✅</span> : <span aria-hidden="true">⛔</span>}
+                      </button>
+                      <button className={`${styles.statusIconButton} ${styles.deleteTempUserButton}`} type="button" onClick={() => handleDeleteTemporaryUser(tempUser)} title="Eliminar usuario temporal" aria-label="Eliminar usuario temporal">
+                        <span aria-hidden="true">🗑️</span>
                       </button>
                     </div>
                   ))}

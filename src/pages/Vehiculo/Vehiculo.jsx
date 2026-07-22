@@ -133,7 +133,7 @@ const Vehiculo = () => {
               return (
                 <tr key={vehiculo.id}>
                   <td className={styles.vehicleMobileTitleCell}>
-                    <strong>{vehiculo.nombreVehiculo}</strong>
+                    {vehiculo.nombreVehiculo}
                   </td>
                   <td data-label="Placa">{vehiculo.placa}</td>
                   <td className={styles.mobileDetailsCell} data-label="SOAT">{renderValidityDate(vehiculo.fechaSOAT, styles)}</td>
