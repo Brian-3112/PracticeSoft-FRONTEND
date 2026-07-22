@@ -1,6 +1,6 @@
 .confirmarBoton{
 
-    background-color: var(--primary);
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
     color: white;
     font-family: 'Poppins', sans-serif;
 
