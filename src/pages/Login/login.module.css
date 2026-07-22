@@ -249,7 +249,7 @@
 
 .btnLink:hover {
     color: var(--primary-dark);
-    background: rgba(51, 204, 173, 0.05);
+    background: rgba(40, 160, 135, 0.05);
     text-decoration: underline;
 }
 
