@@ -392,6 +392,13 @@
   }
 }
 
+.temporaryUserActions {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
 .deleteTempUserButton {
   border-color: #fecaca;
   color: #b91c1c;

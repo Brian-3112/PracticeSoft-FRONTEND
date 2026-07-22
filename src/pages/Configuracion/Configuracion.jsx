@@ -164,16 +164,27 @@ const Configuracion = () => {
       text: `Esta acción eliminará a ${tempUserName}.`,
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonText: 'Sí, eliminar',
+      confirmButtonText: 'Si, eliminar',
       cancelButtonText: 'Cancelar',
-      confirmButtonColor: '#dc2626',
+      customClass: {
+        confirmButton: 'confirmarBoton',
+        cancelButton: 'cancelBoton',
+      },
     });
 
     if (!result.isConfirmed) return;
 
     try {
       await deleteTemporaryUser(tempUserId, config);
-      Swal.fire({ title: 'Usuario temporal eliminado', icon: 'success' });
+      if (String(tempPasswordUserId) === String(tempUserId)) setTempPasswordUserId('');
+      Swal.fire({
+        title: 'Usuario temporal eliminado',
+        icon: 'success',
+        customClass: {
+          confirmButton: 'confirmarBoton',
+          cancelButton: 'cancelBoton',
+        },
+      });
       await refreshTemporaryUsers();
     } catch (error) {
       Swal.fire({ title: 'Error', text: error?.response?.data?.message || 'No se pudo eliminar el usuario temporal.', icon: 'error' });
@@ -343,12 +354,14 @@ const Configuracion = () => {
                       <p className={`${styles.infoValue} ${styles.temporaryUserName}`}>
                         {`${tempUser.nombre ?? ''} ${tempUser.apellido ?? ''}`.trim() || tempUser.email || tempUser.correo}
                       </p>
-                      <button className={styles.statusIconButton} type="button" onClick={() => handleUpdateTemporaryStatus(tempUser)} title="Activar/Desactivar usuario temporal" aria-label="Activar o desactivar usuario temporal">
-                        {(tempUser.isActive ?? tempUser.activo) ? <span aria-hidden="true">✅</span> : <span aria-hidden="true">⛔</span>}
-                      </button>
-                      <button className={`${styles.statusIconButton} ${styles.deleteTempUserButton}`} type="button" onClick={() => handleDeleteTemporaryUser(tempUser)} title="Eliminar usuario temporal" aria-label="Eliminar usuario temporal">
-                        <span aria-hidden="true">🗑️</span>
-                      </button>
+                      <div className={styles.temporaryUserActions}>
+                        <button className={styles.statusIconButton} type="button" onClick={() => handleUpdateTemporaryStatus(tempUser)} title="Activar/Desactivar usuario temporal" aria-label="Activar o desactivar usuario temporal">
+                          {(tempUser.isActive ?? tempUser.activo) ? <span aria-hidden="true">✅</span> : <span aria-hidden="true">⛔</span>}
+                        </button>
+                        <button className={`${styles.statusIconButton} ${styles.deleteTempUserButton}`} type="button" onClick={() => handleDeleteTemporaryUser(tempUser)} title="Eliminar usuario temporal" aria-label="Eliminar usuario temporal">
+                          <span aria-hidden="true">🗑️</span>
+                        </button>
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -360,7 +373,17 @@ const Configuracion = () => {
             {showPasswordForm && (
               <form className={`${styles.passwordForm} ${styles.temporaryPasswordForm} ${styles.managerPanel}`} onSubmit={handleUpdateTemporaryPassword}>
                 <p className={styles.managerPanelTitle}>Actualizar contraseña temporal</p>
-                <label className={styles.formGroup}><span className={styles.formLabel}>ID usuario temporal</span><input className={styles.input} value={tempPasswordUserId} onChange={(e) => setTempPasswordUserId(e.target.value)} required /></label>
+                <label className={styles.formGroup}>
+                  <span className={styles.formLabel}>Usuario temporal</span>
+                  <select className={styles.input} value={tempPasswordUserId} onChange={(e) => setTempPasswordUserId(e.target.value)} required>
+                    <option value="">Selecciona un usuario</option>
+                    {temporaryUsers.map((tempUser) => {
+                      const tempUserId = tempUser.id || tempUser._id;
+                      const tempUserName = `${tempUser.nombre ?? ''} ${tempUser.apellido ?? ''}`.trim() || tempUser.email || tempUser.correo || `Usuario ${tempUserId}`;
+                      return <option key={tempUserId} value={tempUserId}>{tempUserName}</option>;
+                    })}
+                  </select>
+                </label>
                 <label className={styles.formGroup}><span className={styles.formLabel}>Nueva contraseña</span><input className={styles.input} type="password" value={tempNewPassword} onChange={(e) => setTempNewPassword(e.target.value)} required /></label>
                 <button className={`${styles.submitButton} ${styles.darkButton}`} type="submit">Cambiar contraseña a usuario temporal</button>
               </form>
