@@ -275,7 +275,7 @@
   outline: none;
   border-color: var(--primary);
   background: #fff;
-  box-shadow: 0 0 0 3px rgba(40, 160, 135, 0.15);
+  box-shadow: 0 0 0 3px rgba(33, 131, 111, 0.15);
 }
 
 .helpText {
@@ -307,7 +307,7 @@
 }
 
 .primaryButton {
-  background: linear-gradient(135deg, #28a087, #20866f);
+  background: linear-gradient(135deg, #21836F, #20866f);
 }
 
 .outlineButton {

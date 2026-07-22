@@ -94,8 +94,8 @@
 }
 
 .ver .colorimgg {
-  fill: #28A087;
-  stroke: #28A087;
+  fill: #21836F;
+  stroke: #21836F;
 }
 
 .infoButton {
@@ -164,8 +164,8 @@
   align-items: center;
   justify-content: center;
   flex: 0 0 auto;
-  background: rgba(40, 160, 135, 0.16);
-  color: #28A087;
+  background: rgba(33, 131, 111, 0.16);
+  color: #21836F;
   font-size: 0.85rem;
   font-weight: 800;
   letter-spacing: 0.2px;

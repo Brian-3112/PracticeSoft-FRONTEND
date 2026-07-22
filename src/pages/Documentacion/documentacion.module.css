@@ -53,8 +53,8 @@
   align-items: center;
   justify-content: center;
   flex: 0 0 auto;
-  background: rgba(40, 160, 135, 0.16);
-  color: #28A087;
+  background: rgba(33, 131, 111, 0.16);
+  color: #21836F;
   font-size: 0.8rem;
   font-weight: 700;
   letter-spacing: 0.2px;
@@ -89,7 +89,7 @@
   width: 17px;
   height: 17px;
   flex: 0 0 auto;
-  color: #28A087;
+  color: #21836F;
 }
 
 .emptyCell {
